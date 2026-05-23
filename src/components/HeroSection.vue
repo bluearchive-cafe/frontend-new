@@ -29,16 +29,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const publicAssetBase = import.meta.env.BASE_URL
+
 const heroImages = [
-  '/assets/img/hero/hero.png',
-  '/assets/img/hero/hero-haruka.jpg',
-  '/assets/img/hero/115938338_p0_cut.png',
-  '/assets/img/hero/100941489_p0_cut.png',
-  '/assets/img/hero/110486537_p0.jpg',
-  '/assets/img/hero/123658183_p0.jpg',
-  '/assets/img/hero/131020176_p0_cut.png',
-  '/assets/img/hero/142932674_p0.jpg'
-]
+  'assets/img/hero/hero.png',
+  'assets/img/hero/hero-haruka.jpg',
+  'assets/img/hero/115938338_p0_cut.png',
+  'assets/img/hero/100941489_p0_cut.png',
+  'assets/img/hero/110486537_p0.jpg',
+  'assets/img/hero/123658183_p0.jpg',
+  'assets/img/hero/131020176_p0_cut.png',
+  'assets/img/hero/142932674_p0.jpg'
+].map((path) => `${publicAssetBase}${path}`)
 
 function getRandomHeroImage() {
   return heroImages[Math.floor(Math.random() * heroImages.length)]
