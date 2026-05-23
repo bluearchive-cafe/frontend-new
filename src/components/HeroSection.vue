@@ -1,0 +1,157 @@
+<template>
+  <section id="home" class="hero">
+    <img class="hero-image" :src="currentHeroImage" alt="" />
+    <div class="hero-shade" />
+
+    <v-container class="hero-content" max-width="1120">
+      <div class="hero-copy">
+        <h1>
+          <span class="hero-line">提供 <span class="text-gradient">全面的</span></span>
+          <span class="hero-line">蔚蓝档案汉化服务</span>
+        </h1>
+        <p>
+          整理公告、教程和资源入口，让玩家更快找到需要的汉化内容与使用指引。
+        </p>
+
+        <div class="hero-actions">
+          <v-btn color="primary" size="large" to="/news" prepend-icon="mdi-lightning-bolt">
+            立即使用
+          </v-btn>
+          <v-btn class="tutorial-link" variant="text" size="large" href="#news" append-icon="mdi-arrow-right">
+            查看教程
+          </v-btn>
+        </div>
+      </div>
+    </v-container>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const heroImages = [
+  '/assets/img/hero/hero.png',
+  '/assets/img/hero/hero-haruka.jpg',
+  '/assets/img/hero/115938338_p0_cut.png',
+  '/assets/img/hero/100941489_p0_cut.png',
+  '/assets/img/hero/110486537_p0.jpg',
+  '/assets/img/hero/123658183_p0.jpg',
+  '/assets/img/hero/131020176_p0_cut.png',
+  '/assets/img/hero/142932674_p0.jpg'
+]
+
+function getRandomHeroImage() {
+  return heroImages[Math.floor(Math.random() * heroImages.length)]
+}
+
+const currentHeroImage = ref(getRandomHeroImage())
+</script>
+
+<style scoped>
+.hero {
+  position: relative;
+  min-height: 460px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(25, 29, 36, 0.98), rgba(25, 29, 36, 0.92)),
+    var(--color-bg);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: -2vw;
+  width: 72vw;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+  /* opacity: 0.64; */
+  filter: saturate(1.06);
+}
+
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, var(--color-bg) 32%, rgba(25, 29, 36, 0.98) 42%, rgba(25, 29, 36, 0.62) 58%, rgba(25, 29, 36, 0.24) 100%),
+    linear-gradient(180deg, transparent 74%, var(--color-bg-deep) 100%);
+}
+
+.hero-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 460px;
+  padding-block: 72px 56px;
+}
+
+.hero-copy {
+  width: min(560px, 100%);
+}
+
+.hero-copy h1 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(36px, 4.4vw, 56px);
+  /* font-weight: 900; */
+  line-height: 1.08;
+}
+
+.hero-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.hero-copy p {
+  max-width: 520px;
+  margin: 22px 0 0;
+  color: var(--color-text-muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.tutorial-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: 540px;
+  }
+
+  .hero-image {
+    top: 0;
+    right: -12vw;
+    width: 104vw;
+    max-width: none;
+    opacity: 0.38;
+  }
+
+  .hero-shade {
+    background:
+      linear-gradient(90deg, var(--color-bg) 0%, rgba(25, 29, 36, 0.98) 48%, rgba(25, 29, 36, 0.78) 72%, rgba(25, 29, 36, 0.46) 100%),
+      linear-gradient(180deg, transparent 70%, var(--color-bg-deep) 100%);
+  }
+
+  .hero-content {
+    align-items: flex-end;
+    min-height: 540px;
+    padding-block: 76px 54px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(28px, 8.6vw, 38px);
+  }
+
+  .hero-copy p {
+    font-size: 15px;
+  }
+}
+</style>

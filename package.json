@@ -1,0 +1,27 @@
+{
+  "name": "bluearchive-cafe-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "markdown-it": "^14.1.1",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vue": "^3.5.13",
+    "vue-router": "^5.0.7",
+    "vuetify": "^3.7.6"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "sass-embedded": "^1.100.0",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.1",
+    "vue-tsc": "^2.1.10"
+  }
+}
