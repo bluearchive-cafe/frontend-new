@@ -1,9 +1,5 @@
 import MarkdownIt from 'markdown-it'
 
-import designSync from './news/design-sync.md?raw'
-import homepageFramework from './news/homepage-framework.md?raw'
-import tutorialPlan from './news/tutorial-plan.md?raw'
-
 type NewsMeta = {
   title: string
   author: string
@@ -25,11 +21,17 @@ const markdown = new MarkdownIt({
   typographer: true
 })
 
-const rawArticles = [
-  { slug: 'homepage-framework', source: homepageFramework },
-  { slug: 'tutorial-plan', source: tutorialPlan },
-  { slug: 'design-sync', source: designSync }
-]
+const articleModules = import.meta.glob<string>('./news/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+})
+
+const rawArticles = Object.entries(articleModules).map(([path, source]) => {
+  const slug = path.split('/').pop()?.replace(/\.md$/, '') ?? ''
+
+  return { slug, source }
+})
 
 function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
