@@ -3,7 +3,7 @@
     <v-container max-width="1120">
       <div class="footer-inner">
         <div class="footer-left">
-          <strong>BlueArchive.Cafe</strong>
+          <strong>蔚蓝咖啡厅</strong>
           <p>Copyright © 2026 BlueArchive.Cafe. All rights reserved.</p>
           <div class="friend-links" aria-label="友情链接">
             <span>友情链接</span>

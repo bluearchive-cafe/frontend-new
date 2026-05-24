@@ -4,7 +4,7 @@
       <div class="page-heading">
         <p>News</p>
         <h1>新闻</h1>
-        <span>使用 Markdown 编写和维护公告内容，自动展示作者、发布时间与字数统计。</span>
+        <span>查看汉化更新、使用说明与站点公告，快速找到最近发布的重要信息。</span>
       </div>
 
       <div class="category-filter" role="group" aria-label="文章分类筛选">
@@ -16,11 +16,11 @@
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
           @click="selectedCategory = category"
         >
-          {{ category }}
+          {{ category }}<span class="category-count">{{ getCategoryCount(category) }}</span>
         </v-btn>
       </div>
 
-      <div class="article-list">
+      <div v-if="filteredArticles.length" class="article-list">
         <v-card
           v-for="article in filteredArticles"
           :key="article.slug"
@@ -42,6 +42,17 @@
           </v-card-text>
         </v-card>
       </div>
+
+      <v-card v-else class="empty-card" elevation="0">
+        <v-card-text class="empty-content">
+          <p class="empty-label">No articles</p>
+          <h2>这个分类暂时没有文章</h2>
+          <p>换一个分类看看，或者返回全部新闻浏览当前已发布的内容。</p>
+          <v-btn color="primary" variant="flat" @click="selectedCategory = allCategoryLabel">
+            查看全部新闻
+          </v-btn>
+        </v-card-text>
+      </v-card>
     </v-container>
   </section>
 </template>
@@ -56,6 +67,14 @@ import { formatPublishTime, newsArticles, newsCategories } from '../content/news
 const allCategoryLabel = '全部'
 const selectedCategory = ref(allCategoryLabel)
 const categoryOptions = computed(() => [allCategoryLabel, ...newsCategories])
+
+function getCategoryCount(category: string) {
+  if (category === allCategoryLabel) {
+    return newsArticles.length
+  }
+
+  return newsArticles.filter((article) => article.category === category).length
+}
 
 const filteredArticles = computed(() => {
   if (selectedCategory.value === allCategoryLabel) {
@@ -111,6 +130,12 @@ const filteredArticles = computed(() => {
   margin-bottom: 24px;
 }
 
+.category-count {
+  margin-left: 8px;
+  opacity: 0.72;
+  font-size: 12px;
+}
+
 .article-list {
   display: grid;
   gap: 16px;
@@ -134,6 +159,11 @@ const filteredArticles = computed(() => {
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
   line-height: 1.35;
+  transition: color 160ms ease;
+}
+
+.article-card:hover h2 {
+  color: var(--color-secondary);
 }
 
 .article-card p {
@@ -146,5 +176,35 @@ const filteredArticles = computed(() => {
 
 .article-meta {
   margin-top: 18px;
+}
+
+.empty-card {
+  border: 1px solid var(--color-border);
+  background: var(--gradient-card);
+}
+
+.empty-content {
+  padding: clamp(26px, 5vw, 44px) !important;
+}
+
+.empty-label {
+  margin: 0 0 10px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: var(--font-weight-heading);
+}
+
+.empty-content h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-heading);
+}
+
+.empty-content p:not(.empty-label) {
+  max-width: 520px;
+  margin: 12px 0 22px;
+  color: var(--color-text-muted);
+  line-height: 1.75;
 }
 </style>

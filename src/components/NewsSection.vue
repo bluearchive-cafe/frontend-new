@@ -16,6 +16,7 @@
             :to="`/news/${item.slug}`"
           >
             <v-card-text>
+              <CategoryBadge :category="item.category" />
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
               <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
@@ -30,6 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import CategoryBadge from './CategoryBadge.vue'
 import { formatPublishTime, newsArticles } from '../content/news'
 
 const latestNews = computed(() => newsArticles.slice(0, 3))
@@ -71,7 +73,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-card {
-  min-height: 190px;
+  min-height: 164px;
   border: 1px solid var(--color-border);
   background: var(--gradient-card-strong);
   transition: border-color 160ms ease, transform 160ms ease;
@@ -85,7 +87,8 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 .news-card :deep(.v-card-text) {
   display: flex;
   flex-direction: column;
-  min-height: 190px;
+  min-height: 164px;
+  padding: 18px;
 }
 
 .news-date {
@@ -97,11 +100,16 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-card h3 {
-  margin: 0 0 10px;
+  margin: 12px 0 8px;
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
   line-height: 1.35;
+  transition: color 160ms ease;
+}
+
+.news-card:hover h3 {
+  color: var(--color-secondary);
 }
 
 .news-card p {
