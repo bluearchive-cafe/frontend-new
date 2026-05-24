@@ -27,6 +27,7 @@
   --font-weight-subheading: 760;
   --font-size-display: clamp(38px, 5.4vw, 56px);
   --font-size-page-title: clamp(34px, 4.8vw, 52px);
+  --font-size-article-title: clamp(28px, 3.8vw, 40px);
   --font-size-section-title: clamp(28px, 3.4vw, 38px);
   --font-size-card-title: clamp(20px, 2.4vw, 26px);
   background: var(--color-bg);

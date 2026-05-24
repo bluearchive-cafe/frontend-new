@@ -22,9 +22,21 @@
       </article>
 
       <v-card v-else class="missing-card" elevation="0">
-        <v-card-text>
+        <v-card-text class="missing-content">
+          <p class="missing-label">404</p>
           <h1>新闻不存在</h1>
-          <p>这篇新闻可能已移动或尚未发布。</p>
+          <p class="missing-description">
+            这篇新闻可能已移动、删除，或者暂时还没有发布。你可以返回新闻列表查找最新公告，也可以回到首页重新开始。
+          </p>
+
+          <div class="missing-actions">
+            <v-btn color="primary" size="large" to="/news" prepend-icon="$arrowLeft">
+              返回新闻列表
+            </v-btn>
+            <v-btn variant="outlined" size="large" to="/" append-icon="$arrowRight">
+              回到首页
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </v-container>
@@ -71,9 +83,9 @@ header {
 h1 {
   margin: 16px 0 0;
   color: var(--color-text);
-  font-size: var(--font-size-page-title);
+  font-size: var(--font-size-article-title);
   font-weight: var(--font-weight-heading);
-  line-height: 1.12;
+  line-height: 1.18;
 }
 
 .article-meta {
@@ -106,11 +118,41 @@ h1 {
 
 .missing-card {
   border: 1px solid var(--color-border);
-  background: var(--color-card);
+  background:
+    radial-gradient(circle at 86% 10%, var(--color-primary-soft), transparent 34%),
+    var(--gradient-card);
 }
 
-.missing-card p {
-  margin: 8px 0 0;
+.missing-content {
+  padding: clamp(30px, 5vw, 52px) !important;
+}
+
+.missing-label {
+  margin: 0 0 12px;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: var(--font-weight-heading);
+}
+
+.missing-description {
+  max-width: 560px;
+  margin: 18px 0 0;
   color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.missing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+@media (max-width: 420px) {
+  .missing-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 </style>

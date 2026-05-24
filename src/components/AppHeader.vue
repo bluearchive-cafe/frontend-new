@@ -28,7 +28,6 @@
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" temporary location="right" color="surface">
-    <div class="drawer-brand">蔚蓝咖啡厅</div>
     <v-list nav density="comfortable">
       <v-list-item
         v-for="item in navItems"
@@ -119,12 +118,6 @@ const navItems = computed(() => [
 .mobile-menu {
   display: none;
   margin-left: auto;
-}
-
-.drawer-brand {
-  padding: 22px 20px 8px;
-  font-size: 18px;
-  font-weight: 700;
 }
 
 @media (max-width: 720px) {
