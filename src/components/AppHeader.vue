@@ -19,7 +19,7 @@
 
       <v-btn
         class="mobile-menu"
-        icon="mdi-menu"
+        icon="$menu"
         variant="text"
         aria-label="打开菜单"
         @click="drawer = true"

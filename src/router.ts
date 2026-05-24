@@ -1,17 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import AboutPage from './pages/AboutPage.vue'
-import HomePage from './pages/HomePage.vue'
-import NewsArticlePage from './pages/NewsArticlePage.vue'
-import NewsPage from './pages/NewsPage.vue'
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'home', component: HomePage },
-    { path: '/news', name: 'news', component: NewsPage },
-    { path: '/news/:slug', name: 'news-article', component: NewsArticlePage },
-    { path: '/about', name: 'about', component: AboutPage }
+    { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
+    { path: '/news', name: 'news', component: () => import('./pages/NewsPage.vue') },
+    { path: '/news/:slug', name: 'news-article', component: () => import('./pages/NewsArticlePage.vue') },
+    { path: '/about', name: 'about', component: () => import('./pages/AboutPage.vue') }
   ],
   scrollBehavior(to) {
     if (to.hash) {

@@ -29,17 +29,17 @@
 <script setup lang="ts">
 const aboutItems = [
   {
-    icon: 'mdi-heart-outline',
+    icon: '$heartOutline',
     title: '非官方项目',
     description: '站点内容面向社区整理，不代表游戏官方立场。'
   },
   {
-    icon: 'mdi-file-document-edit-outline',
+    icon: '$fileDocumentEditOutline',
     title: 'Markdown 驱动',
     description: '新闻和后续文档内容优先使用 Markdown 维护，方便持续补充。'
   },
   {
-    icon: 'mdi-shield-check-outline',
+    icon: '$shieldCheckOutline',
     title: '清晰说明',
     description: '后续会补齐资源来源、使用边界和免责声明，避免信息含混。'
   }

@@ -1,7 +1,7 @@
 <template>
   <section class="article-page">
     <v-container max-width="860">
-      <v-btn class="back-link" variant="text" color="primary" prepend-icon="mdi-arrow-left" to="/news">
+      <v-btn class="back-link" variant="text" color="primary" prepend-icon="$arrowLeft" to="/news">
         返回新闻
       </v-btn>
 

@@ -1,6 +1,6 @@
 <template>
   <span class="category-badge">
-    <v-icon icon="mdi-tag-outline" size="16" aria-hidden="true" />
+    <v-icon icon="$tagOutline" size="16" aria-hidden="true" />
     <span class="sr-only">分类：</span>
     <span>{{ category }}</span>
   </span>

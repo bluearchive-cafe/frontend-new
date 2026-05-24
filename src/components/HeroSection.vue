@@ -14,10 +14,10 @@
         </p>
 
         <div class="hero-actions">
-          <v-btn color="primary" size="large" to="/news" prepend-icon="mdi-lightning-bolt">
+          <v-btn color="primary" size="large" to="/news" prepend-icon="$lightningBolt">
             立即使用
           </v-btn>
-          <v-btn class="tutorial-link" variant="text" size="large" href="#news" append-icon="mdi-arrow-right">
+          <v-btn class="tutorial-link" variant="text" size="large" href="#news" append-icon="$arrowRight">
             查看教程
           </v-btn>
         </div>

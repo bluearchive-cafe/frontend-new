@@ -1,18 +1,49 @@
-import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import './styles/global.css'
 
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import {
+  mdiAccountOutline,
+  mdiArrowLeft,
+  mdiArrowRight,
+  mdiCalendarClockOutline,
+  mdiChevronRight,
+  mdiFileDocumentEditOutline,
+  mdiHeartOutline,
+  mdiLightningBolt,
+  mdiMenu,
+  mdiShieldCheckOutline,
+  mdiTagOutline,
+  mdiTextBoxOutline
+} from '@mdi/js'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 import App from './App.vue'
 import router from './router'
 
 const vuetify = createVuetify({
-  components,
-  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases: {
+      ...aliases,
+      accountOutline: mdiAccountOutline,
+      arrowLeft: mdiArrowLeft,
+      arrowRight: mdiArrowRight,
+      calendarClockOutline: mdiCalendarClockOutline,
+      chevronRight: mdiChevronRight,
+      fileDocumentEditOutline: mdiFileDocumentEditOutline,
+      heartOutline: mdiHeartOutline,
+      lightningBolt: mdiLightningBolt,
+      menu: mdiMenu,
+      shieldCheckOutline: mdiShieldCheckOutline,
+      tagOutline: mdiTagOutline,
+      textBoxOutline: mdiTextBoxOutline
+    },
+    sets: {
+      mdi
+    }
+  },
   theme: {
     defaultTheme: 'blueArchiveDark',
     themes: {

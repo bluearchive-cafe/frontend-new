@@ -3,7 +3,7 @@
     <div class="meta-item">
       <dt class="sr-only">作者</dt>
       <dd>
-        <v-icon icon="mdi-account-outline" size="18" aria-hidden="true" />
+        <v-icon icon="$accountOutline" size="18" aria-hidden="true" />
         <span>{{ author }}</span>
       </dd>
     </div>
@@ -11,7 +11,7 @@
     <div class="meta-item">
       <dt class="sr-only">发布时间</dt>
       <dd>
-        <v-icon icon="mdi-calendar-clock-outline" size="18" aria-hidden="true" />
+        <v-icon icon="$calendarClockOutline" size="18" aria-hidden="true" />
         <time :datetime="dateTimeValue">{{ publishedAt }}</time>
       </dd>
     </div>
@@ -19,7 +19,7 @@
     <div class="meta-item">
       <dt class="sr-only">字数</dt>
       <dd>
-        <v-icon icon="mdi-text-box-outline" size="18" aria-hidden="true" />
+        <v-icon icon="$textBoxOutline" size="18" aria-hidden="true" />
         <span>{{ wordCount }} 字</span>
       </dd>
     </div>

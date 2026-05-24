@@ -6,6 +6,16 @@ const githubPagesBase = process.env.GITHUB_PAGES === 'true' ? '/frontend-new/' :
 
 export default defineConfig({
   base: githubPagesBase,
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          markdown: ['markdown-it'],
+          vuetify: ['vuetify', 'vue', 'vue-router']
+        }
+      }
+    }
+  },
   plugins: [
     vue(),
     vuetify({

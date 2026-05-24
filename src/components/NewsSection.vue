@@ -3,7 +3,7 @@
     <v-container max-width="1120">
       <div class="news-overview">
         <h2 class="section-title">最新动态</h2>
-        <v-btn class="all-news-link" variant="text" color="primary" append-icon="mdi-chevron-right" to="/news">
+        <v-btn class="all-news-link" variant="text" color="primary" append-icon="$chevronRight" to="/news">
           全部公告
         </v-btn>
 
