@@ -69,8 +69,8 @@ const aboutItems = [
   max-width: 520px;
   margin: 0;
   color: var(--color-text);
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 850;
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-heading);
   line-height: 1.2;
 }
 
@@ -101,6 +101,7 @@ const aboutItems = [
   margin: 0 0 6px;
   color: var(--color-text);
   font-size: 18px;
+  font-weight: var(--font-weight-subheading);
 }
 
 .about-row p {

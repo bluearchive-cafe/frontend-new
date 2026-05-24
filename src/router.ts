@@ -6,7 +6,8 @@ const router = createRouter({
     { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
     { path: '/news', name: 'news', component: () => import('./pages/NewsPage.vue') },
     { path: '/news/:slug', name: 'news-article', component: () => import('./pages/NewsArticlePage.vue') },
-    { path: '/about', name: 'about', component: () => import('./pages/AboutPage.vue') }
+    { path: '/about', name: 'about', component: () => import('./pages/AboutPage.vue') },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('./pages/NotFoundPage.vue') }
   ],
   scrollBehavior(to) {
     if (to.hash) {

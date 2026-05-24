@@ -91,8 +91,8 @@ const filteredArticles = computed(() => {
 .page-heading h1 {
   margin: 0;
   color: var(--color-text);
-  font-size: clamp(40px, 6vw, 64px);
-  /* font-weight: 900; */
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-heading);
   line-height: 1.08;
 }
 
@@ -131,7 +131,8 @@ const filteredArticles = computed(() => {
 .article-card h2 {
   margin: 14px 0 10px;
   color: var(--color-text);
-  font-size: clamp(22px, 3vw, 30px);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-subheading);
   line-height: 1.35;
 }
 

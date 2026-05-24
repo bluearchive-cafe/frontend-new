@@ -94,8 +94,8 @@ const currentHeroImage = ref(getRandomHeroImage())
 .hero-copy h1 {
   margin: 0;
   color: var(--color-text);
-  font-size: clamp(36px, 4.4vw, 56px);
-  /* font-weight: 900; */
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-heading);
   line-height: 1.08;
 }
 
@@ -158,7 +158,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-copy h1 {
     max-width: 9em;
-    font-size: clamp(30px, 9vw, 40px);
+    font-size: clamp(30px, 9vw, 38px);
     line-height: 1.12;
   }
 

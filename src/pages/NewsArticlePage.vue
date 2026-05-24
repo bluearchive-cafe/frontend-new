@@ -71,8 +71,8 @@ header {
 h1 {
   margin: 16px 0 0;
   color: var(--color-text);
-  font-size: clamp(30px, 5vw, 46px);
-  font-weight: 900;
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-heading);
   line-height: 1.12;
 }
 
