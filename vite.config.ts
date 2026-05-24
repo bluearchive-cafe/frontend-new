@@ -27,7 +27,7 @@ export default defineConfig({
       version: packageJson.version,
       buildTime: new Date().toISOString(),
       commitSha,
-      developer: 'BlueArchive.Cafe Team, KFACBT, Senseis'
+      developer: 'BlueArchive.Cafe Team, KFACBT, Sensei'
     })
   },
   build: {

@@ -11,9 +11,9 @@ export function printConsoleBrand() {
     'color: #29aeea; font-size: 18px; font-weight: 800;',
     'color: #8bd8ff; font-size: 13px;'
   )
-  console.info('%c Site %c %s ', badgeStart, badgeEnd, `v${__APP_INFO__.version}`)
+  console.info('%c version %c %s ', badgeStart, badgeEnd, `v${__APP_INFO__.version}`)
   console.info(
-    '%c Build time %c %s %c Commit SHA %c %s ',
+    '%c build %c %s %c commit %c %s ',
     badgeStart,
     badgeLight,
     new Date(__APP_INFO__.buildTime).toLocaleString(),
@@ -21,5 +21,5 @@ export function printConsoleBrand() {
     badgeEnd,
     __APP_INFO__.commitSha
   )
-  console.info('%c Dev %c %s ', badgeStart, badgeEnd, __APP_INFO__.developer)
+  console.info('%c developer %c %s ', badgeStart, badgeEnd, __APP_INFO__.developer)
 }
