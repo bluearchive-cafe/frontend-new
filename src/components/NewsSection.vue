@@ -1,25 +1,27 @@
 <template>
   <section id="news" class="section news-section">
     <v-container max-width="1120">
-      <div class="section-heading">
-        <h2>最新动态</h2>
-        <v-btn variant="text" color="primary" append-icon="mdi-chevron-right" to="/news">全部公告</v-btn>
-      </div>
+      <div class="news-overview">
+        <h2 class="section-title">最新动态</h2>
+        <v-btn class="all-news-link" variant="text" color="primary" append-icon="mdi-chevron-right" to="/news">
+          全部公告
+        </v-btn>
 
-      <div class="news-grid">
-        <v-card
-          v-for="item in latestNews"
-          :key="item.slug"
-          class="news-card"
-          elevation="0"
-          :to="`/news/${item.slug}`"
-        >
-          <v-card-text>
-            <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.summary }}</p>
-          </v-card-text>
-        </v-card>
+        <div class="news-grid">
+          <v-card
+            v-for="item in latestNews"
+            :key="item.slug"
+            class="news-card"
+            elevation="0"
+            :to="`/news/${item.slug}`"
+          >
+            <v-card-text>
+              <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.summary }}</p>
+            </v-card-text>
+          </v-card>
+        </div>
       </div>
     </v-container>
   </section>
@@ -42,23 +44,28 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   background: var(--color-bg-deep);
 }
 
-.section-heading {
-  display: flex;
+.news-overview {
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   margin-bottom: 24px;
 }
 
-.section-heading h2 {
+.section-title {
   margin: 0;
   color: var(--color-text);
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 850;
 }
 
+.all-news-link {
+  justify-self: end;
+}
+
 .news-grid {
   display: grid;
+  grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
@@ -100,9 +107,24 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
     grid-template-columns: 1fr;
   }
 
-  .section-heading {
-    align-items: flex-start;
-    flex-direction: column;
+  .news-overview {
+    gap: 18px;
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    grid-column: 1 / -1;
+  }
+
+  .all-news-link {
+    grid-column: 1 / -1;
+    justify-self: end;
+    order: 1;
+  }
+
+  .news-grid {
+    grid-column: 1 / -1;
+    order: 0;
   }
 }
 </style>

@@ -114,6 +114,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 .hero-actions {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 32px;
@@ -121,39 +122,85 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 .tutorial-link {
   color: rgba(255, 255, 255, 0.9);
+  min-height: 42px;
 }
 
 @media (max-width: 720px) {
   .hero {
-    min-height: 540px;
+    min-height: clamp(560px, 86svh, 680px);
   }
 
   .hero-image {
     top: 0;
-    right: -12vw;
-    width: 104vw;
+    right: -32vw;
+    width: 132vw;
+    height: 76%;
     max-width: none;
-    opacity: 0.38;
+    object-position: 58% top;
+    opacity: 0.5;
   }
 
   .hero-shade {
     background:
-      linear-gradient(90deg, var(--color-bg) 0%, rgba(25, 29, 36, 0.98) 48%, rgba(25, 29, 36, 0.78) 72%, rgba(25, 29, 36, 0.46) 100%),
-      linear-gradient(180deg, transparent 70%, var(--color-bg-deep) 100%);
+      linear-gradient(90deg, rgba(25, 29, 36, 0.98) 0%, rgba(25, 29, 36, 0.86) 48%, rgba(25, 29, 36, 0.46) 100%),
+      linear-gradient(180deg, rgba(25, 29, 36, 0.18) 0%, rgba(25, 29, 36, 0.58) 42%, var(--color-bg) 78%, var(--color-bg-deep) 100%);
   }
 
   .hero-content {
     align-items: flex-end;
-    min-height: 540px;
-    padding-block: 76px 54px;
+    min-height: clamp(560px, 86svh, 680px);
+    padding-block: 112px 48px;
+  }
+
+  .hero-copy {
+    max-width: 100%;
   }
 
   .hero-copy h1 {
-    font-size: clamp(28px, 8.6vw, 38px);
+    max-width: 9em;
+    font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.12;
+  }
+
+  .hero-line {
+    white-space: normal;
   }
 
   .hero-copy p {
+    max-width: 22em;
+    margin-top: 18px;
     font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .hero-actions :deep(.v-btn) {
+    min-width: 136px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-content {
+    padding-inline: 16px;
+    padding-block-end: 40px;
+  }
+
+  .hero-copy h1 {
+    font-size: 28px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions :deep(.v-btn) {
+    width: 100%;
   }
 }
 </style>
