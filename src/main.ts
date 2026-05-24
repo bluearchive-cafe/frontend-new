@@ -21,6 +21,9 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 import App from './App.vue'
 import router from './router'
+import { printConsoleBrand } from './utils/console-brand'
+
+printConsoleBrand()
 
 const vuetify = createVuetify({
   icons: {
