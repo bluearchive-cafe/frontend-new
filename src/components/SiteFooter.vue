@@ -2,9 +2,21 @@
   <v-footer class="site-footer">
     <v-container max-width="1120">
       <div class="footer-inner">
-        <div>
+        <div class="footer-left">
           <strong>BlueArchive.Cafe</strong>
           <p>Copyright © 2026 BlueArchive.Cafe. All rights reserved.</p>
+          <div class="friend-links" aria-label="友情链接">
+            <span>友情链接</span>
+            <a
+              v-for="link in friendLinks"
+              :key="link.href"
+              :href="link.href"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ link.label }}
+            </a>
+          </div>
         </div>
         <div class="footer-right">
           <div class="footer-links">
@@ -40,6 +52,21 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+
+const friendLinks = [
+  {
+    label: 'ブルーアーカイブ',
+    href: 'https://bluearchive.jp/'
+  },
+  {
+    label: 'Yostar JP',
+    href: 'https://www.yostar.co.jp/'
+  },
+  {
+    label: 'Shittim Canvas',
+    href: 'https://sc.japerz.com/'
+  }
+]
 </script>
 
 <style scoped>
@@ -65,6 +92,25 @@ strong {
 p {
   margin: 6px 0 0;
   font-size: 13px;
+}
+
+.footer-left {
+  min-width: 0;
+}
+
+.friend-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 12px;
+  color: var(--color-text-subtle);
+  font-size: 13px;
+}
+
+.friend-links span {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
 }
 
 .footer-right {
@@ -94,6 +140,7 @@ p {
   line-height: 1.5;
 }
 
+.friend-links a:hover,
 .footer-links a:hover,
 .beian-link:hover {
   color: var(--color-primary);

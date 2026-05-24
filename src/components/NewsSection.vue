@@ -16,9 +16,9 @@
             :to="`/news/${item.slug}`"
           >
             <v-card-text>
-              <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
+              <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
             </v-card-text>
           </v-card>
         </div>
@@ -82,14 +82,22 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   transform: translateY(-2px);
 }
 
+.news-card :deep(.v-card-text) {
+  display: flex;
+  flex-direction: column;
+  min-height: 190px;
+}
+
 .news-date {
+  margin-top: auto;
+  padding-top: 18px;
   color: var(--color-secondary);
   font-size: 13px;
   font-weight: 700;
 }
 
 .news-card h3 {
-  margin: 14px 0 10px;
+  margin: 0 0 10px;
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
