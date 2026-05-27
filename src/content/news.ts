@@ -6,6 +6,8 @@ type NewsMeta = {
   publishedAt: string
   category: string
   summary: string
+  pinned: boolean
+  draft: boolean
 }
 
 export type NewsArticle = NewsMeta & {
@@ -60,10 +62,16 @@ function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
       author: meta.author ?? 'BlueArchive.Cafe',
       publishedAt: meta.publishedAt ?? '',
       category: meta.category ?? '未分类',
-      summary: meta.summary ?? ''
+      summary: meta.summary ?? '',
+      pinned: parseBoolean(meta.pinned),
+      draft: parseBoolean(meta.draft)
     },
     body: match[2].trim()
   }
+}
+
+function parseBoolean(value: string | undefined) {
+  return ['true', '1', 'yes', 'y'].includes(value?.trim().toLowerCase() ?? '')
 }
 
 function countWords(markdownBody: string) {
@@ -94,7 +102,14 @@ export const newsArticles: NewsArticle[] = rawArticles
       wordCount: countWords(body)
     }
   })
-  .sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime())
+  .filter((article) => !article.draft)
+  .sort((left, right) => {
+    if (left.pinned !== right.pinned) {
+      return left.pinned ? -1 : 1
+    }
+
+    return new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime()
+  })
 
 export function findNewsArticle(slug: string) {
   return newsArticles.find((article) => article.slug === slug)

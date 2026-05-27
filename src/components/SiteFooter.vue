@@ -5,6 +5,7 @@
         <div class="footer-left">
           <strong>蔚蓝咖啡厅</strong>
           <p>Copyright © 2026 BlueArchive.Cafe. All rights reserved.</p>
+          <p>“蔚蓝咖啡厅”是由爱好者创立并维护的民间项目，与游戏“ブルーアーカイブ（中文名‘蔚蓝档案’）”及相关公司并无官方关联。</p>
           <div class="friend-links" aria-label="友情链接">
             <span>友情链接</span>
             <a

@@ -29,7 +29,10 @@
           :to="`/news/${article.slug}`"
         >
           <v-card-text>
-            <CategoryBadge :category="article.category" />
+            <div class="article-badges">
+              <PinnedBadge v-if="article.pinned" />
+              <CategoryBadge :category="article.category" />
+            </div>
             <h2>{{ article.title }}</h2>
             <p>{{ article.summary }}</p>
             <ArticleMeta
@@ -62,6 +65,7 @@ import { computed, ref } from 'vue'
 
 import ArticleMeta from '../components/ArticleMeta.vue'
 import CategoryBadge from '../components/CategoryBadge.vue'
+import PinnedBadge from '../components/PinnedBadge.vue'
 import { formatPublishTime, newsArticles, newsCategories } from '../content/news'
 
 const allCategoryLabel = '全部'
@@ -151,6 +155,13 @@ const filteredArticles = computed(() => {
   border-color: var(--color-border-hover);
   box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
+}
+
+.article-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .article-card h2 {

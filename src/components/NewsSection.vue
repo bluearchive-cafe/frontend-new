@@ -16,7 +16,10 @@
             :to="`/news/${item.slug}`"
           >
             <v-card-text>
-              <CategoryBadge :category="item.category" />
+              <div class="article-badges">
+                <PinnedBadge v-if="item.pinned" />
+                <CategoryBadge :category="item.category" />
+              </div>
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
               <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
@@ -32,6 +35,7 @@
 import { computed } from 'vue'
 
 import CategoryBadge from './CategoryBadge.vue'
+import PinnedBadge from './PinnedBadge.vue'
 import { formatPublishTime, newsArticles } from '../content/news'
 
 const latestNews = computed(() => newsArticles.slice(0, 3))
@@ -89,6 +93,13 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   flex-direction: column;
   min-height: 164px;
   padding: 18px;
+}
+
+.article-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .news-date {

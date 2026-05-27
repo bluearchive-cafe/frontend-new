@@ -7,7 +7,10 @@
 
       <article v-if="article" class="article-shell">
         <header>
-          <CategoryBadge :category="article.category" />
+          <div class="article-badges">
+            <PinnedBadge v-if="article.pinned" />
+            <CategoryBadge :category="article.category" />
+          </div>
           <h1>{{ article.title }}</h1>
           <ArticleMeta
             class="article-meta"
@@ -43,6 +46,7 @@ import { useRoute } from 'vue-router'
 import ArticleMeta from '../components/ArticleMeta.vue'
 import CategoryBadge from '../components/CategoryBadge.vue'
 import NotFoundState from '../components/NotFoundState.vue'
+import PinnedBadge from '../components/PinnedBadge.vue'
 import { findNewsArticle, formatPublishTime } from '../content/news'
 
 const route = useRoute()
@@ -73,6 +77,13 @@ header {
   padding-bottom: 30px;
   border-bottom: 1px solid var(--color-border);
   margin: 0 auto 34px;
+}
+
+.article-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 h1 {
