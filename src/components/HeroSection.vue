@@ -1,6 +1,14 @@
 <template>
   <section id="home" class="hero">
-    <img class="hero-image" :src="currentHeroImage" alt="" />
+    <img
+      class="hero-image"
+      :src="currentHeroImage.src"
+      :srcset="currentHeroImage.srcset"
+      sizes="(max-width: 720px) 132vw, 72vw"
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+    />
     <div class="hero-shade" />
 
     <v-container class="hero-content" max-width="1120">
@@ -31,16 +39,25 @@ import { ref } from 'vue'
 
 const publicAssetBase = import.meta.env.BASE_URL
 
-const heroImages = [
-  'assets/img/hero/hero.png',
-  'assets/img/hero/hero-haruka.jpg',
-  'assets/img/hero/115938338_p0_cut.png',
-  'assets/img/hero/100941489_p0_cut.png',
-  'assets/img/hero/110486537_p0.jpg',
-  'assets/img/hero/123658183_p0.jpg',
-  'assets/img/hero/131020176_p0_cut.png',
-  'assets/img/hero/142932674_p0.jpg'
-].map((path) => `${publicAssetBase}${path}`)
+const heroImageNames = [
+  'hero',
+  'hero-haruka',
+  '115938338_p0_cut',
+  '100941489_p0_cut',
+  '110486537_p0',
+  '123658183_p0',
+  '131020176_p0_cut',
+  '142932674_p0'
+]
+
+const heroImages = heroImageNames.map((name) => {
+  const basePath = `${publicAssetBase}assets/img/hero/optimized/${name}`
+
+  return {
+    src: `${basePath}-1440.webp`,
+    srcset: `${basePath}-960.webp 960w, ${basePath}-1440.webp 1440w, ${basePath}-1920.webp 1920w`
+  }
+})
 
 function getRandomHeroImage() {
   return heroImages[Math.floor(Math.random() * heroImages.length)]

@@ -49,6 +49,10 @@ web_modules/
 
 # Optional npm cache directory
 .npm
+.npm-cache/
+
+# Generated responsive hero images
+public/assets/img/hero/optimized/
 
 # Optional eslint cache
 .eslintcache
