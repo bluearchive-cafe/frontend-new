@@ -74,7 +74,7 @@ draft: false
 这是一个链接：[Google 搜索](https://www.google.com/)
 
 这是一个图片示例：
-![示例图片](/assets/img/hero/hero.png)
+![示例图片](image.png)
 
 ---
 

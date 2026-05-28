@@ -25,6 +25,7 @@ const markdown = new MarkdownIt({
 })
 
 const defaultLinkOpenRenderer = markdown.renderer.rules.link_open
+const defaultImageRenderer = markdown.renderer.rules.image
 const alertMeta: Record<string, { label: string; path: string }> = {
   caution: {
     label: 'Caution',
@@ -58,6 +59,18 @@ markdown.renderer.rules.link_open = (tokens, index, options, env, self) => {
   }
 
   return defaultLinkOpenRenderer?.(tokens, index, options, env, self) ?? self.renderToken(tokens, index, options)
+}
+
+markdown.renderer.rules.image = (tokens, index, options, env, self) => {
+  const token = tokens[index]
+  const src = token.attrGet('src')
+  const resolvedSrc = typeof env.sourcePath === 'string' && src ? resolveMarkdownAsset(env.sourcePath, src) : null
+
+  if (resolvedSrc) {
+    token.attrSet('src', resolvedSrc)
+  }
+
+  return defaultImageRenderer?.(tokens, index, options, env, self) ?? self.renderToken(tokens, index, options)
 }
 
 markdown.core.ruler.after('inline', 'bluearchive_task_lists', (state) => {
@@ -114,17 +127,29 @@ markdown.core.ruler.after('inline', 'bluearchive_alert_blocks', (state) => {
   })
 })
 
-const articleModules = import.meta.glob<string>('./news/*.md', {
+const articleModules = import.meta.glob<string>('./news/**/*.md', {
   query: '?raw',
   import: 'default',
   eager: true
 })
 
-const rawArticles = Object.entries(articleModules).map(([path, source]) => {
-  const slug = path.split('/').pop()?.replace(/\.md$/, '') ?? ''
-
-  return { slug, source }
+const articleAssetModules = import.meta.glob<string>('./news/**/*.{avif,gif,jpeg,jpg,png,svg,webp}', {
+  query: '?url',
+  import: 'default',
+  eager: true
 })
+
+const rawArticles = Object.entries(articleModules).map(([path, source]) => {
+  const slug = getSlugFromPath(path)
+
+  return { path, slug, source }
+})
+
+function getSlugFromPath(path: string) {
+  const normalizedPath = path.replace(/^\.\/news\//, '').replace(/\.md$/, '')
+
+  return normalizedPath.endsWith('/index') ? normalizedPath.slice(0, -'/index'.length) : normalizedPath
+}
 
 function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
@@ -163,6 +188,55 @@ function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
 
 function parseBoolean(value: string | undefined) {
   return ['true', '1', 'yes', 'y'].includes(value?.trim().toLowerCase() ?? '')
+}
+
+function resolveMarkdownAsset(sourcePath: string, src: string) {
+  if (isRemoteOrAbsoluteUrl(src)) {
+    return null
+  }
+
+  const { pathname, suffix } = splitAssetReference(src)
+  const sourceDirectory = sourcePath.slice(0, sourcePath.lastIndexOf('/') + 1)
+  const assetPath = normalizeRelativeAssetPath(`${sourceDirectory}${pathname}`)
+  const assetUrl = articleAssetModules[assetPath]
+
+  return assetUrl ? `${assetUrl}${suffix}` : null
+}
+
+function isRemoteOrAbsoluteUrl(value: string) {
+  return /^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#)/i.test(value)
+}
+
+function splitAssetReference(value: string) {
+  const suffixIndex = value.search(/[?#]/)
+
+  if (suffixIndex === -1) {
+    return { pathname: value, suffix: '' }
+  }
+
+  return {
+    pathname: value.slice(0, suffixIndex),
+    suffix: value.slice(suffixIndex)
+  }
+}
+
+function normalizeRelativeAssetPath(value: string) {
+  const segments: string[] = []
+
+  value.split('/').forEach((segment) => {
+    if (!segment || segment === '.') {
+      return
+    }
+
+    if (segment === '..') {
+      segments.pop()
+      return
+    }
+
+    segments.push(segment)
+  })
+
+  return `./${segments.join('/')}`
 }
 
 function markTaskListItem(tokens: Token[], inlineIndex: number) {
@@ -226,14 +300,14 @@ function countWords(markdownBody: string) {
 }
 
 export const newsArticles: NewsArticle[] = rawArticles
-  .map(({ slug, source }) => {
+  .map(({ path, slug, source }) => {
     const { meta, body } = parseFrontmatter(source)
 
     return {
       ...meta,
       slug,
       body,
-      html: markdown.render(body),
+      html: markdown.render(body, { sourcePath: path }),
       wordCount: countWords(body)
     }
   })
