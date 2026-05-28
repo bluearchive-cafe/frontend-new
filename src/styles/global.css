@@ -98,3 +98,8 @@ a {
   line-height: 1;
   transform: translateY(0.02em);
 }
+
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 2400;
+}

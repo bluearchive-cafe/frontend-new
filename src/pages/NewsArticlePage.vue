@@ -21,7 +21,7 @@
           />
         </header>
 
-        <div class="markdown-body" v-html="article.html" />
+        <div ref="markdownBodyRef" class="markdown-body" v-html="article.html" />
       </article>
 
       <NotFoundState
@@ -40,7 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import mediumZoom from 'medium-zoom'
+import type { Zoom } from 'medium-zoom'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import ArticleMeta from '../components/ArticleMeta.vue'
@@ -50,8 +52,40 @@ import PinnedBadge from '../components/PinnedBadge.vue'
 import { findNewsArticle, formatPublishTime } from '../content/news'
 
 const route = useRoute()
+const markdownBodyRef = ref<HTMLElement | null>(null)
+let imageZoom: Zoom | null = null
 
 const article = computed(() => findNewsArticle(String(route.params.slug)))
+
+function setupImageZoom() {
+  imageZoom?.detach()
+  imageZoom = null
+
+  const images = markdownBodyRef.value?.querySelectorAll<HTMLImageElement>('img')
+
+  if (!images?.length) {
+    return
+  }
+
+  imageZoom = mediumZoom(images, {
+    background: 'rgba(13, 17, 23, 0.92)',
+    margin: 24,
+    scrollOffset: 40
+  })
+}
+
+watch(
+  article,
+  async () => {
+    await nextTick()
+    setupImageZoom()
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  imageZoom?.detach()
+})
 </script>
 
 <style scoped>
@@ -326,7 +360,12 @@ h1 {
   display: block;
   max-width: 100%;
   border-radius: 6px;
+  cursor: zoom-in;
   margin: 0 0 16px;
+}
+
+.markdown-body :deep(img.medium-zoom-image--opened) {
+  cursor: zoom-out;
 }
 
 .markdown-body :deep(kbd) {
