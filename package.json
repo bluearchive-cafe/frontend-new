@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
+    "dev": "npm run optimize:hero && vite --host 127.0.0.1",
     "optimize:hero": "node scripts/optimize-hero-images.mjs",
     "prune:hero": "node scripts/prune-dist-hero-originals.mjs",
     "build": "npm run optimize:hero && vue-tsc -b && vite build && npm run prune:hero",
