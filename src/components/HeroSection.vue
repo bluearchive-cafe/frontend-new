@@ -82,6 +82,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   right: -2vw;
   width: 72vw;
   height: 100%;
+  animation: fade-slide-left 700ms ease both, soft-float 16s ease-in-out 900ms infinite;
   object-fit: cover;
   object-position: center 26%;
   /* opacity: 0.64; */
@@ -106,6 +107,18 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 .hero-copy {
   width: min(560px, 100%);
+}
+
+.hero-copy > * {
+  animation: fade-slide-in-from-left 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hero-copy > :nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.hero-copy > :nth-child(3) {
+  animation-delay: 180ms;
 }
 
 .hero-copy h1 {
@@ -140,6 +153,14 @@ const currentHeroImage = ref(getRandomHeroImage())
 .tutorial-link {
   color: rgba(255, 255, 255, 0.9);
   min-height: 42px;
+}
+
+.hero-actions :deep(.v-btn) {
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.hero-actions :deep(.v-btn:hover) {
+  transform: translateY(-2px);
 }
 
 @media (max-width: 720px) {
@@ -218,6 +239,13 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-actions :deep(.v-btn) {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image,
+  .hero-copy > * {
+    animation: none;
   }
 }
 </style>

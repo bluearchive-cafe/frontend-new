@@ -68,6 +68,7 @@ const aboutItems = [
 .about-copy h2 {
   max-width: 520px;
   margin: 0;
+  animation: fade-slide-up 520ms ease both;
   color: var(--color-text);
   font-size: var(--font-size-section-title);
   font-weight: var(--font-weight-heading);
@@ -77,6 +78,7 @@ const aboutItems = [
 .about-copy p {
   max-width: 560px;
   margin: 18px 0 0;
+  animation: fade-slide-up 520ms ease both;
   color: var(--color-text-muted);
   font-size: 16px;
   line-height: 1.85;
@@ -94,7 +96,35 @@ const aboutItems = [
   padding: 20px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
+  animation: fade-slide-up 520ms ease both;
   background: var(--color-card-soft);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.about-copy p:nth-of-type(1) {
+  animation-delay: 80ms;
+}
+
+.about-copy p:nth-of-type(2) {
+  animation-delay: 160ms;
+}
+
+.about-row:nth-child(1) {
+  animation-delay: 80ms;
+}
+
+.about-row:nth-child(2) {
+  animation-delay: 160ms;
+}
+
+.about-row:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.about-row:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
 }
 
 .about-row h3 {
@@ -114,6 +144,14 @@ const aboutItems = [
   .about-layout {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-copy h2,
+  .about-copy p,
+  .about-row {
+    animation: none;
   }
 }
 </style>

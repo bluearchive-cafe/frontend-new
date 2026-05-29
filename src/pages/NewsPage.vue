@@ -100,6 +100,7 @@ const filteredArticles = computed(() => {
 
 .page-heading {
   max-width: 720px;
+  animation: fade-slide-up 520ms ease both;
   margin-bottom: 34px;
 }
 
@@ -131,6 +132,7 @@ const filteredArticles = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  animation: fade-slide-up 520ms ease 80ms both;
   margin-bottom: 24px;
 }
 
@@ -147,14 +149,27 @@ const filteredArticles = computed(() => {
 
 .article-card {
   border: 1px solid var(--color-border);
+  animation: fade-slide-up 520ms ease both;
   background: var(--gradient-card);
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.article-card:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.article-card:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.article-card:nth-child(4) {
+  animation-delay: 240ms;
 }
 
 .article-card:hover {
   border-color: var(--color-border-hover);
   box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .article-badges {
@@ -191,6 +206,7 @@ const filteredArticles = computed(() => {
 
 .empty-card {
   border: 1px solid var(--color-border);
+  animation: fade-slide-up 520ms ease both;
   background: var(--gradient-card);
 }
 
@@ -217,5 +233,14 @@ const filteredArticles = computed(() => {
   margin: 12px 0 22px;
   color: var(--color-text-muted);
   line-height: 1.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-heading,
+  .category-filter,
+  .article-card,
+  .empty-card {
+    animation: none;
+  }
 }
 </style>

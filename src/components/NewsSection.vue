@@ -55,6 +55,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 16px;
+  animation: fade-slide-up 520ms ease both;
   margin-bottom: 24px;
 }
 
@@ -79,13 +80,23 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 .news-card {
   min-height: 164px;
   border: 1px solid var(--color-border);
+  animation: fade-slide-up 520ms ease both;
   background: var(--gradient-card-strong);
-  transition: border-color 160ms ease, transform 160ms ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.news-card:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.news-card:nth-child(3) {
+  animation-delay: 160ms;
 }
 
 .news-card:hover {
   border-color: var(--color-border-hover);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
 }
 
 .news-card :deep(.v-card-text) {
@@ -153,6 +164,13 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   .news-grid {
     grid-column: 1 / -1;
     order: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-overview,
+  .news-card {
+    animation: none;
   }
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
-  <HeroSection />
-  <NewsSection />
+  <div class="home-page">
+    <HeroSection />
+    <NewsSection />
+  </div>
 </template>
 
 <script setup lang="ts">

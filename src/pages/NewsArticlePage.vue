@@ -96,6 +96,7 @@ onBeforeUnmount(() => {
 }
 
 .back-link {
+  animation: fade-slide-up 420ms ease both;
   margin-bottom: 22px;
 }
 
@@ -103,6 +104,7 @@ onBeforeUnmount(() => {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   padding: clamp(26px, 5vw, 50px);
+  animation: fade-slide-up 520ms ease 80ms both;
   background: linear-gradient(180deg, rgba(48, 55, 70, 0.78), rgba(25, 29, 36, 0.86));
 }
 
@@ -149,6 +151,22 @@ h1 {
   color: var(--color-text-soft);
   font-size: 16px;
   line-height: 1.65;
+}
+
+.markdown-body > :deep(*) {
+  animation: fade-slide-up 420ms ease both;
+}
+
+.markdown-body > :deep(:nth-child(2)) {
+  animation-delay: 40ms;
+}
+
+.markdown-body > :deep(:nth-child(3)) {
+  animation-delay: 80ms;
+}
+
+.markdown-body > :deep(:nth-child(4)) {
+  animation-delay: 120ms;
 }
 
 .markdown-body :deep(p) {
@@ -385,6 +403,14 @@ h1 {
   padding: 1px 4px;
   background: rgba(255, 215, 106, 0.24);
   color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-link,
+  .article-shell,
+  .markdown-body > :deep(*) {
+    animation: none;
+  }
 }
 
 </style>
