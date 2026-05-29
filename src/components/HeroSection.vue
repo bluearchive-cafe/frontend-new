@@ -82,7 +82,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   right: -2vw;
   width: 72vw;
   height: 100%;
-  animation: fade-slide-left 700ms ease both, soft-float 16s ease-in-out 900ms infinite;
+  animation: fade-slide-left 700ms ease both;
   object-fit: cover;
   object-position: center 26%;
   /* opacity: 0.64; */

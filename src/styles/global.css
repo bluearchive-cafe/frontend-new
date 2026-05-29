@@ -148,17 +148,6 @@ a {
   }
 }
 
-@keyframes soft-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.01);
-  }
-
-  50% {
-    transform: translate3d(-10px, 0, 0) scale(1.035);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

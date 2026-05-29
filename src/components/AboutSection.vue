@@ -3,12 +3,12 @@
     <v-container max-width="1120">
       <div class="about-layout">
         <div class="about-copy">
-          <h2>关于 BlueArchive.Cafe</h2>
+          <h2>关于本站</h2>
           <p>
-            BlueArchive.Cafe 是一个非官方蔚蓝档案主题站点，目标是把公告、教程、资源入口和项目说明整理到一个清晰、易维护的位置。
+            蔚蓝咖啡厅 是游戏《ブルーアーカイブ》的民间汉化组织，旨在为各位玩家提供优质、准确的汉化服务。
           </p>
           <p>
-            当前版本优先搭好站点结构和 Markdown 内容流程，后续会逐步补齐更完整的教程、下载指引、更新说明与免责声明。
+            如发现问题，请反馈到 feedback@bluearchive.cafe。
           </p>
         </div>
 
@@ -22,6 +22,35 @@
           </div>
         </div>
       </div>
+
+      <section class="social-section" aria-labelledby="social-title">
+        <div class="social-heading">
+          <h2 id="social-title">社交媒体</h2>
+          <p>在这里，查看我们的社交平台。</p>
+        </div>
+
+        <v-list class="social-list" bg-color="transparent" lines="two">
+          <v-list-item
+            v-for="link in socialLinks"
+            :key="link.href"
+            :href="link.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            :title="link.label"
+            :subtitle="link.description"
+          >
+            <template #prepend>
+              <v-avatar :class="['social-icon', `social-icon--${link.tone}`]" rounded="lg">
+                <v-icon :icon="link.icon" size="22" />
+              </v-avatar>
+            </template>
+
+            <template #append>
+              <v-icon icon="$arrowRight" color="primary" size="18" />
+            </template>
+          </v-list-item>
+        </v-list>
+      </section>
     </v-container>
   </section>
 </template>
@@ -29,19 +58,33 @@
 <script setup lang="ts">
 const aboutItems = [
   {
-    icon: '$heartOutline',
+    icon: '$info',
     title: '非官方项目',
-    description: '站点内容面向社区整理，不代表游戏官方立场。'
+    description: '“蔚蓝咖啡厅”是由爱好者创立并维护的民间项目，与游戏“ブルーアーカイブ（中文名‘蔚蓝档案’）”及相关公司并无官方关联。'
+  }
+]
+
+const socialLinks = [
+  {
+        label: '哔哩哔哩',
+        href: 'https://space.bilibili.com/3706947316484682',
+    icon: '$videoOutline',
+    tone: 'bilibili',
+    description: '发布站点更新、公告同步和阶段性内容预览。'
   },
   {
-    icon: '$fileDocumentEditOutline',
-    title: 'Markdown 驱动',
-    description: '新闻和后续文档内容优先使用 Markdown 维护，方便持续补充。'
+    label: 'QQ 群组',
+    href: 'https://qm.qq.com/q/YPU4KjGVmA',
+    icon: '$accountGroupOutline',
+    tone: 'qq',
+    description: '加入社区交流，反馈页面问题、内容错误或使用建议。'
   },
   {
-    icon: '$shieldCheckOutline',
-    title: '清晰说明',
-    description: '后续会补齐资源来源、使用边界和免责声明，避免信息含混。'
+    label: 'GitHub',
+    href: 'https://github.com/bluearchive-cafe',
+    icon: '$github',
+    tone: 'github',
+    description: '查看源码、跟踪开发进度，或通过 issue 参与改进。'
   }
 ]
 </script>
@@ -140,10 +183,74 @@ const aboutItems = [
   line-height: 1.65;
 }
 
+.social-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
+  gap: 48px;
+  align-items: start;
+  margin-top: 40px;
+  padding-top: 34px;
+  border-top: 1px solid var(--color-border);
+}
+
+.social-heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-heading);
+}
+
+.social-heading p {
+  max-width: 560px;
+  margin: 12px 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+}
+
+.social-list {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-card-soft) !important;
+}
+
+.social-list :deep(.v-list-item) {
+  min-height: 72px;
+}
+
+.social-icon {
+  border: 1px solid rgba(41, 174, 234, 0.32);
+  background: rgba(41, 174, 234, 0.1);
+  color: var(--color-secondary);
+}
+
+.social-icon--bilibili {
+  border-color: rgba(41, 174, 234, 0.42);
+  background: rgba(41, 174, 234, 0.14);
+  color: #69d8ff;
+}
+
+.social-icon--qq {
+  border-color: rgba(139, 216, 255, 0.36);
+  background: rgba(139, 216, 255, 0.12);
+  color: #8bd8ff;
+}
+
+.social-icon--github {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
 @media (max-width: 840px) {
-  .about-layout {
+  .about-layout,
+  .social-section {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .social-section {
+    margin-top: 32px;
+    padding-top: 28px;
   }
 }
 

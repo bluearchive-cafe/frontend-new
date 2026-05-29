@@ -5,17 +5,20 @@ import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
 import {
   mdiAccountOutline,
+  mdiAccountGroupOutline,
   mdiArrowLeft,
   mdiArrowRight,
   mdiCalendarClockOutline,
   mdiChevronRight,
   mdiFileDocumentEditOutline,
+  mdiGithub,
   mdiHeartOutline,
   mdiLightningBolt,
   mdiMenu,
   mdiShieldCheckOutline,
   mdiTagOutline,
-  mdiTextBoxOutline
+  mdiTextBoxOutline,
+  mdiVideoOutline
 } from '@mdi/js'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
@@ -31,17 +34,20 @@ const vuetify = createVuetify({
     aliases: {
       ...aliases,
       accountOutline: mdiAccountOutline,
+      accountGroupOutline: mdiAccountGroupOutline,
       arrowLeft: mdiArrowLeft,
       arrowRight: mdiArrowRight,
       calendarClockOutline: mdiCalendarClockOutline,
       chevronRight: mdiChevronRight,
       fileDocumentEditOutline: mdiFileDocumentEditOutline,
+      github: mdiGithub,
       heartOutline: mdiHeartOutline,
       lightningBolt: mdiLightningBolt,
       menu: mdiMenu,
       shieldCheckOutline: mdiShieldCheckOutline,
       tagOutline: mdiTagOutline,
-      textBoxOutline: mdiTextBoxOutline
+      textBoxOutline: mdiTextBoxOutline,
+      videoOutline: mdiVideoOutline
     },
     sets: {
       mdi
