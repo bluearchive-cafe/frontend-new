@@ -225,15 +225,15 @@ const platformLinks: PlatformLink[] = [
     tags: ['APK', '移动端', '模拟器'],
     variants: [
       {
-        name: '独占版',
-        description: '需要卸载官方客户端才可安装，但对模拟器的兼容性更好。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=com.YostarJP.BlueArchive.apk',
+        name: '共存版',
+        description: '可与官方客户端共存安装。',
+        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk',
         recommended: true
       },
       {
-        name: '共存版',
-        description: '可与官方客户端共存安装。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk'
+        name: '独占版',
+        description: '需要卸载官方客户端才可安装，但对模拟器的兼容性更好。',
+        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=com.YostarJP.BlueArchive.apk'
       }
     ]
   },
