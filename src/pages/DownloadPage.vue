@@ -208,7 +208,7 @@ interface DownloadVariant {
   recommended?: boolean
 }
 
-const guideUrl = '/news'
+const baseDocUrl = 'https://bluearchive-cafe.github.io/docs/'
 
 const downloadDialog = ref(false)
 const selectedPlatform = ref<PlatformLink | null>(null)
@@ -219,8 +219,8 @@ const platformLinks: PlatformLink[] = [
     name: 'Android 客户端',
     icon: '$android',
     tone: 'android',
-    docUrl: guideUrl,
-    docExternal: false,
+    docUrl: baseDocUrl + 'platform/android/',
+    docExternal: true,
     description: '适用于手机、平板与安卓模拟器。下载后请根据安装文档确认存储权限和系统兼容性。',
     tags: ['APK', '移动端', '模拟器'],
     variants: [
@@ -241,8 +241,8 @@ const platformLinks: PlatformLink[] = [
     name: 'Windows 启动器',
     icon: '$microsoftWindows',
     tone: 'windows',
-    docUrl: guideUrl,
-    docExternal: false,
+    docUrl: baseDocUrl + 'platform/windows/',
+    docExternal: true,
     description: '适用于 Windows 10 / 11。下载后请按文档检查运行库、解压路径与杀毒软件拦截情况。',
     tags: ['Windows 10 / 11', '桌面端'],
     variants: [
@@ -257,8 +257,8 @@ const platformLinks: PlatformLink[] = [
     name: 'iOS 客户端',
     icon: '$appleIos',
     tone: 'ios',
-    docUrl: guideUrl,
-    docExternal: false,
+    docUrl: baseDocUrl + 'platform/ios/',
+    docExternal: true,
     description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
     tags: ['iPhone', 'iPad'],
     variants: [
@@ -279,8 +279,8 @@ const platformLinks: PlatformLink[] = [
     name: 'macOS 客户端',
     icon: '$apple',
     tone: 'macos',
-    docUrl: guideUrl,
-    docExternal: false,
+    docUrl: baseDocUrl + 'platform/macos/',
+    docExternal: true,
     description: '适用于 Apple Silicon Mac。首次打开时可能需要在系统设置中确认安全权限。',
     tags: ['Apple Silicon', '桌面端'],
     variants: [
@@ -315,15 +315,15 @@ const documentLinks = [
   {
     title: '安装与更新说明',
     description: '查看不同平台的安装流程、更新建议和常见配置项。',
-    href: guideUrl,
-    external: false,
+    href: baseDocUrl + 'guide/',
+    external: true,
     icon: '$bookOpenOutline'
   },
   {
     title: '常见问题排查',
     description: '遇到无法安装、无法启动或资源加载失败时，先从这里开始排查。',
-    href: guideUrl,
-    external: false,
+    href: baseDocUrl + 'guide/qa/',
+    external: true,
     icon: '$helpCircleOutline'
   },
   {
