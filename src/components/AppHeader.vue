@@ -97,6 +97,12 @@ const navItems = computed(() => [
     isActive: () => route.path === '/download'
   },
   {
+    label: '状态',
+    value: 'status',
+    to: '/status',
+    isActive: () => route.path === '/status'
+  },
+  {
     label: '关于',
     value: 'about',
     to: '/about',

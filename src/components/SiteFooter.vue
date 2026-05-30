@@ -24,6 +24,7 @@
             <RouterLink to="/">首页</RouterLink>
             <RouterLink to="/news">新闻</RouterLink>
             <RouterLink to="/download">下载</RouterLink>
+            <RouterLink to="/status">状态</RouterLink>
             <RouterLink to="/about">关于</RouterLink>
           </div>
           <div class="beian-list" aria-label="备案信息">
