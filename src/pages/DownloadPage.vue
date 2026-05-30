@@ -137,7 +137,7 @@
       </section>
     </v-container>
 
-    <v-dialog v-model="downloadDialog" max-width="520">
+    <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)">
       <v-card class="download-dialog" elevation="0">
         <v-card-text>
           <div class="dialog-head">
@@ -551,7 +551,10 @@ const documentLinks = [
 .download-dialog {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--gradient-card);
+  background:
+    linear-gradient(180deg, rgba(48, 55, 70, 0.98), rgba(36, 41, 50, 0.98)),
+    var(--color-surface);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
 }
 
 .download-dialog :deep(.v-card-text) {
