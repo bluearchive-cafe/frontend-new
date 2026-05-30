@@ -208,7 +208,6 @@ interface DownloadVariant {
   recommended?: boolean
 }
 
-const releaseUrl = 'https://github.com/bluearchive-cafe'
 const guideUrl = '/news'
 
 const downloadDialog = ref(false)
