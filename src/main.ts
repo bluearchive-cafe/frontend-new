@@ -29,7 +29,8 @@ import {
   mdiShieldCheckOutline,
   mdiTagOutline,
   mdiTextBoxOutline,
-  mdiVideoOutline
+  mdiVolumeHigh,
+  mdiImageOutline
 } from '@mdi/js'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
@@ -69,7 +70,8 @@ const vuetify = createVuetify({
       shieldCheckOutline: mdiShieldCheckOutline,
       tagOutline: mdiTagOutline,
       textBoxOutline: mdiTextBoxOutline,
-      videoOutline: mdiVideoOutline
+      volumeHighOutline: mdiVolumeHigh,
+      imageOutline: mdiImageOutline
     },
     sets: {
       mdi

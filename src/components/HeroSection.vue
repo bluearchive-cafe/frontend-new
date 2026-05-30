@@ -22,7 +22,7 @@
         </p>
 
         <div class="hero-actions">
-          <v-btn color="primary" size="large" to="/news" prepend-icon="$lightningBolt">
+          <v-btn color="primary" size="large" to="/download" prepend-icon="$lightningBolt">
             立即使用
           </v-btn>
           <v-btn class="tutorial-link" variant="text" size="large" href="https://bluearchive-cafe.github.io/docs/platform/" rel="noopener noreferrer" append-icon="$arrowRight">

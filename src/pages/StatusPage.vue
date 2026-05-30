@@ -124,14 +124,14 @@ const statusPanels: StatusPanel[] = [
     key: 'voice',
     title: '语音包',
     description: '游戏内主线语音资源同步状态',
-    icon: '$videoOutline',
+    icon: '$volumeHighOutline',
     tone: 'voice'
   },
   {
     key: 'media',
     title: '图像包',
     description: '游戏内图像视频资源同步状态',
-    icon: '$fileDocumentEditOutline',
+    icon: '$imageOutline',
     tone: 'media'
   }
 ]
