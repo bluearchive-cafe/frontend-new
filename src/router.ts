@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import { findNewsArticle } from './content/news'
 
@@ -29,7 +29,7 @@ function getRouteTitle(routeName: unknown, params: Record<string, unknown>) {
 }
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
     { path: '/news', name: 'news', component: () => import('./pages/NewsPage.vue') },
