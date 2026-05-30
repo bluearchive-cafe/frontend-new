@@ -91,6 +91,12 @@ const navItems = computed(() => [
     isActive: () => route.path.startsWith('/news')
   },
   {
+    label: '下载',
+    value: 'download',
+    to: '/download',
+    isActive: () => route.path === '/download'
+  },
+  {
     label: '关于',
     value: 'about',
     to: '/about',
