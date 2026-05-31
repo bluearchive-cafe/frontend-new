@@ -1,0 +1,16 @@
+@use "../../node_modules/@fontsource/noto-sans/scss/mixins" as noto-sans with (
+  $directory: "../../node_modules/@fontsource/noto-sans/files",
+  $weights: (400, 500, 600, 700, 800, 900),
+  $subsets: (latin),
+  $formats: woff2
+);
+
+@use "../../node_modules/@fontsource/noto-sans-sc/scss/mixins" as noto-sans-sc with (
+  $directory: "../../node_modules/@fontsource/noto-sans-sc/files",
+  $weights: (400, 500, 600, 700, 800, 900),
+  $subsets: (chinese-simplified, latin),
+  $formats: woff2
+);
+
+@include noto-sans.faces();
+@include noto-sans-sc.faces();
