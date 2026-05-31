@@ -40,6 +40,13 @@ export default defineConfig({
       }
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['if-function']
+      }
+    }
+  },
   plugins: [
     vue(),
     vuetify({

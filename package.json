@@ -12,6 +12,7 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
+    "@fontsource-utils/scss": "^0.2.2",
     "@fontsource/noto-sans": "^5.2.10",
     "@fontsource/noto-sans-sc": "^5.2.9",
     "@mdi/js": "^7.4.47",
