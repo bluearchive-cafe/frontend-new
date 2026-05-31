@@ -4,7 +4,7 @@
       class="hero-image"
       :src="currentHeroImage.src"
       :srcset="currentHeroImage.srcset"
-      sizes="(max-width: 720px) 100vw, 72vw"
+      sizes="(max-width: 720px) 118vw, 76vw"
       alt=""
       decoding="async"
       fetchpriority="high"
@@ -80,7 +80,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   position: absolute;
   top: 0;
   right: -2vw;
-  width: 72vw;
+  width: 76vw;
   height: 100%;
   animation: fade-slide-left 700ms ease both;
   object-fit: cover;
@@ -170,8 +170,8 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-image {
     top: 0;
-    right: 0;
-    width: 100%;
+    right: -9vw;
+    width: 118vw;
     height: 100%;
     max-width: none;
     object-position: center top;
