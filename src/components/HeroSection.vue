@@ -25,7 +25,7 @@
           <v-btn color="primary" size="large" to="/download" prepend-icon="$lightningBolt">
             立即使用
           </v-btn>
-          <v-btn class="tutorial-link" variant="text" size="large" href="https://bluearchive-cafe.github.io/docs/platform/" rel="noopener noreferrer" append-icon="$arrowRight">
+          <v-btn class="tutorial-link" variant="text" size="large" href="https://docs.bluearchive.cafe/platform/" rel="noopener noreferrer" append-icon="$arrowRight">
             查看教程
           </v-btn>
         </div>

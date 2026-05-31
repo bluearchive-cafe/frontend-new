@@ -208,7 +208,7 @@ interface DownloadVariant {
   recommended?: boolean
 }
 
-const baseDocUrl = 'https://bluearchive-cafe.github.io/docs/'
+const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 const downloadDialog = ref(false)
 const selectedPlatform = ref<PlatformLink | null>(null)

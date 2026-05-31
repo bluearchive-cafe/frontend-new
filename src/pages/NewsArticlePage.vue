@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import mediumZoom from 'medium-zoom'
 import type { Zoom } from 'medium-zoom'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import ArticleMeta from '../components/ArticleMeta.vue'
@@ -56,6 +56,7 @@ const markdownBodyRef = ref<HTMLElement | null>(null)
 let imageZoom: Zoom | null = null
 
 const article = computed(() => findNewsArticle(String(route.params.slug)))
+const articleSlug = computed(() => article.value?.slug)
 
 function setupImageZoom() {
   imageZoom?.detach()
@@ -74,13 +75,21 @@ function setupImageZoom() {
   })
 }
 
+async function refreshImageZoom() {
+  await nextTick()
+  setupImageZoom()
+}
+
+onMounted(() => {
+  void refreshImageZoom()
+})
+
 watch(
-  article,
-  async () => {
-    await nextTick()
-    setupImageZoom()
+  articleSlug,
+  () => {
+    void refreshImageZoom()
   },
-  { immediate: true }
+  { flush: 'post' }
 )
 
 onBeforeUnmount(() => {
