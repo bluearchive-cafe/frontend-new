@@ -4,7 +4,7 @@
       class="hero-image"
       :src="currentHeroImage.src"
       :srcset="currentHeroImage.srcset"
-      sizes="(max-width: 720px) 132vw, 72vw"
+      sizes="(max-width: 720px) 100vw, 72vw"
       alt=""
       decoding="async"
       fetchpriority="high"
@@ -170,18 +170,18 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-image {
     top: 0;
-    right: -32vw;
-    width: 132vw;
-    height: 76%;
+    right: 0;
+    width: 100%;
+    height: 100%;
     max-width: none;
-    object-position: 58% top;
-    opacity: 0.5;
+    object-position: center top;
+    opacity: 0.58;
   }
 
   .hero-shade {
     background:
-      linear-gradient(90deg, rgba(25, 29, 36, 0.98) 0%, rgba(25, 29, 36, 0.86) 48%, rgba(25, 29, 36, 0.46) 100%),
-      linear-gradient(180deg, rgba(25, 29, 36, 0.18) 0%, rgba(25, 29, 36, 0.58) 42%, var(--color-bg) 78%, var(--color-bg-deep) 100%);
+      linear-gradient(180deg, rgba(25, 29, 36, 0.08) 0%, rgba(25, 29, 36, 0.18) 30%, rgba(25, 29, 36, 0.78) 62%, var(--color-bg) 100%),
+      linear-gradient(90deg, rgba(25, 29, 36, 0.4) 0%, rgba(25, 29, 36, 0.1) 58%, rgba(25, 29, 36, 0.22) 100%);
   }
 
   .hero-content {
