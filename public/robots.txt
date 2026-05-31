@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bluearchive-cafe.github.io/frontend-new/sitemap.xml

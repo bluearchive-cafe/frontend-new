@@ -1,32 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import { findNewsArticle } from './content/news'
-
-const siteTitle = '蔚蓝咖啡厅'
-const routeTitles = {
-  home: '',
-  news: '新闻',
-  download: '下载',
-  status: '状态',
-  about: '关于',
-  'not-found': '页面不存在'
-} as const
-
-function formatDocumentTitle(pageTitle?: string) {
-  return pageTitle ? `${pageTitle} - ${siteTitle}` : siteTitle
-}
-
-function getRouteTitle(routeName: unknown, params: Record<string, unknown>) {
-  if (routeName === 'news-article') {
-    const slugParam = params.slug
-    const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam
-    const article = typeof slug === 'string' ? findNewsArticle(slug) : null
-
-    return article?.title ?? '新闻不存在'
-  }
-
-  return typeof routeName === 'string' ? routeTitles[routeName as keyof typeof routeTitles] : undefined
-}
+import { applyRouteSeo } from './utils/seo'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -52,8 +26,8 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to) => {
-  document.title = formatDocumentTitle(getRouteTitle(to.name, to.params))
+router.afterEach((to) => {
+  applyRouteSeo(to)
 })
 
 export default router
