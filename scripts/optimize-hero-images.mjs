@@ -1,4 +1,4 @@
-import { mkdir, readdir, rm } from 'node:fs/promises'
+import { mkdir, readFile, readdir, rm } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -10,16 +10,10 @@ const sourceDirectory = path.join(projectRoot, 'public/assets/img/hero')
 const outputDirectory = path.join(projectRoot, 'public/assets/img/hero/optimized')
 const widths = [960, 1440, 1920]
 const supportedExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp'])
-const heroImageNames = new Set([
-  'hero',
-  'hero-haruka',
-  '115938338_p0_cut',
-  '100941489_p0_cut',
-  '110486537_p0',
-  '123658183_p0',
-  '131020176_p0_cut',
-  '142932674_p0'
-])
+const heroImageNames = JSON.parse(
+  await readFile(path.join(projectRoot, 'src/content/hero-images.json'), 'utf-8')
+)
+const heroImageNameSet = new Set(heroImageNames)
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
@@ -28,7 +22,7 @@ const files = (await readdir(sourceDirectory))
   .filter((file) => {
     const basename = path.basename(file, path.extname(file))
 
-    return supportedExtensions.has(path.extname(file).toLowerCase()) && heroImageNames.has(basename)
+    return supportedExtensions.has(path.extname(file).toLowerCase()) && heroImageNameSet.has(basename)
   })
   .sort()
 

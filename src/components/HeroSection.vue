@@ -37,18 +37,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const publicAssetBase = import.meta.env.BASE_URL
+import heroImageNames from '../content/hero-images.json'
 
-const heroImageNames = [
-  'hero',
-  'hero-haruka',
-  '115938338_p0_cut',
-  '100941489_p0_cut',
-  '110486537_p0',
-  '123658183_p0',
-  '131020176_p0_cut',
-  '142932674_p0'
-]
+const publicAssetBase = import.meta.env.BASE_URL
 
 const heroImages = heroImageNames.map((name) => {
   const basePath = `${publicAssetBase}assets/img/hero/optimized/${name}`

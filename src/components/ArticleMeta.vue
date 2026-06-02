@@ -12,7 +12,7 @@
       <dt class="sr-only">发布时间</dt>
       <dd>
         <v-icon icon="$calendarClockOutline" size="18" aria-hidden="true" />
-        <time :datetime="dateTimeValue">{{ publishedAt }}</time>
+        <time :datetime="publishedAtDateTime">{{ publishedAt }}</time>
       </dd>
     </div>
 
@@ -27,16 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
-const props = defineProps<{
+defineProps<{
   author: string
   publishedAt: string
+  publishedAtDateTime: string
   wordCount: number
   label?: string
 }>()
-
-const dateTimeValue = computed(() => props.publishedAt.replace(' ', 'T'))
 </script>
 
 <style scoped>

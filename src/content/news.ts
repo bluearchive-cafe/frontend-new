@@ -15,6 +15,8 @@ export type NewsArticle = NewsMeta & {
   slug: string
   body: string
   html: string
+  publishedAtDateTime: string
+  publishedAtTimestamp: number
   wordCount: number
 }
 
@@ -190,6 +192,23 @@ function parseBoolean(value: string | undefined) {
   return ['true', '1', 'yes', 'y'].includes(value?.trim().toLowerCase() ?? '')
 }
 
+function parsePublishedAt(value: string, path: string) {
+  const publishedAt = value.trim()
+
+  if (!publishedAt) {
+    throw new Error(`${path} requires publishedAt frontmatter.`)
+  }
+
+  const publishedAtDateTime = publishedAt.replace(' ', 'T')
+  const publishedAtTimestamp = Date.parse(publishedAtDateTime)
+
+  if (Number.isNaN(publishedAtTimestamp)) {
+    throw new Error(`${path} has invalid publishedAt frontmatter: ${publishedAt}`)
+  }
+
+  return { publishedAt, publishedAtDateTime, publishedAtTimestamp }
+}
+
 function resolveMarkdownAsset(sourcePath: string, src: string) {
   if (isRemoteOrAbsoluteUrl(src)) {
     return null
@@ -302,9 +321,11 @@ function countWords(markdownBody: string) {
 export const newsArticles: NewsArticle[] = rawArticles
   .map(({ path, slug, source }) => {
     const { meta, body } = parseFrontmatter(source)
+    const publishedAt = parsePublishedAt(meta.publishedAt, path)
 
     return {
       ...meta,
+      ...publishedAt,
       slug,
       body,
       html: markdown.render(body, { sourcePath: path }),
@@ -317,7 +338,7 @@ export const newsArticles: NewsArticle[] = rawArticles
       return left.pinned ? -1 : 1
     }
 
-    return new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime()
+    return right.publishedAtTimestamp - left.publishedAtTimestamp
   })
 
 export function findNewsArticle(slug: string) {
@@ -327,9 +348,5 @@ export function findNewsArticle(slug: string) {
 export const newsCategories = Array.from(new Set(newsArticles.map((article) => article.category)))
 
 export function formatPublishTime(value: string) {
-  if (!value) {
-    return '未设置发布时间'
-  }
-
   return value
 }

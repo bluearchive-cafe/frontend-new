@@ -39,6 +39,7 @@
               class="article-meta"
               :author="article.author"
               :published-at="formatPublishTime(article.publishedAt)"
+              :published-at-date-time="article.publishedAtDateTime"
               :word-count="article.wordCount"
               label="新闻元信息"
             />
