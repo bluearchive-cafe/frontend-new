@@ -54,7 +54,7 @@
                       prepend-icon="$download"
                       append-icon="$chevronDown"
                     >
-                      选择客户端
+                      查看下载选项
                     </v-btn>
                   </template>
 
@@ -88,7 +88,7 @@
                   prepend-icon="$download"
                   @click="openDownloadGuide(platform, platform.variants[0])"
                 >
-                  下载客户端
+                  {{ singleVariantButtonText(platform.variants[0]) }}
                 </v-btn>
               </template>
 
@@ -303,6 +303,10 @@ const selectedDownloadTitle = computed(() => {
 
 function platformTags(platform: PlatformLink) {
   return platform.tags ?? []
+}
+
+function singleVariantButtonText(variant: DownloadVariant) {
+  return `下载${variant.name}`
 }
 
 function openDownloadGuide(platform: PlatformLink, variant: DownloadVariant) {

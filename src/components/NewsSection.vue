@@ -4,7 +4,7 @@
       <div class="news-overview">
         <h2 class="section-title">最新动态</h2>
         <v-btn class="all-news-link" variant="text" color="primary" append-icon="$chevronRight" to="/news">
-          全部公告
+          全部新闻
         </v-btn>
 
         <div class="news-grid">
@@ -22,7 +22,10 @@
               </div>
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
-              <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
+              <div class="news-card-footer">
+                <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
+                <span class="read-more">查看详情</span>
+              </div>
             </v-card-text>
           </v-card>
         </div>
@@ -113,12 +116,34 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   gap: 8px;
 }
 
-.news-date {
+.news-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 14px;
   margin-top: auto;
   padding-top: 18px;
+}
+
+.news-date {
   color: var(--color-secondary);
   font-size: 13px;
   font-weight: 700;
+}
+
+.read-more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid rgba(41, 174, 234, 0.3);
+  border-radius: 999px;
+  background: rgba(41, 174, 234, 0.08);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .news-card h3 {

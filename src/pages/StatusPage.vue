@@ -43,14 +43,14 @@
               </thead>
               <tbody>
                 <tr class="official">
-                  <td class="label">官方</td>
-                  <td class="value" :data-key="`${panel.key}/official/version`">正在获取</td>
-                  <td class="value" :data-key="`${panel.key}/official/time`">正在获取</td>
+                  <td class="label" data-label="来源">官方</td>
+                  <td class="value" data-label="版本" :data-key="`${panel.key}/official/version`">正在获取</td>
+                  <td class="value" data-label="更新时间" :data-key="`${panel.key}/official/time`">正在获取</td>
                 </tr>
                 <tr class="localized">
-                  <td class="label">汉化</td>
-                  <td class="value" :data-key="`${panel.key}/localized/version`">正在获取</td>
-                  <td class="value" :data-key="`${panel.key}/localized/time`">正在获取</td>
+                  <td class="label" data-label="来源">汉化</td>
+                  <td class="value" data-label="版本" :data-key="`${panel.key}/localized/version`">正在获取</td>
+                  <td class="value" data-label="更新时间" :data-key="`${panel.key}/localized/time`">正在获取</td>
                 </tr>
               </tbody>
             </table>
@@ -89,7 +89,7 @@ const statusPanels: StatusPanel[] = [
     key: 'ios',
     title: '应用包',
     description: 'iOS / macOS 专用客户端应用包',
-    icon: '$appleIos',
+    icon: '$apple',
     tone: 'ios'
   },
   {
@@ -219,7 +219,7 @@ function setAllStatusFailed() {
     const key = element.dataset.key ?? ''
 
     if (key.endsWith('/status')) {
-      setStatusChip(element, '未获取', 'loading')
+      setStatusChip(element, '获取失败', 'error')
       return
     }
 
@@ -452,6 +452,8 @@ function setAllStatusFailed() {
   .status-panel summary {
     align-items: flex-start;
     flex-direction: column;
+    gap: 14px;
+    padding: 16px;
   }
 
   .status-panel-meta {
@@ -460,11 +462,92 @@ function setAllStatusFailed() {
   }
 
   .status-panel-body {
-    overflow-x: auto;
+    padding: 0 16px 16px;
+  }
+
+  .status-panel-leading {
+    align-items: flex-start;
+  }
+
+  .status-symbol {
+    flex: 0 0 auto;
+  }
+
+  .status-table,
+  .status-table thead,
+  .status-table tbody,
+  .status-table tr,
+  .status-table th,
+  .status-table td {
+    display: block;
+  }
+
+  .status-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .status-table {
-    min-width: 560px;
+    border: 0;
+    background: transparent;
+  }
+
+  .status-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .status-table tr {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .status-table td {
+    display: grid;
+    grid-template-columns: minmax(72px, 0.36fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--color-border);
+    overflow-wrap: anywhere;
+  }
+
+  .status-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .status-table .label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text);
+    font-size: 15px;
+  }
+
+  .status-table .label::after {
+    color: var(--color-text-subtle);
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .status-table .value::before {
+    color: var(--color-text-subtle);
+    content: attr(data-label);
+    font-size: 13px;
+    font-weight: 800;
   }
 }
 

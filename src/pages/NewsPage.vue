@@ -35,14 +35,17 @@
             </div>
             <h2>{{ article.title }}</h2>
             <p>{{ article.summary }}</p>
-            <ArticleMeta
-              class="article-meta"
-              :author="article.author"
-              :published-at="formatPublishTime(article.publishedAt)"
-              :published-at-date-time="article.publishedAtDateTime"
-              :word-count="article.wordCount"
-              label="新闻元信息"
-            />
+            <div class="article-footer">
+              <ArticleMeta
+                class="article-meta"
+                :author="article.author"
+                :published-at="formatPublishTime(article.publishedAt)"
+                :published-at-date-time="article.publishedAtDateTime"
+                :word-count="article.wordCount"
+                label="新闻元信息"
+              />
+              <span class="read-more">阅读全文</span>
+            </div>
           </v-card-text>
         </v-card>
       </div>
@@ -201,8 +204,27 @@ const filteredArticles = computed(() => {
   line-height: 1.75;
 }
 
-.article-meta {
+.article-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 18px;
   margin-top: 18px;
+}
+
+.read-more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(41, 174, 234, 0.3);
+  border-radius: 999px;
+  background: rgba(41, 174, 234, 0.08);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .empty-card {
