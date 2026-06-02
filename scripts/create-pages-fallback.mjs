@@ -1,5 +1,7 @@
-import { copyFileSync, existsSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
+
+import { getSitemapRoutes } from './site-routes.mjs'
 
 const distDir = resolve('dist')
 const indexFile = resolve(distDir, 'index.html')
@@ -10,4 +12,15 @@ if (!existsSync(indexFile)) {
 }
 
 copyFileSync(indexFile, fallbackFile)
-console.log('Created dist/404.html for GitHub Pages SPA fallback.')
+
+const routes = await getSitemapRoutes()
+
+routes
+  .filter((route) => route.path !== '/')
+  .forEach((route) => {
+    const routeDirectory = resolve(distDir, route.path.replace(/^\//, ''))
+    mkdirSync(routeDirectory, { recursive: true })
+    copyFileSync(indexFile, resolve(routeDirectory, 'index.html'))
+  })
+
+console.log(`Created dist/404.html and ${routes.length - 1} route fallback pages for static hosting.`)

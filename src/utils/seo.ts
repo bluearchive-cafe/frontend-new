@@ -4,7 +4,7 @@ import { findNewsArticle } from '../content/news'
 
 const siteTitle = '蔚蓝咖啡厅'
 const siteName = 'BlueArchive.Cafe'
-const siteUrl = 'https://bluearchive-cafe.github.io/frontend-new/'
+const siteUrl = 'https://bluearchive.cafe/'
 const defaultImage = `${siteUrl}favicon.jpg`
 const defaultDescription = 'BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。'
 const defaultKeywords = '蔚蓝档案,蔚蓝档案汉化,Blue Archive,BlueArchive.Cafe,蔚蓝咖啡厅,汉化教程,客户端下载'
@@ -98,7 +98,7 @@ function getRouteSeo(route: RouteLocationNormalizedLoaded): SeoInfo {
 
 function getRouteUrl(route: RouteLocationNormalizedLoaded) {
   const path = route.fullPath === '/' ? '/' : route.fullPath
-  return `${siteUrl}#${path}`
+  return new URL(path.replace(/^\//, ''), siteUrl).toString()
 }
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
