@@ -150,10 +150,6 @@ const currentHeroImage = ref(getRandomHeroImage())
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
-.hero-actions :deep(.v-btn:hover) {
-  transform: translateY(-2px);
-}
-
 @media (max-width: 720px) {
   .hero {
     min-height: clamp(560px, 86svh, 680px);
@@ -230,6 +226,12 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-actions :deep(.v-btn) {
     width: 100%;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-actions :deep(.v-btn:hover) {
+    transform: translateY(-2px);
   }
 }
 

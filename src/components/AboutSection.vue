@@ -174,12 +174,6 @@ const socialLinks = [
   animation-delay: 240ms;
 }
 
-.about-row:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-3px);
-}
-
 .about-row h3 {
   margin: 0 0 6px;
   color: var(--color-text);
@@ -205,6 +199,7 @@ const socialLinks = [
 
 .social-heading h2 {
   margin: 0;
+  animation: fade-slide-up 520ms ease 260ms both;
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-heading);
@@ -213,6 +208,7 @@ const socialLinks = [
 .social-heading p {
   max-width: 560px;
   margin: 12px 0 0;
+  animation: fade-slide-up 520ms ease 320ms both;
   color: var(--color-text-muted);
   line-height: 1.75;
 }
@@ -220,6 +216,7 @@ const socialLinks = [
 .social-list {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
+  animation: fade-slide-up 520ms ease 320ms both;
   background: var(--color-card-soft) !important;
 }
 
@@ -251,6 +248,14 @@ const socialLinks = [
   color: var(--color-text);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .about-row:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+}
+
 @media (max-width: 840px) {
   .about-layout,
   .social-section {
@@ -267,7 +272,10 @@ const socialLinks = [
 @media (prefers-reduced-motion: reduce) {
   .about-copy h2,
   .about-copy p,
-  .about-row {
+  .about-row,
+  .social-heading h2,
+  .social-heading p,
+  .social-list {
     animation: none;
   }
 }

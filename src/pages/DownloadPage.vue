@@ -434,12 +434,6 @@ const documentLinks = [
   animation-delay: 240ms;
 }
 
-.platform-card:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
-}
-
 .platform-card :deep(.v-card-text) {
   display: flex;
   min-height: 100%;
@@ -599,6 +593,14 @@ const documentLinks = [
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 24px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .platform-card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
 }
 
 @media (max-width: 840px) {

@@ -170,12 +170,6 @@ const filteredArticles = computed(() => {
   animation-delay: 240ms;
 }
 
-.article-card:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
-}
-
 .article-badges {
   display: flex;
   align-items: center;
@@ -190,10 +184,6 @@ const filteredArticles = computed(() => {
   font-weight: var(--font-weight-subheading);
   line-height: 1.35;
   transition: color 160ms ease;
-}
-
-.article-card:hover h2 {
-  color: var(--color-secondary);
 }
 
 .article-card p {
@@ -256,6 +246,18 @@ const filteredArticles = computed(() => {
   margin: 12px 0 22px;
   color: var(--color-text-muted);
   line-height: 1.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .article-card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  .article-card:hover h2 {
+    color: var(--color-secondary);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

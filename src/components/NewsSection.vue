@@ -96,12 +96,6 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   animation-delay: 160ms;
 }
 
-.news-card:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
-}
-
 .news-card :deep(.v-card-text) {
   display: flex;
   flex-direction: column;
@@ -155,15 +149,23 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   transition: color 160ms ease;
 }
 
-.news-card:hover h3 {
-  color: var(--color-secondary);
-}
-
 .news-card p {
   margin: 0;
   color: var(--color-text-muted);
   font-size: 14px;
   line-height: 1.7;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .news-card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  .news-card:hover h3 {
+    color: var(--color-secondary);
+  }
 }
 
 @media (max-width: 840px) {
