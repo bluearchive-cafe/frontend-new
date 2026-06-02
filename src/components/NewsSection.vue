@@ -7,7 +7,7 @@
           全部新闻
         </v-btn>
 
-        <div class="news-grid">
+        <div v-if="latestNews.length" class="news-grid">
           <v-card
             v-for="item in latestNews"
             :key="item.slug"
@@ -29,6 +29,14 @@
             </v-card-text>
           </v-card>
         </div>
+
+        <v-card v-else class="news-empty-card" elevation="0">
+          <v-card-text>
+            <p class="empty-label">No news</p>
+            <h3>暂无新闻</h3>
+            <p>当前还没有已发布的新闻内容，后续公告会在这里展示。</p>
+          </v-card-text>
+        </v-card>
       </div>
     </v-container>
   </section>
@@ -78,6 +86,39 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
+}
+
+.news-empty-card {
+  grid-column: 1 / -1;
+  border: 1px solid var(--color-border);
+  animation: fade-slide-up 520ms ease both;
+  background: var(--gradient-card-strong);
+}
+
+.news-empty-card :deep(.v-card-text) {
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.empty-label {
+  margin: 0 0 10px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: var(--font-weight-heading);
+}
+
+.news-empty-card h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-heading);
+}
+
+.news-empty-card p:not(.empty-label) {
+  max-width: 520px;
+  margin: 12px 0 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 1.75;
 }
 
 .news-card {
@@ -192,11 +233,16 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
     grid-column: 1 / -1;
     order: 0;
   }
+
+  .news-empty-card {
+    order: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .news-overview,
-  .news-card {
+  .news-card,
+  .news-empty-card {
     animation: none;
   }
 }

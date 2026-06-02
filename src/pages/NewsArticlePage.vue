@@ -22,7 +22,7 @@
           />
         </header>
 
-        <div ref="markdownBodyRef" class="markdown-body" v-html="article.html" />
+        <div ref="markdownBodyRef" class="markdown-body" v-html="articleHtml" />
       </article>
 
       <NotFoundState
@@ -51,6 +51,7 @@ import CategoryBadge from '../components/CategoryBadge.vue'
 import NotFoundState from '../components/NotFoundState.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
 import { findNewsArticle, formatPublishTime } from '../content/news'
+import { sanitizeHtml } from '../utils/sanitize-html'
 
 const route = useRoute()
 const markdownBodyRef = ref<HTMLElement | null>(null)
@@ -58,6 +59,7 @@ let imageZoom: Zoom | null = null
 
 const article = computed(() => findNewsArticle(String(route.params.slug)))
 const articleSlug = computed(() => article.value?.slug)
+const articleHtml = computed(() => article.value ? sanitizeHtml(article.value.html) : '')
 
 function setupImageZoom() {
   imageZoom?.detach()

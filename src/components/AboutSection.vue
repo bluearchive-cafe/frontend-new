@@ -76,8 +76,8 @@ const aboutItems = [
 
 const socialLinks = [
   {
-        label: '哔哩哔哩',
-        href: 'https://space.bilibili.com/3706947316484682',
+    label: '哔哩哔哩',
+    href: 'https://space.bilibili.com/3706947316484682',
     icon: '$videoOutline',
     tone: 'bilibili',
     description: '发布站点更新、公告同步和阶段性内容预览。'

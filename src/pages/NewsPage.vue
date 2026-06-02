@@ -52,10 +52,10 @@
 
       <v-card v-else class="empty-card" elevation="0">
         <v-card-text class="empty-content">
-          <p class="empty-label">No articles</p>
-          <h2>这个分类暂时没有文章</h2>
-          <p>换一个分类看看，或者返回全部新闻浏览当前已发布的内容。</p>
-          <v-btn color="primary" variant="flat" @click="selectedCategory = allCategoryLabel">
+          <p class="empty-label">{{ emptyLabel }}</p>
+          <h2>{{ emptyTitle }}</h2>
+          <p>{{ emptyDescription }}</p>
+          <v-btn v-if="newsArticles.length" color="primary" variant="flat" @click="selectedCategory = allCategoryLabel">
             查看全部新闻
           </v-btn>
         </v-card-text>
@@ -91,6 +91,14 @@ const filteredArticles = computed(() => {
 
   return newsArticles.filter((article) => article.category === selectedCategory.value)
 })
+
+const emptyLabel = computed(() => newsArticles.length ? 'No articles' : 'No news')
+const emptyTitle = computed(() => newsArticles.length ? '这个分类暂时没有文章' : '暂无新闻')
+const emptyDescription = computed(() =>
+  newsArticles.length
+    ? '换一个分类看看，或者返回全部新闻浏览当前已发布的内容。'
+    : '当前还没有已发布的新闻内容，后续公告会在这里展示。'
+)
 </script>
 
 <style scoped>
