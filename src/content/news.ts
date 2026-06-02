@@ -342,7 +342,9 @@ export const newsArticles: NewsArticle[] = rawArticles
   })
 
 export function findNewsArticle(slug: string) {
-  return newsArticles.find((article) => article.slug === slug)
+  const normalizedSlug = slug.replace(/\/+$/, '')
+
+  return newsArticles.find((article) => article.slug === normalizedSlug)
 }
 
 export const newsCategories = Array.from(new Set(newsArticles.map((article) => article.category)))
