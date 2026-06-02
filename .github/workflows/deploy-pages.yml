@@ -30,14 +30,6 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Restore build cache
-        uses: actions/cache@v5
-        with:
-          path: .vite
-          key: vite-${{ runner.os }}-${{ hashFiles('package-lock.json', 'vite.config.ts') }}
-          restore-keys: |
-            vite-${{ runner.os }}-
-
       - name: Install dependencies
         run: npm ci
 

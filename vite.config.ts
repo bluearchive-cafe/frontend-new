@@ -21,7 +21,6 @@ const commitSha =
 
 export default defineConfig({
   base: githubPagesBase,
-  cacheDir: '.vite',
   define: {
     __APP_INFO__: JSON.stringify({
       name: 'BlueArchive.Cafe',
