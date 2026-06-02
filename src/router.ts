@@ -6,8 +6,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
-    { path: '/news', name: 'news', component: () => import('./pages/NewsPage.vue') },
-    { path: '/news/:slug(.*)', name: 'news-article', component: () => import('./pages/NewsArticlePage.vue') },
+    { path: '/news', alias: '/news/', name: 'news', component: () => import('./pages/NewsPage.vue') },
+    { path: '/news/:slug(.+)', name: 'news-article', component: () => import('./pages/NewsArticlePage.vue') },
     { path: '/download', name: 'download', component: () => import('./pages/DownloadPage.vue') },
     { path: '/status', name: 'status', component: () => import('./pages/StatusPage.vue') },
     { path: '/about', name: 'about', component: () => import('./pages/AboutPage.vue') },
