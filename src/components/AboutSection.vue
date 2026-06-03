@@ -51,11 +51,74 @@
           </v-list-item>
         </v-list>
       </section>
+
+      <section class="sponsor-section" aria-labelledby="sponsor-title">
+        <div class="sponsor-heading">
+          <h2 id="sponsor-title">支持我们</h2>
+          <p>如果本站对你有帮助，可以通过以下方式支持我们持续维护汉化内容、站点服务和相关工具。</p>
+        </div>
+
+        <v-list class="social-list sponsor-list" bg-color="transparent" lines="two">
+          <v-list-item
+            title="微信赞赏码"
+            subtitle="点击查看赞赏码，支持项目长期维护。"
+            @click="isSponsorQrOpen = true"
+          >
+            <template #prepend>
+              <v-avatar class="social-icon sponsor-icon--wechat" rounded="lg">
+                <v-icon icon="$imageOutline" size="22" />
+              </v-avatar>
+            </template>
+
+            <template #append>
+              <v-icon icon="$imageOutline" color="primary" size="18" />
+            </template>
+          </v-list-item>
+
+          <v-list-item
+            href="https://afdian.com/a/MisakaCloud"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="爱发电"
+            subtitle="通过爱发电进行赞助，支持项目长期维护。"
+          >
+            <template #prepend>
+              <v-avatar class="social-icon sponsor-icon--afdian" rounded="lg">
+                <v-icon icon="$linkVariant" size="22" />
+              </v-avatar>
+            </template>
+
+            <template #append>
+              <v-icon icon="$openInNew" color="primary" size="18" />
+            </template>
+          </v-list-item>
+        </v-list>
+      </section>
     </v-container>
+
+    <v-dialog v-model="isSponsorQrOpen" max-width="420">
+      <v-card class="sponsor-dialog" elevation="0">
+        <v-card-text>
+          <div class="sponsor-dialog-heading">
+            <div>
+              <h2>微信赞赏码</h2>
+              <p>感谢你的支持。</p>
+            </div>
+            <v-btn variant="text" color="primary" @click="isSponsorQrOpen = false">
+              关闭
+            </v-btn>
+          </div>
+
+          <img class="sponsor-qr" src="/assets/img/about/wechat-sponsor.png" alt="微信赞赏码" loading="lazy" decoding="async">
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const aboutItems = [
   {
     icon: '$infoOutline',
@@ -97,6 +160,8 @@ const socialLinks = [
     description: '查看源码、跟踪开发进度，或通过 issue 参与改进。'
   }
 ]
+
+const isSponsorQrOpen = ref(false)
 </script>
 
 <style scoped>
@@ -224,6 +289,88 @@ const socialLinks = [
   min-height: 72px;
 }
 
+.sponsor-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
+  gap: 48px;
+  align-items: start;
+  margin-top: 40px;
+  padding-top: 34px;
+  border-top: 1px solid var(--color-border);
+}
+
+.sponsor-heading h2 {
+  margin: 0;
+  animation: fade-slide-up 520ms ease 380ms both;
+  color: var(--color-text);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-heading);
+}
+
+.sponsor-heading p {
+  max-width: 560px;
+  margin: 12px 0 0;
+  animation: fade-slide-up 520ms ease 440ms both;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+}
+
+.sponsor-list {
+  animation-delay: 440ms;
+}
+
+.sponsor-icon--wechat {
+  border-color: rgba(120, 214, 163, 0.34);
+  background: rgba(120, 214, 163, 0.12);
+  color: #78d6a3;
+}
+
+.sponsor-icon--afdian {
+  border-color: rgba(255, 215, 106, 0.34);
+  background: rgba(255, 215, 106, 0.12);
+  color: #ffd76a;
+}
+
+.sponsor-dialog {
+  border: 1px solid var(--color-border);
+  background: var(--gradient-card);
+}
+
+.sponsor-dialog :deep(.v-card-text) {
+  padding: 20px !important;
+}
+
+.sponsor-dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sponsor-dialog-heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 22px;
+  font-weight: var(--font-weight-heading);
+}
+
+.sponsor-dialog-heading p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.sponsor-qr {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  margin: 0 auto;
+  background: #fff;
+}
+
 .social-icon {
   border: 1px solid rgba(41, 174, 234, 0.32);
   background: rgba(41, 174, 234, 0.1);
@@ -258,12 +405,14 @@ const socialLinks = [
 
 @media (max-width: 840px) {
   .about-layout,
-  .social-section {
+  .social-section,
+  .sponsor-section {
     grid-template-columns: 1fr;
     gap: 28px;
   }
 
-  .social-section {
+  .social-section,
+  .sponsor-section {
     margin-top: 32px;
     padding-top: 28px;
   }
@@ -275,7 +424,9 @@ const socialLinks = [
   .about-row,
   .social-heading h2,
   .social-heading p,
-  .social-list {
+  .social-list,
+  .sponsor-heading h2,
+  .sponsor-heading p {
     animation: none;
   }
 }
