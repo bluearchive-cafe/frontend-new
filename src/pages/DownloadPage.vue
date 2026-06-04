@@ -471,7 +471,7 @@ const documentLinks = [
 .platform-icon--ios,
 .platform-icon--macos {
   border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-neutral-soft);
   color: var(--color-text);
 }
 
@@ -549,9 +549,7 @@ const documentLinks = [
 .download-dialog {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background:
-    linear-gradient(180deg, rgba(48, 55, 70, 0.98), rgba(36, 41, 50, 0.98)),
-    var(--color-surface);
+  background: var(--color-surface);
   box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
 }
 

@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-card);
   padding: clamp(26px, 5vw, 50px);
   animation: fade-slide-up 520ms ease 80ms both;
-  background: linear-gradient(180deg, rgba(48, 55, 70, 0.78), rgba(25, 29, 36, 0.86));
+  background: var(--color-card);
 }
 
 header {
@@ -150,9 +150,9 @@ h1 {
 .markdown-body {
   --markdown-border: rgba(139, 148, 158, 0.28);
   --markdown-border-muted: rgba(139, 148, 158, 0.18);
-  --markdown-code-bg: rgba(110, 118, 129, 0.22);
-  --markdown-pre-bg: rgba(13, 17, 23, 0.58);
-  --markdown-table-alt: rgba(110, 118, 129, 0.08);
+  --markdown-code-bg: var(--color-neutral-soft);
+  --markdown-pre-bg: var(--color-bg);
+  --markdown-table-alt: var(--color-neutral-softer);
   --markdown-alert-note: #2f81f7;
   --markdown-alert-tip: #3fb950;
   --markdown-alert-important: #a371f7;
@@ -403,7 +403,7 @@ h1 {
   border-bottom-color: rgba(139, 148, 158, 0.42);
   border-radius: 5px;
   padding: 3px 5px;
-  background: rgba(110, 118, 129, 0.16);
+  background: var(--color-neutral-softer);
   color: var(--color-text);
   box-shadow: inset 0 -1px 0 rgba(139, 148, 158, 0.24);
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
@@ -413,7 +413,7 @@ h1 {
 .markdown-body :deep(mark) {
   border-radius: 4px;
   padding: 1px 4px;
-  background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+  background: var(--color-mark);
   color: var(--color-text);
 }
 

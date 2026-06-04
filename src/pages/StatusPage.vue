@@ -345,7 +345,7 @@ function setAllStatusFailed() {
 
 .status-symbol--ios {
   border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-neutral-soft);
   color: var(--color-text);
 }
 
@@ -431,7 +431,7 @@ function setAllStatusFailed() {
 }
 
 .status-table th {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--color-neutral-softer);
   color: var(--color-text-soft);
   font-size: 13px;
   font-weight: 800;
@@ -507,7 +507,7 @@ function setAllStatusFailed() {
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--color-card);
   }
 
   .status-table td {
@@ -531,7 +531,7 @@ function setAllStatusFailed() {
     width: auto;
     padding: 12px 14px;
     border-bottom: 1px solid var(--color-border);
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--color-neutral-softer);
     color: var(--color-text);
     font-size: 15px;
   }

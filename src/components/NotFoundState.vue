@@ -59,9 +59,7 @@ withDefaults(
 .not-found-state {
   width: 100%;
   border: 1px solid var(--color-border);
-  background:
-    radial-gradient(circle at 88% 12%, var(--color-primary-soft), transparent 34%),
-    var(--gradient-card);
+  background: var(--color-card);
 }
 
 .not-found-content {

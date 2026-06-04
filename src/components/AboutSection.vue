@@ -391,7 +391,7 @@ const isSponsorQrOpen = ref(false)
 
 .social-icon--github {
   border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-neutral-soft);
   color: var(--color-text);
 }
 
