@@ -178,6 +178,12 @@ const emptyDescription = computed(() =>
   animation-delay: 240ms;
 }
 
+.article-card :deep(.v-card-text) {
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-padding);
+}
+
 .article-badges {
   display: flex;
   align-items: center;
@@ -186,7 +192,7 @@ const emptyDescription = computed(() =>
 }
 
 .article-card h2 {
-  margin: 14px 0 10px;
+  margin: var(--control-gap) 0 var(--inline-gap);
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
@@ -198,8 +204,8 @@ const emptyDescription = computed(() =>
   max-width: 760px;
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .article-footer {
@@ -207,15 +213,16 @@ const emptyDescription = computed(() =>
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--control-gap) var(--space-5);
-  margin-top: var(--space-5);
+  gap: var(--control-gap) var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-5);
 }
 
 .read-more {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
+  min-height: 30px;
+  padding: 0 11px;
   border: 1px solid var(--color-primary-border);
   border-radius: 999px;
   background: var(--color-primary-softer);
@@ -232,7 +239,7 @@ const emptyDescription = computed(() =>
 }
 
 .empty-content {
-  padding: clamp(26px, 5vw, 44px) !important;
+  padding: clamp(22px, 4vw, 34px) !important;
 }
 
 .empty-label {
