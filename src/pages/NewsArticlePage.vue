@@ -413,7 +413,7 @@ h1 {
 .markdown-body :deep(mark) {
   border-radius: 4px;
   padding: 1px 4px;
-  background: rgba(255, 215, 106, 0.24);
+  background: color-mix(in srgb, var(--color-accent) 24%, transparent);
   color: var(--color-text);
 }
 

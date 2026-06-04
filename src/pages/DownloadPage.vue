@@ -393,10 +393,10 @@ const documentLinks = [
   align-items: center;
   margin-bottom: 24px;
   padding: 16px 18px;
-  border: 1px solid rgba(255, 215, 106, 0.28);
+  border: 1px solid var(--color-accent-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up 520ms ease 60ms both;
-  background: rgba(255, 215, 106, 0.08);
+  background: var(--color-accent-softer);
 }
 
 .guide-strip :deep(.v-icon) {
@@ -457,15 +457,15 @@ const documentLinks = [
 
 .platform-icon,
 .doc-icon {
-  border: 1px solid rgba(41, 174, 234, 0.32);
-  background: rgba(41, 174, 234, 0.1);
+  border: 1px solid var(--color-primary-border);
+  background: var(--color-primary-soft);
   color: var(--color-secondary);
 }
 
 .platform-icon--android {
-  border-color: rgba(120, 214, 163, 0.38);
-  background: rgba(120, 214, 163, 0.12);
-  color: #78d6a3;
+  border-color: var(--color-success-border-strong);
+  background: var(--color-success-soft);
+  color: var(--color-success);
 }
 
 .platform-icon--ios,
@@ -476,9 +476,9 @@ const documentLinks = [
 }
 
 .platform-icon--windows {
-  border-color: rgba(41, 174, 234, 0.42);
-  background: rgba(41, 174, 234, 0.14);
-  color: #69d8ff;
+  border-color: var(--color-primary-border-strong);
+  background: var(--color-primary-soft);
+  color: var(--color-info);
 }
 
 .platform-description {

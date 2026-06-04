@@ -9,9 +9,9 @@
   width: fit-content;
   min-height: 28px;
   padding: 4px 10px;
-  border: 1px solid rgba(255, 215, 106, 0.38);
+  border: 1px solid var(--color-accent-border);
   border-radius: 999px;
-  background: rgba(255, 215, 106, 0.12);
+  background: var(--color-accent-soft);
   color: var(--color-accent);
   font-size: 13px;
   font-weight: 800;

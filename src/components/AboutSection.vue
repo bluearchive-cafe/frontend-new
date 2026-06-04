@@ -320,15 +320,15 @@ const isSponsorQrOpen = ref(false)
 }
 
 .sponsor-icon--wechat {
-  border-color: rgba(120, 214, 163, 0.34);
-  background: rgba(120, 214, 163, 0.12);
-  color: #78d6a3;
+  border-color: var(--color-success-border);
+  background: var(--color-success-soft);
+  color: var(--color-success);
 }
 
 .sponsor-icon--afdian {
-  border-color: rgba(255, 215, 106, 0.34);
-  background: rgba(255, 215, 106, 0.12);
-  color: #ffd76a;
+  border-color: var(--color-accent-border);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
 }
 
 .sponsor-dialog {
@@ -372,21 +372,21 @@ const isSponsorQrOpen = ref(false)
 }
 
 .social-icon {
-  border: 1px solid rgba(41, 174, 234, 0.32);
-  background: rgba(41, 174, 234, 0.1);
+  border: 1px solid var(--color-primary-border);
+  background: var(--color-primary-soft);
   color: var(--color-secondary);
 }
 
 .social-icon--bilibili {
-  border-color: rgba(41, 174, 234, 0.42);
-  background: rgba(41, 174, 234, 0.14);
-  color: #69d8ff;
+  border-color: var(--color-primary-border-strong);
+  background: var(--color-primary-soft);
+  color: var(--color-info);
 }
 
 .social-icon--qq {
-  border-color: rgba(139, 216, 255, 0.36);
-  background: rgba(139, 216, 255, 0.12);
-  color: #8bd8ff;
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-soft);
+  color: var(--color-secondary);
 }
 
 .social-icon--github {

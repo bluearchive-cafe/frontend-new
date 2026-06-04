@@ -216,9 +216,9 @@ const emptyDescription = computed(() =>
   align-items: center;
   min-height: 32px;
   padding: 0 12px;
-  border: 1px solid rgba(41, 174, 234, 0.3);
+  border: 1px solid var(--color-primary-border);
   border-radius: 999px;
-  background: rgba(41, 174, 234, 0.08);
+  background: var(--color-primary-softer);
   color: var(--color-primary);
   font-size: 13px;
   font-weight: 800;

@@ -20,9 +20,9 @@ defineProps<{
   width: fit-content;
   min-height: 28px;
   padding: 4px 10px;
-  border: 1px solid rgba(41, 174, 234, 0.32);
+  border: 1px solid var(--color-primary-border);
   border-radius: 999px;
-  background: rgba(41, 174, 234, 0.1);
+  background: var(--color-primary-soft);
   color: var(--color-secondary);
   font-size: 13px;
   font-weight: 800;

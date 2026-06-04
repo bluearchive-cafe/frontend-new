@@ -332,15 +332,15 @@ function setAllStatusFailed() {
 }
 
 .status-symbol {
-  border: 1px solid rgba(41, 174, 234, 0.32);
-  background: rgba(41, 174, 234, 0.1);
+  border: 1px solid var(--color-primary-border);
+  background: var(--color-primary-soft);
   color: var(--color-secondary);
 }
 
 .status-symbol--android {
-  border-color: rgba(120, 214, 163, 0.38);
-  background: rgba(120, 214, 163, 0.12);
-  color: #78d6a3;
+  border-color: var(--color-success-border-strong);
+  background: var(--color-success-soft);
+  color: var(--color-success);
 }
 
 .status-symbol--ios {
@@ -351,9 +351,9 @@ function setAllStatusFailed() {
 
 .status-symbol--windows,
 .status-symbol--asset {
-  border-color: rgba(41, 174, 234, 0.42);
-  background: rgba(41, 174, 234, 0.14);
-  color: #69d8ff;
+  border-color: var(--color-primary-border-strong);
+  background: var(--color-primary-soft);
+  color: var(--color-info);
 }
 
 .status-chip {
@@ -381,21 +381,21 @@ function setAllStatusFailed() {
 }
 
 .status-chip[data-status-state="success"] {
-  border-color: rgba(120, 214, 163, 0.34);
-  background: rgba(120, 214, 163, 0.12);
-  color: #78d6a3;
+  border-color: var(--color-success-border);
+  background: var(--color-success-soft);
+  color: var(--color-success);
 }
 
 .status-chip[data-status-state="error"] {
-  border-color: rgba(255, 107, 137, 0.36);
-  background: rgba(255, 107, 137, 0.12);
-  color: #ff8aa2;
+  border-color: var(--color-error-border);
+  background: var(--color-error-soft);
+  color: var(--color-error);
 }
 
 .status-chip[data-status-state="loading"] {
-  border-color: rgba(255, 215, 106, 0.34);
-  background: rgba(255, 215, 106, 0.1);
-  color: #ffd76a;
+  border-color: var(--color-accent-border);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
 }
 
 .status-panel-expand {
