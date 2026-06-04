@@ -54,7 +54,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 <style scoped>
 .section {
-  padding: 72px 0;
+  padding-block: var(--section-padding-block);
 }
 
 .news-section {
@@ -65,9 +65,9 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 16px;
+  gap: var(--grid-gap);
   animation: fade-slide-up 520ms ease both;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .section-title {
@@ -85,7 +85,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: var(--grid-gap);
 }
 
 .news-empty-card {
@@ -100,7 +100,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .empty-label {
-  margin: 0 0 10px;
+  margin: 0 0 var(--control-gap);
   color: var(--color-primary);
   font-size: 13px;
   font-weight: var(--font-weight-heading);
@@ -115,7 +115,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 .news-empty-card p:not(.empty-label) {
   max-width: 520px;
-  margin: 12px 0 0;
+  margin: var(--control-gap) 0 0;
   color: var(--color-text-muted);
   font-size: 15px;
   line-height: 1.75;
@@ -141,14 +141,14 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   display: flex;
   flex-direction: column;
   min-height: 164px;
-  padding: 18px;
+  padding: var(--card-padding);
 }
 
 .article-badges {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--inline-gap);
 }
 
 .news-card-footer {
@@ -156,9 +156,9 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 14px;
+  gap: var(--control-gap) var(--space-4);
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: var(--space-5);
 }
 
 .news-date {
@@ -182,7 +182,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-card h3 {
-  margin: 12px 0 8px;
+  margin: var(--control-gap) 0 var(--inline-gap);
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
@@ -215,7 +215,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   }
 
   .news-overview {
-    gap: 18px;
+    gap: var(--space-5);
     margin-bottom: 0;
   }
 

@@ -16,10 +16,10 @@ defineProps<{
 .category-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--compact-gap);
   width: fit-content;
   min-height: 28px;
-  padding: 4px 10px;
+  padding: var(--pill-padding);
   border: 1px solid var(--color-primary-border);
   border-radius: 999px;
   background: var(--color-primary-soft);

@@ -8,7 +8,7 @@
   align-items: center;
   width: fit-content;
   min-height: 28px;
-  padding: 4px 10px;
+  padding: var(--pill-padding);
   border: 1px solid var(--color-accent-border);
   border-radius: 999px;
   background: var(--color-accent-soft);

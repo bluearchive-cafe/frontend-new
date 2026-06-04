@@ -74,7 +74,7 @@ const friendLinks = [
 
 <style scoped>
 .site-footer {
-  padding: 24px 0;
+  padding-block: var(--space-6);
   border-top: 1px solid var(--color-border);
   background: var(--color-footer);
   color: rgba(255, 255, 255, 0.74);
@@ -84,7 +84,7 @@ const friendLinks = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 strong {
@@ -105,8 +105,8 @@ p {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px 14px;
-  margin-top: 12px;
+  gap: var(--inline-gap) var(--space-4);
+  margin-top: var(--space-3);
   color: var(--color-text-subtle);
   font-size: 13px;
 }
@@ -120,12 +120,12 @@ p {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--control-gap);
 }
 
 .footer-links {
   display: flex;
-  gap: 18px;
+  gap: var(--space-5);
   font-size: 14px;
 }
 
@@ -133,7 +133,7 @@ p {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
   text-align: right;
 }
 

@@ -41,6 +41,29 @@
   --radius-card: 8px;
   --container-page: 1120px;
   --shadow-hover: 0 18px 44px rgba(0, 0, 0, 0.18);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --page-padding-block: 96px 88px;
+  --section-padding-block: 72px;
+  --page-heading-gap: 32px;
+  --content-section-gap: 40px;
+  --content-divider-padding: 32px;
+  --grid-gap: 16px;
+  --card-padding: 20px;
+  --card-padding-large: 24px;
+  --inline-gap: 8px;
+  --compact-gap: 6px;
+  --control-gap: 12px;
+  --pill-padding: 4px 10px;
   --font-weight-heading: 850;
   --font-weight-subheading: 760;
   --font-size-display: clamp(38px, 5.4vw, 56px);
@@ -84,7 +107,7 @@ a {
 
 .page-surface {
   min-height: 72vh;
-  padding: 96px 0 88px;
+  padding-block: var(--page-padding-block);
   background:
     radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
     var(--color-bg-deep);

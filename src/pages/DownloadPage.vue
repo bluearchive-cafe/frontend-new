@@ -343,7 +343,7 @@ const documentLinks = [
 <style scoped>
 .download-page {
   min-height: 72vh;
-  padding: 96px 0 88px;
+  padding-block: var(--page-padding-block);
   background:
     radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
     var(--color-bg-deep);
@@ -351,13 +351,13 @@ const documentLinks = [
 
 .page-heading {
   max-width: 760px;
-  margin-bottom: 28px;
+  margin-bottom: var(--page-heading-gap);
   animation: fade-slide-up 520ms ease both;
 }
 
 .page-heading p,
 .docs-copy p {
-  margin: 0 0 8px;
+  margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
   font-size: 14px;
   font-weight: 800;
@@ -389,10 +389,10 @@ const documentLinks = [
 .guide-strip {
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--control-gap);
   align-items: center;
-  margin-bottom: 24px;
-  padding: 16px 18px;
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-5);
   border: 1px solid var(--color-accent-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up 520ms ease 60ms both;
@@ -412,7 +412,7 @@ const documentLinks = [
 .platform-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--grid-gap);
 }
 
 .platform-card {
@@ -438,13 +438,13 @@ const documentLinks = [
   display: flex;
   min-height: 100%;
   flex-direction: column;
-  padding: 22px !important;
+  padding: var(--card-padding-large) !important;
 }
 
 .platform-head {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .platform-head h2 {
@@ -482,7 +482,7 @@ const documentLinks = [
 }
 
 .platform-description {
-  margin: 18px 0 0;
+  margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
   font-size: 15px;
   line-height: 1.75;
@@ -491,8 +491,8 @@ const documentLinks = [
 .platform-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
+  gap: var(--inline-gap);
+  margin-top: var(--space-5);
 }
 
 .variant-menu {
@@ -521,18 +521,18 @@ const documentLinks = [
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--control-gap);
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: var(--space-6);
 }
 
 .docs-section {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
-  gap: 48px;
+  gap: var(--space-12);
   align-items: start;
-  margin-top: 44px;
-  padding-top: 34px;
+  margin-top: var(--content-section-gap);
+  padding-top: var(--content-divider-padding);
   border-top: 1px solid var(--color-border);
 }
 
@@ -554,13 +554,13 @@ const documentLinks = [
 }
 
 .download-dialog :deep(.v-card-text) {
-  padding: 24px !important;
+  padding: var(--card-padding-large) !important;
 }
 
 .dialog-head {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .dialog-head p {
@@ -579,7 +579,7 @@ const documentLinks = [
 }
 
 .dialog-copy {
-  margin: 18px 0 0;
+  margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
   line-height: 1.75;
 }
@@ -589,8 +589,8 @@ const documentLinks = [
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
+  gap: var(--control-gap);
+  margin-top: var(--space-6);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -608,9 +608,9 @@ const documentLinks = [
   }
 
   .docs-section {
-    gap: 28px;
-    margin-top: 36px;
-    padding-top: 28px;
+    gap: var(--space-7);
+    margin-top: var(--space-9);
+    padding-top: var(--space-7);
   }
 }
 

@@ -63,11 +63,11 @@ withDefaults(
 }
 
 .not-found-content {
-  padding: clamp(30px, 5vw, 52px) !important;
+  padding: clamp(var(--space-8), 5vw, 52px) !important;
 }
 
 .status-code {
-  margin: 0 0 12px;
+  margin: 0 0 var(--control-gap);
   color: var(--color-primary);
   font-size: 14px;
   font-weight: var(--font-weight-heading);
@@ -84,7 +84,7 @@ h1 {
 
 .description {
   max-width: 560px;
-  margin: 18px 0 0;
+  margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
   font-size: 16px;
   line-height: 1.8;
@@ -93,8 +93,8 @@ h1 {
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
 }
 
 @media (max-width: 420px) {

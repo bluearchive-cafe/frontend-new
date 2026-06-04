@@ -40,7 +40,7 @@ defineProps<{
 .article-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: var(--inline-gap) var(--space-4);
   margin: 0;
   color: var(--color-secondary);
   font-size: 13px;
@@ -54,7 +54,7 @@ defineProps<{
 .meta-item dd {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--compact-gap);
   margin: 0;
   min-height: 22px;
 }

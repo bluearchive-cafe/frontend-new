@@ -231,7 +231,7 @@ function setAllStatusFailed() {
 <style scoped>
 .status-page {
   min-height: 72vh;
-  padding: 96px 0 88px;
+  padding-block: var(--page-padding-block);
   background:
     radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
     var(--color-bg-deep);
@@ -239,12 +239,12 @@ function setAllStatusFailed() {
 
 .page-heading {
   max-width: 760px;
-  margin-bottom: 34px;
+  margin-bottom: var(--page-heading-gap);
   animation: fade-slide-up 520ms ease both;
 }
 
 .page-heading p {
-  margin: 0 0 8px;
+  margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
   font-size: 14px;
   font-weight: 800;
@@ -269,7 +269,7 @@ function setAllStatusFailed() {
 
 .status-panels {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .status-panel {
@@ -296,9 +296,9 @@ function setAllStatusFailed() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: var(--space-5);
   min-height: 82px;
-  padding: 18px 20px;
+  padding: var(--space-5);
   cursor: pointer;
   list-style: none;
 }
@@ -311,12 +311,12 @@ function setAllStatusFailed() {
 .status-panel-meta {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .status-panel-copy {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .status-panel-title {
@@ -362,7 +362,7 @@ function setAllStatusFailed() {
   justify-content: center;
   min-width: 72px;
   min-height: 28px;
-  padding: 4px 10px;
+  padding: var(--pill-padding);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   color: var(--color-text-muted);
@@ -408,7 +408,7 @@ function setAllStatusFailed() {
 }
 
 .status-panel-body {
-  padding: 0 20px 20px;
+  padding: 0 var(--space-5) var(--space-5);
 }
 
 .status-table {
@@ -421,7 +421,7 @@ function setAllStatusFailed() {
 
 .status-table th,
 .status-table td {
-  padding: 13px 14px;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
   text-align: left;
 }
@@ -452,8 +452,8 @@ function setAllStatusFailed() {
   .status-panel summary {
     align-items: flex-start;
     flex-direction: column;
-    gap: 14px;
-    padding: 16px;
+    gap: var(--space-4);
+    padding: var(--space-4);
   }
 
   .status-panel-meta {
@@ -462,7 +462,7 @@ function setAllStatusFailed() {
   }
 
   .status-panel-body {
-    padding: 0 16px 16px;
+    padding: 0 var(--space-4) var(--space-4);
   }
 
   .status-panel-leading {
@@ -500,7 +500,7 @@ function setAllStatusFailed() {
 
   .status-table tbody {
     display: grid;
-    gap: 10px;
+    gap: var(--control-gap);
   }
 
   .status-table tr {
@@ -513,9 +513,9 @@ function setAllStatusFailed() {
   .status-table td {
     display: grid;
     grid-template-columns: minmax(72px, 0.36fr) minmax(0, 1fr);
-    gap: 12px;
+    gap: var(--control-gap);
     align-items: start;
-    padding: 11px 14px;
+    padding: var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--color-border);
     overflow-wrap: anywhere;
   }
@@ -529,7 +529,7 @@ function setAllStatusFailed() {
     align-items: center;
     justify-content: space-between;
     width: auto;
-    padding: 12px 14px;
+    padding: var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--color-border);
     background: var(--color-neutral-softer);
     color: var(--color-text);

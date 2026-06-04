@@ -103,39 +103,39 @@ onBeforeUnmount(() => {
 <style scoped>
 .article-page {
   min-height: 72vh;
-  padding: 88px 0;
+  padding-block: 88px;
   background: var(--color-bg-deep);
 }
 
 .back-link {
   animation: fade-slide-up 420ms ease both;
-  margin-bottom: 22px;
+  margin-bottom: var(--space-6);
 }
 
 .article-shell {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  padding: clamp(26px, 5vw, 50px);
+  padding: clamp(var(--space-7), 5vw, 50px);
   animation: fade-slide-up 520ms ease 80ms both;
   background: var(--color-card);
 }
 
 header {
   max-width: 740px;
-  padding-bottom: 30px;
+  padding-bottom: var(--space-8);
   border-bottom: 1px solid var(--color-border);
-  margin: 0 auto 34px;
+  margin: 0 auto var(--space-8);
 }
 
 .article-badges {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--inline-gap);
 }
 
 h1 {
-  margin: 16px 0 0;
+  margin: var(--space-4) 0 0;
   color: var(--color-text);
   font-size: var(--font-size-article-title);
   font-weight: var(--font-weight-heading);
@@ -143,7 +143,7 @@ h1 {
 }
 
 .article-meta {
-  margin-top: 26px;
+  margin-top: var(--space-7);
   font-size: 14px;
 }
 
@@ -182,13 +182,13 @@ h1 {
 }
 
 .markdown-body :deep(p) {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 
 .markdown-body :deep(h1) {
   padding-bottom: 0.3em;
   border-bottom: 1px solid var(--markdown-border-muted);
-  margin: 32px 0 16px;
+  margin: var(--space-8) 0 var(--space-4);
   color: var(--color-text);
   font-size: 2em;
   font-weight: var(--font-weight-heading);
@@ -198,7 +198,7 @@ h1 {
 .markdown-body :deep(h2) {
   padding-bottom: 0.3em;
   border-bottom: 1px solid var(--markdown-border-muted);
-  margin: 32px 0 16px;
+  margin: var(--space-8) 0 var(--space-4);
   color: var(--color-text);
   font-size: 1.5em;
   font-weight: var(--font-weight-heading);
@@ -206,7 +206,7 @@ h1 {
 }
 
 .markdown-body :deep(h3) {
-  margin: 24px 0 16px;
+  margin: var(--space-6) 0 var(--space-4);
   color: var(--color-text);
   font-size: 1.25em;
   font-weight: var(--font-weight-subheading);
@@ -214,7 +214,7 @@ h1 {
 }
 
 .markdown-body :deep(h4) {
-  margin: 24px 0 16px;
+  margin: var(--space-6) 0 var(--space-4);
   color: var(--color-text);
   font-size: 1em;
   font-weight: var(--font-weight-subheading);
@@ -223,7 +223,7 @@ h1 {
 
 .markdown-body :deep(ul),
 .markdown-body :deep(ol) {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   padding-left: 2em;
 }
 
@@ -231,7 +231,7 @@ h1 {
 .markdown-body :deep(ol ol),
 .markdown-body :deep(ul ol),
 .markdown-body :deep(ol ul) {
-  margin: 8px 0 0;
+  margin: var(--inline-gap) 0 0;
 }
 
 .markdown-body :deep(li) {
@@ -239,7 +239,7 @@ h1 {
 }
 
 .markdown-body :deep(li > p) {
-  margin: 16px 0;
+  margin: var(--space-4) 0;
 }
 
 .markdown-body :deep(a) {
@@ -249,7 +249,7 @@ h1 {
 }
 
 .markdown-body :deep(blockquote) {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   padding: 0 1em;
   border-left: 0.25em solid var(--markdown-border);
   color: var(--color-text-muted);
@@ -260,7 +260,7 @@ h1 {
 }
 
 .markdown-body :deep(.markdown-alert) {
-  margin: 16px 0;
+  margin: var(--space-4) 0;
   padding: 0.5em 1em;
   border: 0;
   border-left: 0.25em solid var(--alert-color, var(--markdown-alert-note));
@@ -296,8 +296,8 @@ h1 {
 .markdown-body :deep(.markdown-alert-title) {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: var(--inline-gap);
+  margin-bottom: var(--inline-gap);
   color: var(--alert-color, var(--markdown-alert-note));
   font-weight: var(--font-weight-subheading);
   line-height: 1.4;
@@ -339,8 +339,8 @@ h1 {
 
 .markdown-body :deep(pre) {
   overflow-x: auto;
-  margin: 0 0 16px;
-  padding: 16px;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-4);
   border: 0;
   border-radius: 6px;
   background: var(--markdown-pre-bg);
@@ -358,7 +358,7 @@ h1 {
   overflow-x: auto;
   width: 100%;
   border-collapse: collapse;
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 
 .markdown-body :deep(th),
@@ -382,7 +382,7 @@ h1 {
 .markdown-body :deep(hr) {
   height: 0.25em;
   border: 0;
-  margin: 24px 0;
+  margin: var(--space-6) 0;
   background: var(--markdown-border-muted);
 }
 
@@ -391,7 +391,7 @@ h1 {
   max-width: 100%;
   border-radius: 6px;
   cursor: zoom-in;
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 
 .markdown-body :deep(img.medium-zoom-image--opened) {

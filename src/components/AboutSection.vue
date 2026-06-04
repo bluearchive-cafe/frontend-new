@@ -167,7 +167,7 @@ const isSponsorQrOpen = ref(false)
 <style scoped>
 .section {
   min-height: 72vh;
-  padding: 96px 0 88px;
+  padding-block: var(--page-padding-block);
 }
 
 .about-section {
@@ -179,7 +179,7 @@ const isSponsorQrOpen = ref(false)
 .about-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
-  gap: 48px;
+  gap: var(--space-12);
   align-items: start;
 }
 
@@ -195,7 +195,7 @@ const isSponsorQrOpen = ref(false)
 
 .about-copy p {
   max-width: 560px;
-  margin: 18px 0 0;
+  margin: var(--space-5) 0 0;
   animation: fade-slide-up 520ms ease both;
   color: var(--color-text-muted);
   font-size: 16px;
@@ -204,14 +204,14 @@ const isSponsorQrOpen = ref(false)
 
 .about-list {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .about-row {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
-  gap: 14px;
-  padding: 20px;
+  gap: var(--space-4);
+  padding: var(--card-padding);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up 520ms ease both;
@@ -255,10 +255,10 @@ const isSponsorQrOpen = ref(false)
 .social-section {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
-  gap: 48px;
+  gap: var(--space-12);
   align-items: start;
-  margin-top: 40px;
-  padding-top: 34px;
+  margin-top: var(--content-section-gap);
+  padding-top: var(--content-divider-padding);
   border-top: 1px solid var(--color-border);
 }
 
@@ -272,7 +272,7 @@ const isSponsorQrOpen = ref(false)
 
 .social-heading p {
   max-width: 560px;
-  margin: 12px 0 0;
+  margin: var(--control-gap) 0 0;
   animation: fade-slide-up 520ms ease 320ms both;
   color: var(--color-text-muted);
   line-height: 1.75;
@@ -292,10 +292,10 @@ const isSponsorQrOpen = ref(false)
 .sponsor-section {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
-  gap: 48px;
+  gap: var(--space-12);
   align-items: start;
-  margin-top: 40px;
-  padding-top: 34px;
+  margin-top: var(--content-section-gap);
+  padding-top: var(--content-divider-padding);
   border-top: 1px solid var(--color-border);
 }
 
@@ -309,7 +309,7 @@ const isSponsorQrOpen = ref(false)
 
 .sponsor-heading p {
   max-width: 560px;
-  margin: 12px 0 0;
+  margin: var(--control-gap) 0 0;
   animation: fade-slide-up 520ms ease 440ms both;
   color: var(--color-text-muted);
   line-height: 1.75;
@@ -337,15 +337,15 @@ const isSponsorQrOpen = ref(false)
 }
 
 .sponsor-dialog :deep(.v-card-text) {
-  padding: 20px !important;
+  padding: var(--card-padding) !important;
 }
 
 .sponsor-dialog-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .sponsor-dialog-heading h2 {
@@ -408,13 +408,13 @@ const isSponsorQrOpen = ref(false)
   .social-section,
   .sponsor-section {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: var(--space-7);
   }
 
   .social-section,
   .sponsor-section {
-    margin-top: 32px;
-    padding-top: 28px;
+    margin-top: var(--space-8);
+    padding-top: var(--space-7);
   }
 }
 

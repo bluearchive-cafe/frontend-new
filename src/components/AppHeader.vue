@@ -121,16 +121,16 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
 .header-inner {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
   height: 100%;
   padding-block: 0;
-  padding-inline: 20px;
+  padding-inline: var(--space-5);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--control-gap);
   color: var(--color-text);
   font-size: 18px;
   font-weight: 700;
@@ -157,7 +157,7 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   min-width: 72px;
   height: 100%;
   border-radius: 0 !important;
-  padding-inline: 14px;
+  padding-inline: var(--space-4);
   color: var(--color-nav-muted);
   font-weight: 700;
   letter-spacing: 0;
@@ -210,12 +210,12 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
 }
 
 .drawer-list {
-  padding: 12px;
+  padding: var(--space-3);
 }
 
 .drawer-list :deep(.v-list-item) {
   min-height: 44px;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 @media (max-width: 720px) {

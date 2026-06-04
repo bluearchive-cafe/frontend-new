@@ -93,7 +93,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   display: flex;
   align-items: center;
   min-height: 460px;
-  padding-block: 72px 56px;
+  padding-block: var(--section-padding-block) 56px;
 }
 
 .hero-copy {
@@ -127,7 +127,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 .hero-copy p {
   max-width: 520px;
-  margin: 22px 0 0;
+  margin: var(--space-6) 0 0;
   color: var(--color-text-muted);
   font-size: 17px;
   line-height: 1.75;
@@ -137,8 +137,8 @@ const currentHeroImage = ref(getRandomHeroImage())
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 32px;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
 }
 
 .tutorial-link {
@@ -193,15 +193,15 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-copy p {
     max-width: 22em;
-    margin-top: 18px;
+    margin-top: var(--space-5);
     font-size: 15px;
     line-height: 1.7;
   }
 
   .hero-actions {
     align-items: center;
-    gap: 12px;
-    margin-top: 28px;
+    gap: var(--control-gap);
+    margin-top: var(--space-7);
   }
 
   .hero-actions :deep(.v-btn) {
@@ -211,8 +211,8 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 @media (max-width: 360px) {
   .hero-content {
-    padding-inline: 16px;
-    padding-block-end: 40px;
+    padding-inline: var(--space-4);
+    padding-block-end: var(--space-10);
   }
 
   .hero-copy h1 {

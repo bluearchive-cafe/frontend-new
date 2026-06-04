@@ -104,7 +104,7 @@ const emptyDescription = computed(() =>
 <style scoped>
 .news-page {
   min-height: 72vh;
-  padding: 96px 0 88px;
+  padding-block: var(--page-padding-block);
   background:
     radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
     var(--color-bg-deep);
@@ -113,11 +113,11 @@ const emptyDescription = computed(() =>
 .page-heading {
   max-width: 720px;
   animation: fade-slide-up 520ms ease both;
-  margin-bottom: 34px;
+  margin-bottom: var(--page-heading-gap);
 }
 
 .page-heading p {
-  margin: 0 0 8px;
+  margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
   font-size: 14px;
   font-weight: 800;
@@ -143,20 +143,20 @@ const emptyDescription = computed(() =>
 .category-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--control-gap);
   animation: fade-slide-up 520ms ease 80ms both;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .category-count {
-  margin-left: 8px;
+  margin-left: var(--inline-gap);
   opacity: 0.72;
   font-size: 12px;
 }
 
 .article-list {
   display: grid;
-  gap: 16px;
+  gap: var(--grid-gap);
 }
 
 .article-card {
@@ -182,7 +182,7 @@ const emptyDescription = computed(() =>
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--inline-gap);
 }
 
 .article-card h2 {
@@ -207,8 +207,8 @@ const emptyDescription = computed(() =>
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px 18px;
-  margin-top: 18px;
+  gap: var(--control-gap) var(--space-5);
+  margin-top: var(--space-5);
 }
 
 .read-more {
@@ -236,7 +236,7 @@ const emptyDescription = computed(() =>
 }
 
 .empty-label {
-  margin: 0 0 10px;
+  margin: 0 0 var(--control-gap);
   color: var(--color-primary);
   font-size: 13px;
   font-weight: var(--font-weight-heading);
@@ -251,7 +251,7 @@ const emptyDescription = computed(() =>
 
 .empty-content p:not(.empty-label) {
   max-width: 520px;
-  margin: 12px 0 22px;
+  margin: var(--control-gap) 0 var(--space-6);
   color: var(--color-text-muted);
   line-height: 1.75;
 }
