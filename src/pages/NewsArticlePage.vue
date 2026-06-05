@@ -165,22 +165,6 @@ h1 {
   line-height: 1.65;
 }
 
-.markdown-body > :deep(*) {
-  animation: fade-slide-up 420ms ease both;
-}
-
-.markdown-body > :deep(:nth-child(2)) {
-  animation-delay: 40ms;
-}
-
-.markdown-body > :deep(:nth-child(3)) {
-  animation-delay: 80ms;
-}
-
-.markdown-body > :deep(:nth-child(4)) {
-  animation-delay: 120ms;
-}
-
 .markdown-body :deep(p) {
   margin: 0 0 var(--space-4);
 }
@@ -419,8 +403,7 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
   .back-link,
-  .article-shell,
-  .markdown-body > :deep(*) {
+  .article-shell {
     animation: none;
   }
 }
