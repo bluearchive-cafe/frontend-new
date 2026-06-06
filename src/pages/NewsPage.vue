@@ -1,24 +1,30 @@
 <template>
   <section class="news-page">
     <v-container max-width="1120">
-      <div class="page-heading">
-        <p>News</p>
-        <h1>新闻</h1>
-        <span>查看汉化更新、使用说明与站点公告，快速找到最近发布的重要信息。</span>
-      </div>
+      <PageHeading
+        eyebrow="News"
+        title="新闻"
+        description="查看汉化更新、使用说明与站点公告，快速找到最近发布的重要信息。"
+      />
 
-      <div class="category-filter" role="group" aria-label="文章分类筛选">
+      <v-btn-toggle
+        v-model="selectedCategory"
+        class="category-filter"
+        mandatory
+        aria-label="文章分类筛选"
+      >
         <v-btn
           v-for="category in categoryOptions"
           :key="category"
+          :value="category"
           :aria-pressed="selectedCategory === category"
           :color="selectedCategory === category ? 'primary' : undefined"
+          height="42"
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
-          @click="selectedCategory = category"
         >
           {{ category }}<span class="category-count">{{ getCategoryCount(category) }}</span>
         </v-btn>
-      </div>
+      </v-btn-toggle>
 
       <div v-if="filteredArticles.length" class="article-list">
         <v-card
@@ -71,6 +77,7 @@ import { computed, ref } from 'vue'
 import ArticleMeta from '../components/ArticleMeta.vue'
 import CategoryBadge from '../components/CategoryBadge.vue'
 import DraftBadge from '../components/DraftBadge.vue'
+import PageHeading from '../components/PageHeading.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
 import { formatPublishTime, newsArticles, newsCategories } from '../content/news'
 
@@ -112,42 +119,28 @@ const emptyDescription = computed(() =>
     var(--color-bg-deep);
 }
 
-.page-heading {
-  max-width: 720px;
-  animation: fade-slide-up 520ms ease both;
-  margin-bottom: var(--page-heading-gap);
-}
-
-.page-heading p {
-  margin: 0 0 var(--inline-gap);
-  color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.page-heading h1 {
-  margin: 0;
-  color: var(--color-text);
-  font-size: var(--font-size-page-title);
-  font-weight: var(--font-weight-heading);
-  line-height: 1.08;
-}
-
-.page-heading span {
-  display: block;
-  margin-top: 16px;
-  color: var(--color-text-muted);
-  font-size: 16px;
-  line-height: 1.8;
-}
-
 .category-filter {
   display: flex;
   flex-wrap: wrap;
   gap: var(--control-gap);
   animation: fade-slide-up 520ms ease 80ms both;
   margin-bottom: var(--space-6);
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+.category-filter :deep(.v-btn) {
+  border-radius: var(--radius-card);
+  color: inherit;
+}
+
+.category-filter :deep(.v-btn--variant-flat) {
+  color: rgb(var(--v-theme-on-primary));
+}
+
+.category-filter :deep(.v-btn--variant-outlined) {
+  border: thin solid currentColor;
 }
 
 .category-count {
@@ -278,7 +271,6 @@ const emptyDescription = computed(() =>
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-heading,
   .category-filter,
   .article-card,
   .empty-card {
