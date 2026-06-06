@@ -44,6 +44,9 @@ const routeSeo: Record<string, SeoInfo> = {
   }
 }
 
+/**
+ * Applies route-specific SEO state to document title, meta tags, and the canonical link.
+ */
 export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
   const seo = getRouteSeo(route)
   const url = getRouteUrl(route)
@@ -102,6 +105,11 @@ function getRouteUrl(route: RouteLocationNormalizedLoaded) {
 }
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
+  if (!content) {
+    removeMeta(attribute, key)
+    return
+  }
+
   let meta = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`)
 
   if (!meta) {

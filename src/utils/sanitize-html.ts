@@ -150,20 +150,41 @@ function sanitizeInputAttribute(element: Element, attributeName: string) {
 function isSafeUrl(value: string, attributeName: 'href' | 'src') {
   const trimmedValue = value.trim()
 
-  if (!trimmedValue) {
+  if (!hasUrlValue(trimmedValue)) {
     return false
   }
 
-  if (/^(?:#|\/(?!\/)|\.{0,2}\/)/.test(trimmedValue)) {
+  if (isProtocolRelativeUrl(trimmedValue)) {
+    return false
+  }
+
+  if (isRelativeUrl(trimmedValue)) {
     return true
   }
 
   try {
     const url = new URL(trimmedValue, window.location.origin)
-    const allowedProtocols = attributeName === 'href' ? ['http:', 'https:', 'mailto:'] : ['http:', 'https:']
 
-    return allowedProtocols.includes(url.protocol)
+    return isAllowedProtocol(url.protocol, attributeName)
   } catch {
     return false
   }
+}
+
+function hasUrlValue(value: string) {
+  return value.length > 0
+}
+
+function isRelativeUrl(value: string) {
+  return /^(?:#|\/(?!\/)|\.{0,2}\/)/.test(value)
+}
+
+function isProtocolRelativeUrl(value: string) {
+  return value.startsWith('//')
+}
+
+function isAllowedProtocol(protocol: string, attributeName: 'href' | 'src') {
+  const allowedProtocols = attributeName === 'href' ? ['http:', 'https:', 'mailto:'] : ['http:', 'https:']
+
+  return allowedProtocols.includes(protocol)
 }

@@ -217,6 +217,11 @@ function resolveMarkdownAsset(sourcePath: string, src: string) {
   const { pathname, suffix } = splitAssetReference(src)
   const sourceDirectory = sourcePath.slice(0, sourcePath.lastIndexOf('/') + 1)
   const assetPath = normalizeRelativeAssetPath(`${sourceDirectory}${pathname}`)
+
+  if (!isNewsAssetPath(assetPath)) {
+    return null
+  }
+
   const assetUrl = articleAssetModules[assetPath]
 
   return assetUrl ? `${assetUrl}${suffix}` : null
@@ -256,6 +261,11 @@ function normalizeRelativeAssetPath(value: string) {
   })
 
   return `./${segments.join('/')}`
+}
+
+function isNewsAssetPath(value: string) {
+  // Markdown assets must stay inside the news content tree after path normalization.
+  return value === './news' || value.startsWith('./news/')
 }
 
 function markTaskListItem(tokens: Token[], inlineIndex: number) {
