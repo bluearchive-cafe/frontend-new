@@ -1,11 +1,12 @@
 <template>
   <section class="download-page">
     <v-container max-width="1120">
-      <div class="page-heading">
-        <p>Download</p>
-        <h1>下载</h1>
-        <span>选择你的设备平台，获取客户端入口；首次使用前建议先阅读安装文档和注意事项。</span>
-      </div>
+      <PageHeading
+        eyebrow="Download"
+        title="下载"
+        description="选择你的设备平台，获取客户端入口；首次使用前建议先阅读安装文档和注意事项。"
+        max-width="760px"
+      />
 
       <div class="guide-strip" role="note">
         <v-icon icon="$alertCircleOutline" color="warning" size="22" />
@@ -154,6 +155,17 @@
             下载前建议先查看安装文档，确认系统版本、权限设置和常见问题处理方式。
           </p>
 
+          <v-alert
+            v-if="downloadAttempted"
+            class="download-feedback"
+            color="primary"
+            density="comfortable"
+            role="status"
+            variant="tonal"
+          >
+            如果下载没有开始，请重新点击继续下载，或先查看安装文档确认浏览器与系统权限设置。
+          </v-alert>
+
           <div class="dialog-actions">
             <v-btn variant="text" @click="downloadDialog = false">
               稍后再说
@@ -177,6 +189,7 @@
               target="_blank"
               rel="noopener noreferrer"
               prepend-icon="$download"
+              @click="markDownloadAttempted"
             >
               继续下载
             </v-btn>
@@ -189,6 +202,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+
+import PageHeading from '../components/PageHeading.vue'
 
 interface PlatformLink {
   name: string
@@ -211,6 +226,7 @@ interface DownloadVariant {
 const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 const downloadDialog = ref(false)
+const downloadAttempted = ref(false)
 const selectedPlatform = ref<PlatformLink | null>(null)
 const selectedVariant = ref<DownloadVariant | null>(null)
 
@@ -312,7 +328,12 @@ function singleVariantButtonText(variant: DownloadVariant) {
 function openDownloadGuide(platform: PlatformLink, variant: DownloadVariant) {
   selectedPlatform.value = platform
   selectedVariant.value = variant
+  downloadAttempted.value = false
   downloadDialog.value = true
+}
+
+function markDownloadAttempted() {
+  downloadAttempted.value = true
 }
 
 const documentLinks = [
@@ -349,13 +370,6 @@ const documentLinks = [
     var(--color-bg-deep);
 }
 
-.page-heading {
-  max-width: 760px;
-  margin-bottom: var(--page-heading-gap);
-  animation: fade-slide-up 520ms ease both;
-}
-
-.page-heading p,
 .docs-copy p {
   margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
@@ -364,20 +378,14 @@ const documentLinks = [
   text-transform: uppercase;
 }
 
-.page-heading h1,
 .docs-copy h2 {
   margin: 0;
   color: var(--color-text);
-  font-size: var(--font-size-page-title);
+  font-size: var(--font-size-section-title);
   font-weight: var(--font-weight-heading);
   line-height: 1.08;
 }
 
-.docs-copy h2 {
-  font-size: var(--font-size-section-title);
-}
-
-.page-heading span,
 .docs-copy span {
   display: block;
   margin-top: 16px;
@@ -584,6 +592,10 @@ const documentLinks = [
   line-height: 1.75;
 }
 
+.download-feedback {
+  margin-top: var(--space-5);
+}
+
 .dialog-actions {
   display: flex;
   align-items: center;
@@ -631,7 +643,6 @@ const documentLinks = [
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-heading,
   .guide-strip,
   .platform-card {
     animation: none;

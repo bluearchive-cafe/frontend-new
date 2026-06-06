@@ -38,6 +38,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 import App from './App.vue'
 import router from './router'
+import { blueArchiveDarkTheme } from './theme'
 import { printConsoleBrand } from './utils/console-brand'
 
 printConsoleBrand()
@@ -86,21 +87,7 @@ const vuetify = createVuetify({
     defaultTheme: 'blueArchiveDark',
     // Site palette mirrors the BlueArchive.Cafe dark visual system.
     themes: {
-      blueArchiveDark: {
-        dark: true,
-        colors: {
-          background: '#191d24',
-          surface: '#242932',
-          'surface-bright': '#303746',
-          primary: '#29aeea',
-          secondary: '#8bd8ff',
-          accent: '#ffd76a',
-          error: '#ff6b89',
-          info: '#6bbdff',
-          success: '#78d6a3',
-          warning: '#ffd76a'
-        }
-      }
+      blueArchiveDark: blueArchiveDarkTheme
     }
   },
   defaults: {

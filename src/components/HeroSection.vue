@@ -118,11 +118,12 @@ const currentHeroImage = ref(getRandomHeroImage())
   font-size: var(--font-size-display);
   font-weight: var(--font-weight-heading);
   line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .hero-line {
   display: block;
-  white-space: nowrap;
+  max-width: 100%;
 }
 
 .hero-copy p {
@@ -185,10 +186,6 @@ const currentHeroImage = ref(getRandomHeroImage())
     max-width: 9em;
     font-size: clamp(30px, 9vw, 38px);
     line-height: 1.12;
-  }
-
-  .hero-line {
-    white-space: normal;
   }
 
   .hero-copy p {

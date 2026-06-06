@@ -1,13 +1,32 @@
 <template>
   <section class="status-page">
     <v-container max-width="1120">
-      <div class="page-heading">
-        <p>Status</p>
-        <h1>资源状态</h1>
-        <span>汉化资源会因官方版本更新而暂时失效，可以在此处检查各项资源的维护状态。</span>
-      </div>
+      <PageHeading
+        eyebrow="Status"
+        title="资源状态"
+        description="汉化资源会因官方版本更新而暂时失效，可以在此处检查各项资源的维护状态。"
+        max-width="760px"
+      />
 
-      <div class="status-panels" ref="statusRootRef">
+      <p class="sr-only" role="status" aria-live="polite">
+        {{ statusAnnouncement }}
+      </p>
+
+      <v-progress-linear
+        v-if="isStatusLoading"
+        class="status-progress"
+        color="primary"
+        height="3"
+        indeterminate
+        rounded
+      />
+
+      <div
+        ref="statusRootRef"
+        class="status-panels"
+        aria-live="polite"
+        :aria-busy="isStatusLoading"
+      >
         <details
           v-for="(panel, index) in statusPanels"
           :key="panel.key"
@@ -64,6 +83,8 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
 
+import PageHeading from '../components/PageHeading.vue'
+
 type StatusState = 'success' | 'error' | 'loading'
 type StatusData = Record<string, unknown>
 
@@ -76,6 +97,8 @@ interface StatusPanel {
 }
 
 const statusRootRef = ref<HTMLElement | null>(null)
+const isStatusLoading = ref(true)
+const statusAnnouncement = ref('正在获取资源状态')
 
 const statusPanels: StatusPanel[] = [
   {
@@ -142,6 +165,9 @@ onMounted(async () => {
 })
 
 async function fillStatus() {
+  isStatusLoading.value = true
+  statusAnnouncement.value = '正在获取资源状态'
+
   try {
     const res = await fetch('https://api.bluearchive.cafe/status/list')
 
@@ -153,8 +179,12 @@ async function fillStatus() {
     const elements = statusRootRef.value?.querySelectorAll<HTMLElement>('[data-key]') ?? []
 
     elements.forEach((element) => fillStatusElement(element, statusData))
+    statusAnnouncement.value = '资源状态已更新'
   } catch {
     setAllStatusFailed()
+    statusAnnouncement.value = '资源状态获取失败'
+  } finally {
+    isStatusLoading.value = false
   }
 }
 
@@ -237,39 +267,24 @@ function setAllStatusFailed() {
     var(--color-bg-deep);
 }
 
-.page-heading {
-  max-width: 760px;
-  margin-bottom: var(--page-heading-gap);
-  animation: fade-slide-up 520ms ease both;
-}
-
-.page-heading p {
-  margin: 0 0 var(--inline-gap);
-  color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.page-heading h1 {
-  margin: 0;
-  color: var(--color-text);
-  font-size: var(--font-size-page-title);
-  font-weight: var(--font-weight-heading);
-  line-height: 1.08;
-}
-
-.page-heading span {
-  display: block;
-  margin-top: 16px;
-  color: var(--color-text-muted);
-  font-size: 16px;
-  line-height: 1.8;
-}
-
 .status-panels {
   display: grid;
   gap: var(--space-4);
+}
+
+.status-progress {
+  margin-bottom: var(--space-4);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .status-panel {
@@ -552,7 +567,6 @@ function setAllStatusFailed() {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-heading,
   .status-panel {
     animation: none;
   }
