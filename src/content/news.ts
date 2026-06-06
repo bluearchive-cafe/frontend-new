@@ -210,6 +210,7 @@ function parsePublishedAt(value: string, path: string) {
 }
 
 function resolveMarkdownAsset(sourcePath: string, src: string) {
+  // Remote, absolute, and anchor-only references are left for Markdown output to keep unchanged.
   if (isRemoteOrAbsoluteUrl(src)) {
     return null
   }
@@ -280,6 +281,7 @@ function markTaskListItem(tokens: Token[], inlineIndex: number) {
 }
 
 function findBlockquoteClose(tokens: Token[], openIndex: number) {
+  // MarkdownIt emits paired blockquote tokens; depth tracks nested quotes until the opener closes.
   let depth = 0
 
   for (let index = openIndex; index < tokens.length; index += 1) {
@@ -292,13 +294,17 @@ function findBlockquoteClose(tokens: Token[], openIndex: number) {
     if (token.type === 'blockquote_close') {
       depth -= 1
 
-      if (depth === 0) {
+      if (shouldCloseBlockquote(depth)) {
         return index
       }
     }
   }
 
   return -1
+}
+
+function shouldCloseBlockquote(depth: number) {
+  return depth === 0
 }
 
 function removeAlertMarker(children: Token[]) {

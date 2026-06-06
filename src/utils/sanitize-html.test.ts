@@ -1,10 +1,22 @@
 // @vitest-environment jsdom
 
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { sanitizeHtml } from './sanitize-html'
 
 describe('sanitizeHtml', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('returns an empty string when parsing fails', () => {
+    vi.spyOn(DOMParser.prototype, 'parseFromString').mockImplementation(() => {
+      throw new Error('parse failed')
+    })
+
+    expect(sanitizeHtml('<script>alert(1)</script>')).toBe('')
+  })
+
   it('removes event attributes and attributes outside the allowlist', () => {
     expect(sanitizeHtml('<p onclick="alert(1)" data-id="x" class="markdown-alert unknown">Hello</p>')).toBe(
       '<p class="markdown-alert">Hello</p>'

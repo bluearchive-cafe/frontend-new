@@ -42,9 +42,11 @@ import { printConsoleBrand } from './utils/console-brand'
 
 printConsoleBrand()
 
+// Vuetify is configured here so icon aliases, theme tokens, and component defaults are app-wide.
 const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi',
+    // Only icons referenced by the app are registered as aliases.
     aliases: {
       ...aliases,
       accountOutline: mdiAccountOutline,
@@ -82,6 +84,7 @@ const vuetify = createVuetify({
   },
   theme: {
     defaultTheme: 'blueArchiveDark',
+    // Site palette mirrors the BlueArchive.Cafe dark visual system.
     themes: {
       blueArchiveDark: {
         dark: true,
@@ -101,6 +104,7 @@ const vuetify = createVuetify({
     }
   },
   defaults: {
+    // Shared component defaults keep common Vuetify controls visually consistent.
     VBtn: {
       rounded: 'lg',
       height: 42
@@ -111,4 +115,5 @@ const vuetify = createVuetify({
   }
 })
 
+// Mount the Vue app after router and Vuetify are installed.
 createApp(App).use(router).use(vuetify).mount('#app')

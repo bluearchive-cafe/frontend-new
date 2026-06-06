@@ -4,6 +4,7 @@ import { applyRouteSeo } from './utils/seo'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  // Public routes are lazy-loaded to keep the initial app bundle focused on shell code.
   routes: [
     { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
     { path: '/news', alias: '/news/', name: 'news', component: () => import('./pages/NewsPage.vue') },
@@ -15,6 +16,7 @@ const router = createRouter({
   ],
   scrollBehavior(to) {
     if (to.hash) {
+      // Offset in-page anchors below the fixed app bar.
       return {
         el: to.hash,
         behavior: 'smooth',
@@ -22,11 +24,13 @@ const router = createRouter({
       }
     }
 
+    // Regular navigation starts at the top of the new page.
     return { top: 0 }
   }
 })
 
 router.afterEach((to) => {
+  // SEO tags follow the resolved route after each successful navigation.
   applyRouteSeo(to)
 })
 

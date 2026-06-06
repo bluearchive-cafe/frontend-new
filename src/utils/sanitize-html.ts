@@ -60,12 +60,20 @@ const allowedClassNames = new Set([
   'task-list-item-checkbox'
 ])
 
+/**
+ * Sanitizes trusted Markdown renderer output before it is inserted with v-html.
+ * Returns an empty string if parsing or traversal fails, so raw HTML is never reused as a fallback.
+ */
 export function sanitizeHtml(html: string) {
-  const document = new DOMParser().parseFromString(html, 'text/html')
+  try {
+    const document = new DOMParser().parseFromString(html, 'text/html')
 
-  sanitizeChildren(document.body)
+    sanitizeChildren(document.body)
 
-  return document.body.innerHTML
+    return document.body.innerHTML
+  } catch {
+    return ''
+  }
 }
 
 function sanitizeChildren(parent: Node) {
@@ -147,6 +155,9 @@ function sanitizeInputAttribute(element: Element, attributeName: string) {
   element.setAttribute('disabled', '')
 }
 
+/**
+ * Allows document-relative URLs plus a small protocol allowlist for navigable and media attributes.
+ */
 function isSafeUrl(value: string, attributeName: 'href' | 'src') {
   const trimmedValue = value.trim()
 
@@ -183,6 +194,7 @@ function isProtocolRelativeUrl(value: string) {
   return value.startsWith('//')
 }
 
+// href may open mail clients; src must stay fetchable over HTTP(S).
 function isAllowedProtocol(protocol: string, attributeName: 'href' | 'src') {
   const allowedProtocols = attributeName === 'href' ? ['http:', 'https:', 'mailto:'] : ['http:', 'https:']
 
