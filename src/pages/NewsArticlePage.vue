@@ -9,6 +9,7 @@
         <header>
           <div class="article-badges">
             <PinnedBadge v-if="article.pinned" />
+            <DraftBadge v-if="article.draft" />
             <CategoryBadge :category="article.category" />
           </div>
           <h1>{{ article.title }}</h1>
@@ -48,6 +49,7 @@ import { useRoute } from 'vue-router'
 
 import ArticleMeta from '../components/ArticleMeta.vue'
 import CategoryBadge from '../components/CategoryBadge.vue'
+import DraftBadge from '../components/DraftBadge.vue'
 import NotFoundState from '../components/NotFoundState.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
 import { findNewsArticle, formatPublishTime } from '../content/news'

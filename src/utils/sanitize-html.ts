@@ -42,7 +42,7 @@ const allowedAttributesByTag: Record<string, Set<string>> = {
   img: new Set(['alt', 'decoding', 'height', 'loading', 'src', 'title', 'width']),
   input: new Set(['checked', 'class', 'disabled', 'type']),
   path: new Set(['d']),
-  svg: new Set(['aria-hidden', 'class', 'height', 'viewBox', 'width'])
+  svg: new Set(['aria-hidden', 'class', 'height', 'viewbox', 'width'])
 }
 
 const allowedClassNames = new Set([

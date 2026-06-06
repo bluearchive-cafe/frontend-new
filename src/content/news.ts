@@ -332,7 +332,7 @@ export const newsArticles: NewsArticle[] = rawArticles
       wordCount: countWords(body)
     }
   })
-  .filter((article) => !article.draft)
+  .filter((article) => import.meta.env.DEV || !article.draft)
   .sort((left, right) => {
     if (left.pinned !== right.pinned) {
       return left.pinned ? -1 : 1

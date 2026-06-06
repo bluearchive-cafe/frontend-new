@@ -109,7 +109,7 @@
             </v-btn>
           </div>
 
-          <img class="sponsor-qr" src="/assets/img/about/wechat-sponsor.png" alt="微信赞赏码" loading="lazy" decoding="async">
+          <img class="sponsor-qr" :src="sponsorQrSrc" alt="微信赞赏码" loading="lazy" decoding="async">
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -161,6 +161,8 @@ const socialLinks = [
   }
 ]
 
+const publicAssetBase = import.meta.env.BASE_URL
+const sponsorQrSrc = `${publicAssetBase}assets/img/about/wechat-sponsor.png`
 const isSponsorQrOpen = ref(false)
 </script>
 

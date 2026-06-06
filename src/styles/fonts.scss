@@ -13,7 +13,7 @@
 @include fontsource.faces(
   $metadata: noto-sans-sc.$metadata,
   $directory: "../../node_modules/@fontsource/noto-sans-sc/files",
-  $weights: (400, 500, 600, 700, 800, 900),
+  $weights: (400, 700, 900),
   $subsets: (chinese-simplified, latin),
   $formats: woff2
 );

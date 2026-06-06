@@ -31,6 +31,7 @@
           <v-card-text>
             <div class="article-badges">
               <PinnedBadge v-if="article.pinned" />
+              <DraftBadge v-if="article.draft" />
               <CategoryBadge :category="article.category" />
             </div>
             <h2>{{ article.title }}</h2>
@@ -69,6 +70,7 @@ import { computed, ref } from 'vue'
 
 import ArticleMeta from '../components/ArticleMeta.vue'
 import CategoryBadge from '../components/CategoryBadge.vue'
+import DraftBadge from '../components/DraftBadge.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
 import { formatPublishTime, newsArticles, newsCategories } from '../content/news'
 
