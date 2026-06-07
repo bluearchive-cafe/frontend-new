@@ -76,11 +76,8 @@ export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
     removeMeta('property', 'article:published_time')
   }
 
-  // JSON-LD structured data — Organization and WebSite are always injected;
-  // Article schema is added only on news article pages.
-  injectOrganizationSchema()
-  injectWebsiteSchema()
-
+  // JSON-LD — Organization / WebSite are static in index.html.
+  // Article schema is injected dynamically only on news article pages.
   if (route.name === 'news-article') {
     const slugParam = route.params.slug
     const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam
@@ -168,31 +165,6 @@ function setJsonLd(id: string, data: Record<string, unknown>) {
 
 function removeJsonLd(id: string) {
   document.head.querySelector(`script[id="${id}"]`)?.remove()
-}
-
-function injectOrganizationSchema() {
-  setJsonLd('jsonld-organization', {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: siteName,
-    url: siteUrl,
-    logo: defaultImage,
-    sameAs: [
-      'https://space.bilibili.com/3706947316484682',
-      'https://github.com/bluearchive-cafe'
-    ]
-  })
-}
-
-function injectWebsiteSchema() {
-  setJsonLd('jsonld-website', {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: siteTitle,
-    url: siteUrl,
-    description: defaultDescription,
-    inLanguage: 'zh-CN'
-  })
 }
 
 function injectArticleSchema(article: { title: string; author: string; publishedAt: string; summary: string; slug: string }) {
