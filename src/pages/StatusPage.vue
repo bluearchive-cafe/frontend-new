@@ -12,15 +12,6 @@
         {{ statusAnnouncement }}
       </p>
 
-      <v-progress-linear
-        v-if="isStatusLoading"
-        class="status-progress"
-        color="primary"
-        height="3"
-        indeterminate
-        rounded
-      />
-
       <div
         ref="statusRootRef"
         class="status-panels"
@@ -81,9 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import PageHeading from '../components/PageHeading.vue'
+import { setToolbarLoading } from '../utils/toolbar-loader'
 
 type StatusState = 'success' | 'error' | 'loading'
 type StatusData = Record<string, unknown>
@@ -160,12 +152,18 @@ const statusPanels: StatusPanel[] = [
 ]
 
 onMounted(async () => {
+  setToolbarLoading(true)
   await nextTick()
   await fillStatus()
 })
 
+onBeforeUnmount(() => {
+  setToolbarLoading(false)
+})
+
 async function fillStatus() {
   isStatusLoading.value = true
+  setToolbarLoading(true)
   statusAnnouncement.value = '正在获取资源状态'
 
   try {
@@ -185,6 +183,7 @@ async function fillStatus() {
     statusAnnouncement.value = '资源状态获取失败'
   } finally {
     isStatusLoading.value = false
+    setToolbarLoading(false)
   }
 }
 
@@ -270,10 +269,6 @@ function setAllStatusFailed() {
 .status-panels {
   display: grid;
   gap: var(--space-4);
-}
-
-.status-progress {
-  margin-bottom: var(--space-4);
 }
 
 .sr-only {

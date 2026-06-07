@@ -37,6 +37,16 @@
         @click="drawer = true"
       />
     </v-container>
+
+    <v-progress-linear
+      :active="isToolbarLoading"
+      absolute
+      color="primary"
+      height="3"
+      indeterminate
+      location="bottom"
+      rounded
+    />
   </v-app-bar>
 
   <v-navigation-drawer
@@ -74,8 +84,11 @@ import { computed } from 'vue'
 import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
+import { useToolbarLoader } from '../utils/toolbar-loader'
+
 const drawer = ref(false)
 const route = useRoute()
+const { isToolbarLoading } = useToolbarLoader()
 
 const navItems = computed(() => [
   {
