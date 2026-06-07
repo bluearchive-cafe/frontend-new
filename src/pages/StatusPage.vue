@@ -178,8 +178,18 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
+  abortStatusFetch()
   stopToolbarLoading()
 })
+
+let abortController: AbortController | null = null
+
+function abortStatusFetch() {
+  if (abortController) {
+    abortController.abort()
+    abortController = null
+  }
+}
 
 async function fillStatus() {
   isStatusLoading.value = true
@@ -191,7 +201,10 @@ async function fillStatus() {
   statusAnnouncement.value = '正在获取资源状态'
 
   try {
-    const res = await fetch('https://api.bluearchive.cafe/status/list')
+    abortController = new AbortController()
+    const res = await fetch('https://api.bluearchive.cafe/status/list', {
+      signal: abortController.signal
+    })
 
     if (!res.ok) {
       throw new Error(`Status request failed: ${res.status}`)
@@ -201,13 +214,18 @@ async function fillStatus() {
 
     statusResources.value = createStatusResourcesFromData(statusData)
     statusAnnouncement.value = '资源状态已更新'
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return
+    }
+
     statusResources.value = createStatusResources('获取失败', {
       label: '获取失败',
       state: 'error'
     })
     statusAnnouncement.value = '资源状态获取失败'
   } finally {
+    abortController = null
     isStatusLoading.value = false
     stopToolbarLoading()
   }

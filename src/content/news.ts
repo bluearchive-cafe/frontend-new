@@ -153,6 +153,9 @@ function getSlugFromPath(path: string) {
   return normalizedPath.endsWith('/index') ? normalizedPath.slice(0, -'/index'.length) : normalizedPath
 }
 
+// Frontmatter key-value parsing mirrors scripts/frontmatter.mjs (canonical implementation).
+// This copy exists because the module runs in Vite (browser) while scripts/ targets Node.js;
+// the typed NewsMeta construction with defaults is unique to this file.
 function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
 
@@ -160,7 +163,7 @@ function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
     throw new Error('News markdown requires frontmatter.')
   }
 
-  const meta = match[1].split(/\r?\n/).reduce<Record<string, string>>((result, line) => {
+  const rawMeta = match[1].split(/\r?\n/).reduce<Record<string, string>>((result, line) => {
     const separatorIndex = line.indexOf(':')
 
     if (separatorIndex === -1) {
@@ -176,13 +179,13 @@ function parseFrontmatter(source: string): { meta: NewsMeta; body: string } {
 
   return {
     meta: {
-      title: meta.title ?? '未命名新闻',
-      author: meta.author ?? 'BlueArchive.Cafe',
-      publishedAt: meta.publishedAt ?? '',
-      category: meta.category ?? '未分类',
-      summary: meta.summary ?? '',
-      pinned: parseBoolean(meta.pinned),
-      draft: parseBoolean(meta.draft)
+      title: rawMeta.title ?? '未命名新闻',
+      author: rawMeta.author ?? 'BlueArchive.Cafe',
+      publishedAt: rawMeta.publishedAt ?? '',
+      category: rawMeta.category ?? '未分类',
+      summary: rawMeta.summary ?? '',
+      pinned: parseBoolean(rawMeta.pinned),
+      draft: parseBoolean(rawMeta.draft)
     },
     body: match[2].trim()
   }

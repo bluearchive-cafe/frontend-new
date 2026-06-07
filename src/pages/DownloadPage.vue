@@ -138,7 +138,7 @@
       </section>
     </v-container>
 
-    <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)">
+    <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)" aria-labelledby="download-dialog-title">
       <v-card class="download-dialog" elevation="0">
         <v-card-text>
           <div class="dialog-head">
@@ -147,7 +147,7 @@
             </v-avatar>
             <div>
               <p>安装前确认</p>
-              <h2>{{ selectedDownloadTitle }}</h2>
+              <h2 id="download-dialog-title">{{ selectedDownloadTitle }}</h2>
             </div>
           </div>
 

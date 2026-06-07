@@ -3,7 +3,7 @@
     <v-container max-width="1120">
       <div class="about-layout">
         <div class="about-copy">
-          <h2>关于本站</h2>
+          <h1>关于本站</h1>
           <p>
             蔚蓝咖啡厅 是游戏《ブルーアーカイブ》的民间汉化组织，旨在为各位玩家提供优质、准确的汉化服务。
           </p>
@@ -185,7 +185,7 @@ const isSponsorQrOpen = ref(false)
   align-items: start;
 }
 
-.about-copy h2 {
+.about-copy h1 {
   max-width: 520px;
   margin: 0;
   animation: fade-slide-up 520ms ease both;
@@ -421,7 +421,7 @@ const isSponsorQrOpen = ref(false)
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-copy h2,
+  .about-copy h1,
   .about-copy p,
   .about-row,
   .social-heading h2,

@@ -75,6 +75,24 @@ export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
   } else {
     removeMeta('property', 'article:published_time')
   }
+
+  // JSON-LD structured data — Organization and WebSite are always injected;
+  // Article schema is added only on news article pages.
+  injectOrganizationSchema()
+  injectWebsiteSchema()
+
+  if (route.name === 'news-article') {
+    const slugParam = route.params.slug
+    const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam
+    const article = typeof slug === 'string' ? findNewsArticle(slug) : null
+
+    if (article) {
+      injectArticleSchema(article)
+      return
+    }
+  }
+
+  removeArticleSchema()
 }
 
 function getRouteSeo(route: RouteLocationNormalizedLoaded): SeoInfo {
@@ -135,4 +153,66 @@ function setCanonical(href: string) {
   }
 
   link.href = href
+}
+
+// ── JSON-LD structured data ───────────────────────────────────────────
+
+function setJsonLd(id: string, data: Record<string, unknown>) {
+  removeJsonLd(id)
+  const script = document.createElement('script')
+  script.id = id
+  script.type = 'application/ld+json'
+  script.textContent = JSON.stringify(data)
+  document.head.append(script)
+}
+
+function removeJsonLd(id: string) {
+  document.head.querySelector(`script[id="${id}"]`)?.remove()
+}
+
+function injectOrganizationSchema() {
+  setJsonLd('jsonld-organization', {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteName,
+    url: siteUrl,
+    logo: defaultImage,
+    sameAs: [
+      'https://space.bilibili.com/3706947316484682',
+      'https://github.com/bluearchive-cafe'
+    ]
+  })
+}
+
+function injectWebsiteSchema() {
+  setJsonLd('jsonld-website', {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteTitle,
+    url: siteUrl,
+    description: defaultDescription,
+    inLanguage: 'zh-CN'
+  })
+}
+
+function injectArticleSchema(article: { title: string; author: string; publishedAt: string; summary: string; slug: string }) {
+  setJsonLd('jsonld-article', {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    author: { '@type': 'Person', name: article.author },
+    datePublished: article.publishedAt,
+    description: article.summary || `${article.title}，来自 BlueArchive.Cafe 的新闻与公告。`,
+    url: new URL(`news/${article.slug}`, siteUrl).toString(),
+    publisher: {
+      '@type': 'Organization',
+      name: siteName,
+      url: siteUrl,
+      logo: { '@type': 'ImageObject', url: defaultImage }
+    }
+  })
+}
+
+function removeArticleSchema() {
+  removeJsonLd('jsonld-article')
 }

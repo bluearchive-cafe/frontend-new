@@ -1,8 +1,10 @@
 <template>
   <v-app>
+    <a class="skip-link" href="#main-content">跳转到主内容</a>
+
     <AppHeader />
 
-    <v-main class="app-main">
+    <v-main id="main-content" class="app-main">
       <RouterView v-slot="{ Component, route }">
         <Transition name="page" mode="out-in">
           <component :is="Component" :key="route.fullPath" />
@@ -20,6 +22,28 @@ import SiteFooter from './components/SiteFooter.vue'
 </script>
 
 <style scoped>
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 16px;
+  z-index: 2500;
+  padding: 10px 20px;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  translate: 0 -100%;
+  transition: translate 120ms ease;
+}
+
+.skip-link:focus-visible {
+  translate: 0 0;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
