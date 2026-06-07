@@ -13,7 +13,6 @@
       </p>
 
       <div
-        ref="statusRootRef"
         class="status-panels"
         aria-live="polite"
         :aria-busy="isStatusLoading"
@@ -35,8 +34,8 @@
               </span>
             </div>
             <div class="status-panel-meta">
-              <span class="status-chip" :data-key="`${panel.key}/status`" data-status-state="loading">
-                获取中
+              <span class="status-chip" :data-status-state="statusResources[panel.key].status.state">
+                {{ statusResources[panel.key].status.label }}
               </span>
               <v-icon class="status-panel-expand" icon="$chevronDown" size="22" />
             </div>
@@ -54,13 +53,13 @@
               <tbody>
                 <tr class="official">
                   <td class="label" data-label="来源">官方</td>
-                  <td class="value" data-label="版本" :data-key="`${panel.key}/official/version`">正在获取</td>
-                  <td class="value" data-label="更新时间" :data-key="`${panel.key}/official/time`">正在获取</td>
+                  <td class="value" data-label="版本">{{ statusResources[panel.key].official.version }}</td>
+                  <td class="value" data-label="更新时间">{{ statusResources[panel.key].official.time }}</td>
                 </tr>
                 <tr class="localized">
                   <td class="label" data-label="来源">汉化</td>
-                  <td class="value" data-label="版本" :data-key="`${panel.key}/localized/version`">正在获取</td>
-                  <td class="value" data-label="更新时间" :data-key="`${panel.key}/localized/time`">正在获取</td>
+                  <td class="value" data-label="版本">{{ statusResources[panel.key].localized.version }}</td>
+                  <td class="value" data-label="更新时间">{{ statusResources[panel.key].localized.time }}</td>
                 </tr>
               </tbody>
             </table>
@@ -88,7 +87,22 @@ interface StatusPanel {
   tone: string
 }
 
-const statusRootRef = ref<HTMLElement | null>(null)
+interface StatusChipView {
+  label: string
+  state: StatusState
+}
+
+interface StatusSourceView {
+  version: string
+  time: string
+}
+
+interface StatusResourceView {
+  status: StatusChipView
+  official: StatusSourceView
+  localized: StatusSourceView
+}
+
 const isStatusLoading = ref(true)
 const statusAnnouncement = ref('正在获取资源状态')
 const toolbarLoadingDelayMs = 400
@@ -153,6 +167,11 @@ const statusPanels: StatusPanel[] = [
   }
 ]
 
+const statusResources = ref(createStatusResources('正在获取', {
+  label: '获取中',
+  state: 'loading'
+}))
+
 onMounted(async () => {
   await nextTick()
   await fillStatus()
@@ -164,6 +183,10 @@ onBeforeUnmount(() => {
 
 async function fillStatus() {
   isStatusLoading.value = true
+  statusResources.value = createStatusResources('正在获取', {
+    label: '获取中',
+    state: 'loading'
+  })
   scheduleToolbarLoading()
   statusAnnouncement.value = '正在获取资源状态'
 
@@ -175,12 +198,14 @@ async function fillStatus() {
     }
 
     const statusData = await res.json() as StatusData
-    const elements = statusRootRef.value?.querySelectorAll<HTMLElement>('[data-key]') ?? []
 
-    elements.forEach((element) => fillStatusElement(element, statusData))
+    statusResources.value = createStatusResourcesFromData(statusData)
     statusAnnouncement.value = '资源状态已更新'
   } catch {
-    setAllStatusFailed()
+    statusResources.value = createStatusResources('获取失败', {
+      label: '获取失败',
+      state: 'error'
+    })
     statusAnnouncement.value = '资源状态获取失败'
   } finally {
     isStatusLoading.value = false
@@ -208,37 +233,70 @@ function stopToolbarLoading() {
   setToolbarLoading(false)
 }
 
-function fillStatusElement(element: HTMLElement, statusData: StatusData) {
-  const key = element.dataset.key
+function createStatusResources(valueLabel: string, status: StatusChipView) {
+  return statusPanels.reduce<Record<string, StatusResourceView>>((resources, panel) => {
+    resources[panel.key] = {
+      status: { ...status },
+      official: {
+        version: valueLabel,
+        time: valueLabel
+      },
+      localized: {
+        version: valueLabel,
+        time: valueLabel
+      }
+    }
 
-  if (!key) {
-    return
-  }
-
-  if (key.endsWith('/status')) {
-    fillStatusChip(element, statusData, key)
-    return
-  }
-
-  element.textContent = readStatusValue(statusData, key) ?? '未获取'
+    return resources
+  }, {})
 }
 
-function fillStatusChip(element: HTMLElement, statusData: StatusData, key: string) {
-  const resourceKey = key.replace(/\/status$/, '')
-  const officialVersion = readStatusValue(statusData, `${resourceKey}/official/version`)
-  const localizedVersion = readStatusValue(statusData, `${resourceKey}/localized/version`)
+function createStatusResourcesFromData(statusData: StatusData) {
+  return statusPanels.reduce<Record<string, StatusResourceView>>((resources, panel) => {
+    resources[panel.key] = createStatusResourceFromData(statusData, panel.key)
 
+    return resources
+  }, {})
+}
+
+function createStatusResourceFromData(statusData: StatusData, resourceKey: string): StatusResourceView {
+  const officialVersion = readStatusValue(statusData, `${resourceKey}/official/version`)
+  const officialTime = readStatusValue(statusData, `${resourceKey}/official/time`)
+  const localizedVersion = readStatusValue(statusData, `${resourceKey}/localized/version`)
+  const localizedTime = readStatusValue(statusData, `${resourceKey}/localized/time`)
+
+  return {
+    status: createStatusChip(officialVersion, localizedVersion),
+    official: {
+      version: officialVersion ?? '未获取',
+      time: officialTime ?? '未获取'
+    },
+    localized: {
+      version: localizedVersion ?? '未获取',
+      time: localizedTime ?? '未获取'
+    }
+  }
+}
+
+function createStatusChip(officialVersion: string | null, localizedVersion: string | null): StatusChipView {
   if (!officialVersion || !localizedVersion) {
-    setStatusChip(element, '未获取', 'loading')
-    return
+    return {
+      label: '未获取',
+      state: 'loading'
+    }
   }
 
   if (officialVersion === localizedVersion) {
-    setStatusChip(element, '已同步', 'success')
-    return
+    return {
+      label: '已同步',
+      state: 'success'
+    }
   }
 
-  setStatusChip(element, '未同步', 'error')
+  return {
+    label: '未同步',
+    state: 'error'
+  }
 }
 
 function readStatusValue(statusData: StatusData, key: string) {
@@ -255,26 +313,6 @@ function readStatusValue(statusData: StatusData, key: string) {
   }
 
   return String(value)
-}
-
-function setStatusChip(element: HTMLElement, label: string, state: StatusState) {
-  element.textContent = label
-  element.dataset.statusState = state
-}
-
-function setAllStatusFailed() {
-  const elements = statusRootRef.value?.querySelectorAll<HTMLElement>('[data-key]') ?? []
-
-  elements.forEach((element) => {
-    const key = element.dataset.key ?? ''
-
-    if (key.endsWith('/status')) {
-      setStatusChip(element, '获取失败', 'error')
-      return
-    }
-
-    element.textContent = '获取失败'
-  })
 }
 </script>
 
