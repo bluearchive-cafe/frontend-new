@@ -91,6 +91,8 @@ interface StatusPanel {
 const statusRootRef = ref<HTMLElement | null>(null)
 const isStatusLoading = ref(true)
 const statusAnnouncement = ref('正在获取资源状态')
+const toolbarLoadingDelayMs = 400
+let toolbarLoadingDelayId: number | undefined
 
 const statusPanels: StatusPanel[] = [
   {
@@ -152,18 +154,17 @@ const statusPanels: StatusPanel[] = [
 ]
 
 onMounted(async () => {
-  setToolbarLoading(true)
   await nextTick()
   await fillStatus()
 })
 
 onBeforeUnmount(() => {
-  setToolbarLoading(false)
+  stopToolbarLoading()
 })
 
 async function fillStatus() {
   isStatusLoading.value = true
-  setToolbarLoading(true)
+  scheduleToolbarLoading()
   statusAnnouncement.value = '正在获取资源状态'
 
   try {
@@ -183,8 +184,28 @@ async function fillStatus() {
     statusAnnouncement.value = '资源状态获取失败'
   } finally {
     isStatusLoading.value = false
-    setToolbarLoading(false)
+    stopToolbarLoading()
   }
+}
+
+function scheduleToolbarLoading() {
+  stopToolbarLoading()
+  toolbarLoadingDelayId = window.setTimeout(() => {
+    toolbarLoadingDelayId = undefined
+
+    if (isStatusLoading.value) {
+      setToolbarLoading(true)
+    }
+  }, toolbarLoadingDelayMs)
+}
+
+function stopToolbarLoading() {
+  if (toolbarLoadingDelayId !== undefined) {
+    window.clearTimeout(toolbarLoadingDelayId)
+    toolbarLoadingDelayId = undefined
+  }
+
+  setToolbarLoading(false)
 }
 
 function fillStatusElement(element: HTMLElement, statusData: StatusData) {
