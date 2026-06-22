@@ -266,6 +266,11 @@ const platformLinks: PlatformLink[] = [
         name: '便携版',
         description: '解压后直接运行，适合临时使用或放在自定义目录。',
         downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=launcher&version=latest&file=BlueArchive_JP_Gamelauncher.zip'
+      },
+      {
+        name: 'Cafe Launcher 便携版（测试）',
+        description: '我们开发的第三方 Blue Archive 启动器，相比原版启动器提供了更多功能。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia_Release/releases'
       }
     ]
   },
