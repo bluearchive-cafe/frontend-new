@@ -15,7 +15,7 @@
 
       <div class="platform-grid" aria-label="客户端下载入口">
         <v-card
-          v-for="platform in platformLinks"
+          v-for="platform in visiblePlatformLinks"
           :key="platform.name"
           class="platform-card"
           elevation="0"
@@ -202,6 +202,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import PageHeading from '../components/PageHeading.vue'
 
@@ -214,6 +215,7 @@ interface PlatformLink {
   description: string
   tags?: string[]
   variants: DownloadVariant[]
+  hidden?: boolean
 }
 
 interface DownloadVariant {
@@ -221,14 +223,30 @@ interface DownloadVariant {
   description: string
   downloadUrl: string
   recommended?: boolean
+  hidden?: boolean
 }
 
+const route = useRoute()
 const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 const downloadDialog = ref(false)
 const downloadAttempted = ref(false)
 const selectedPlatform = ref<PlatformLink | null>(null)
 const selectedVariant = ref<DownloadVariant | null>(null)
+
+const showHidden = computed(() => route.query.show_hidden === '1')
+
+const visiblePlatformLinks = computed(() => {
+  return platformLinks
+    .filter(platform => showHidden.value || !platform.hidden)
+    .map(platform => ({
+      ...platform,
+      variants: showHidden.value
+        ? platform.variants
+        : platform.variants.filter(variant => !variant.hidden)
+    }))
+    .filter(platform => platform.variants.length > 0)
+})
 
 const platformLinks: PlatformLink[] = [
   {
@@ -244,7 +262,8 @@ const platformLinks: PlatformLink[] = [
         name: '共存版',
         description: '可与官方客户端共存安装。',
         downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk',
-        recommended: true
+        recommended: true,
+        hidden: true
       },
       {
         name: '独占版',
@@ -292,7 +311,8 @@ const platformLinks: PlatformLink[] = [
       {
         name: '免签版',
         description: '免签版客户端签名所用的证书可能随时被吊销，且签名改变后无法覆盖安装，建议优先通过自签侧载。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/itms?version=latest'
+        downloadUrl: 'https://api.bluearchive.cafe/download/itms?version=latest',
+        hidden: true
       },
     ]
   },
