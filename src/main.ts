@@ -1,3 +1,8 @@
+// Redirect www to apex domain before any app initialization
+if (window.location.hostname === 'www.bluearchive.cafe') {
+  window.location.replace('https://bluearchive.cafe' + window.location.pathname + window.location.search + window.location.hash)
+}
+
 import 'vuetify/styles'
 import './styles/fonts.scss'
 import './styles/global.css'
