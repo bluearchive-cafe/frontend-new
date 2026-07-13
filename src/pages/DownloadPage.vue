@@ -311,7 +311,7 @@ const platformLinks: PlatformLink[] = [
       {
         name: '便携版',
         description: '解压后直接运行，适合临时使用或放在自定义目录。',
-        downloadUrl: 'https://download.bluearchive.cafe/windows/latest'
+        downloadUrl: 'https://download.bluearchive.cafe/launcher/latest'
         // old link
         // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=launcher&version=latest&file=BlueArchive_JP_Gamelauncher.zip'
       },
