@@ -259,17 +259,44 @@ const platformLinks: PlatformLink[] = [
     tags: ['APK', '移动端', '模拟器'],
     variants: [
       {
-        name: '共存版',
+        name: '共存版（弃用）',
         description: '可与官方客户端共存安装。',
         downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk',
         recommended: true,
         hidden: true
       },
       {
-        name: '独占版',
+        name: '安装包',
         description: '需要卸载官方客户端才可安装，但对模拟器的兼容性更好。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=com.YostarJP.BlueArchive.apk'
+        downloadUrl: 'https://download.bluearchive.cafe/android/latest'
+        // old link
+        // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=com.YostarJP.BlueArchive.apk'
       }
+    ]
+  },
+  {
+    name: 'iOS 客户端',
+    icon: '$appleIos',
+    tone: 'ios',
+    docUrl: baseDocUrl + 'platform/ios/',
+    docExternal: true,
+    description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
+    tags: ['iPhone', 'iPad'],
+    variants: [
+      {
+        name: '应用包',
+        description: '建议使用 Impactor、AltStore 或 SideStore 等工具进行自签，或使用免签版客户端。',
+        downloadUrl: 'https://download.bluearchive.cafe/ios/latest',
+        // old link
+        // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=ios&version=latest&file=com.YostarJP.BlueArchive.ipa',
+        recommended: true
+      },
+      {
+        name: '免签版（弃用）',
+        description: '免签版客户端签名所用的证书可能随时被吊销，且签名改变后无法覆盖安装，建议优先通过自签侧载。',
+        downloadUrl: 'https://api.bluearchive.cafe/download/itms?version=latest',
+        hidden: true
+      },
     ]
   },
   {
@@ -284,36 +311,15 @@ const platformLinks: PlatformLink[] = [
       {
         name: '便携版',
         description: '解压后直接运行，适合临时使用或放在自定义目录。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=launcher&version=latest&file=BlueArchive_JP_Gamelauncher.zip'
+        downloadUrl: 'https://download.bluearchive.cafe/windows/latest'
+        // old link
+        // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=launcher&version=latest&file=BlueArchive_JP_Gamelauncher.zip'
       },
       {
-        name: 'Cafe Launcher 便携版（测试）',
+        name: 'Cafe Launcher（测试）',
         description: '我们开发的第三方 Blue Archive 启动器，相比原版启动器提供了更多功能。',
         downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia_Release/releases'
       }
-    ]
-  },
-  {
-    name: 'iOS 客户端',
-    icon: '$appleIos',
-    tone: 'ios',
-    docUrl: baseDocUrl + 'platform/ios/',
-    docExternal: true,
-    description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
-    tags: ['iPhone', 'iPad'],
-    variants: [
-      {
-        name: '自签版',
-        description: '建议使用 Impactor、AltStore 或 SideStore 等工具进行自签，或使用免签版客户端。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=ios&version=latest&file=com.YostarJP.BlueArchive.ipa',
-        recommended: true
-      },
-      {
-        name: '免签版',
-        description: '免签版客户端签名所用的证书可能随时被吊销，且签名改变后无法覆盖安装，建议优先通过自签侧载。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/itms?version=latest',
-        hidden: true
-      },
     ]
   },
   {
@@ -326,9 +332,18 @@ const platformLinks: PlatformLink[] = [
     tags: ['Apple Silicon', '桌面端'],
     variants: [
       {
-        name: '应用包',
+        name: '通过 PlayCover 安装',
         description: '适用于搭载 Apple Silicon 芯片的 Mac。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=ios&version=latest&file=com.YostarJP.BlueArchive.ipa'
+        downloadUrl: 'https://download.bluearchive.cafe/playcover/latest'
+        // old link
+        // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=ios&version=latest&file=com.YostarJP.BlueArchive.ipa'
+      },
+      {
+        name: '直接下载应用包',
+        description: '适用于搭载 Apple Silicon 芯片的 Mac。',
+        downloadUrl: 'https://download.bluearchive.cafe/macos/latest'
+        // old link
+        // downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=ios&version=latest&file=com.YostarJP.BlueArchive.ipa'
       }
     ]
   }

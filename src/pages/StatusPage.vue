@@ -119,23 +119,23 @@ const statusPanels: StatusPanel[] = [
   {
     key: 'ios',
     title: '应用包',
-    description: 'iOS / macOS 专用客户端应用包',
+    description: 'iOS 专用客户端应用包',
     icon: '$apple',
     tone: 'ios'
-  },
-  {
-    key: 'launcher',
-    title: '启动器',
-    description: 'Windows 专用启动器压缩包',
-    icon: '$microsoftWindows',
-    tone: 'windows'
   },
   {
     key: 'windows',
     title: '资源包',
     description: 'Windows 专用启动器资源包',
-    icon: '$download',
+    icon: '$microsoftWindows',
     tone: 'asset'
+  },
+  {
+    key: 'macos',
+    title: '资源包',
+    description: 'macOS 专用客户端资源包',
+    icon: '$apple',
+    tone: 'ios'
   },
   {
     key: 'notice',
