@@ -9,7 +9,7 @@
       />
 
       <div class="guide-strip" role="note">
-        <v-icon icon="$alertCircleOutline" color="warning" size="22" />
+        <v-icon icon="$infoOutline" color="info" size="22" />
         <p>不同平台的安装方式和系统权限要求可能不同。遇到签名、权限或网络问题时，请优先查看对应文档。</p>
       </div>
 
@@ -441,10 +441,10 @@ const documentLinks = [
   align-items: center;
   margin-bottom: var(--space-6);
   padding: var(--space-4) var(--space-5);
-  border: 1px solid var(--color-accent-border);
+  border: 1px solid var(--color-info-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up 520ms ease 60ms both;
-  background: var(--color-accent-softer);
+  background: var(--color-info-soft);
 }
 
 .guide-strip :deep(.v-icon) {
@@ -453,7 +453,7 @@ const documentLinks = [
 
 .guide-strip p {
   margin: 0;
-  color: var(--color-text-soft);
+  color: var(--color-info);
   line-height: 1.7;
 }
 

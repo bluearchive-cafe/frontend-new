@@ -13,6 +13,8 @@
   --color-primary-border-strong: rgba(41, 174, 234, 0.42);
   --color-secondary: rgb(var(--v-theme-secondary));
   --color-info: rgb(var(--v-theme-info));
+  --color-info-soft: rgba(var(--v-theme-info), 0.1);
+  --color-info-border: rgba(var(--v-theme-info), 0.34);
   --color-accent: rgb(var(--v-theme-accent));
   --color-accent-soft: #302d24;
   --color-accent-softer: #211f1f;
