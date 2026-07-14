@@ -12,6 +12,28 @@
         {{ statusAnnouncement }}
       </p>
 
+      <v-alert
+        v-if="hasStatusError"
+        class="status-error"
+        color="error"
+        icon="$alertCircleOutline"
+        variant="tonal"
+      >
+        资源状态获取失败，请检查网络连接后重新获取。
+        <template #append>
+          <v-btn
+            color="error"
+            :disabled="isStatusLoading"
+            :loading="isStatusLoading"
+            prepend-icon="$refresh"
+            variant="text"
+            @click="retryStatus"
+          >
+            重新获取
+          </v-btn>
+        </template>
+      </v-alert>
+
       <div
         class="status-panels"
         aria-live="polite"
@@ -74,36 +96,24 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import PageHeading from '../components/PageHeading.vue'
+import {
+  createStatusResources,
+  fetchStatus,
+  mapStatusResources,
+  type StatusResourceKey
+} from '../utils/status'
 import { setToolbarLoading } from '../utils/toolbar-loader'
 
-type StatusState = 'success' | 'error' | 'loading'
-type StatusData = Record<string, unknown>
-
 interface StatusPanel {
-  key: string
+  key: StatusResourceKey
   title: string
   description: string
   icon: string
   tone: string
 }
 
-interface StatusChipView {
-  label: string
-  state: StatusState
-}
-
-interface StatusSourceView {
-  version: string
-  time: string
-}
-
-interface StatusResourceView {
-  status: StatusChipView
-  official: StatusSourceView
-  localized: StatusSourceView
-}
-
 const isStatusLoading = ref(true)
+const hasStatusError = ref(false)
 const statusAnnouncement = ref('正在获取资源状态')
 const toolbarLoadingDelayMs = 400
 let toolbarLoadingDelayId: number | undefined
@@ -192,6 +202,7 @@ function abortStatusFetch() {
 }
 
 async function fillStatus() {
+  abortStatusFetch()
   isStatusLoading.value = true
   statusResources.value = createStatusResources('正在获取', {
     label: '获取中',
@@ -199,20 +210,14 @@ async function fillStatus() {
   })
   scheduleToolbarLoading()
   statusAnnouncement.value = '正在获取资源状态'
+  const requestController = new AbortController()
+  abortController = requestController
 
   try {
-    abortController = new AbortController()
-    const res = await fetch('https://api.bluearchive.cafe/status/list', {
-      signal: abortController.signal
-    })
+    const statusData = await fetchStatus(requestController.signal)
 
-    if (!res.ok) {
-      throw new Error(`Status request failed: ${res.status}`)
-    }
-
-    const statusData = await res.json() as StatusData
-
-    statusResources.value = createStatusResourcesFromData(statusData)
+    statusResources.value = mapStatusResources(statusData)
+    hasStatusError.value = false
     statusAnnouncement.value = '资源状态已更新'
   } catch (error: unknown) {
     if (error instanceof DOMException && error.name === 'AbortError') {
@@ -223,12 +228,19 @@ async function fillStatus() {
       label: '获取失败',
       state: 'error'
     })
+    hasStatusError.value = true
     statusAnnouncement.value = '资源状态获取失败'
   } finally {
-    abortController = null
-    isStatusLoading.value = false
-    stopToolbarLoading()
+    if (abortController === requestController) {
+      abortController = null
+      isStatusLoading.value = false
+      stopToolbarLoading()
+    }
   }
+}
+
+async function retryStatus() {
+  await fillStatus()
 }
 
 function scheduleToolbarLoading() {
@@ -251,87 +263,6 @@ function stopToolbarLoading() {
   setToolbarLoading(false)
 }
 
-function createStatusResources(valueLabel: string, status: StatusChipView) {
-  return statusPanels.reduce<Record<string, StatusResourceView>>((resources, panel) => {
-    resources[panel.key] = {
-      status: { ...status },
-      official: {
-        version: valueLabel,
-        time: valueLabel
-      },
-      localized: {
-        version: valueLabel,
-        time: valueLabel
-      }
-    }
-
-    return resources
-  }, {})
-}
-
-function createStatusResourcesFromData(statusData: StatusData) {
-  return statusPanels.reduce<Record<string, StatusResourceView>>((resources, panel) => {
-    resources[panel.key] = createStatusResourceFromData(statusData, panel.key)
-
-    return resources
-  }, {})
-}
-
-function createStatusResourceFromData(statusData: StatusData, resourceKey: string): StatusResourceView {
-  const officialVersion = readStatusValue(statusData, `${resourceKey}/official/version`)
-  const officialTime = readStatusValue(statusData, `${resourceKey}/official/time`)
-  const localizedVersion = readStatusValue(statusData, `${resourceKey}/localized/version`)
-  const localizedTime = readStatusValue(statusData, `${resourceKey}/localized/time`)
-
-  return {
-    status: createStatusChip(officialVersion, localizedVersion),
-    official: {
-      version: officialVersion ?? '未获取',
-      time: officialTime ?? '未获取'
-    },
-    localized: {
-      version: localizedVersion ?? '未获取',
-      time: localizedTime ?? '未获取'
-    }
-  }
-}
-
-function createStatusChip(officialVersion: string | null, localizedVersion: string | null): StatusChipView {
-  if (!officialVersion || !localizedVersion) {
-    return {
-      label: '未获取',
-      state: 'loading'
-    }
-  }
-
-  if (officialVersion === localizedVersion) {
-    return {
-      label: '已同步',
-      state: 'success'
-    }
-  }
-
-  return {
-    label: '未同步',
-    state: 'error'
-  }
-}
-
-function readStatusValue(statusData: StatusData, key: string) {
-  const value = key.split('/').reduce<unknown>((current, segment) => {
-    if (current && typeof current === 'object' && segment in current) {
-      return (current as Record<string, unknown>)[segment]
-    }
-
-    return undefined
-  }, statusData)
-
-  if (value === null || value === undefined || value === '') {
-    return null
-  }
-
-  return String(value)
-}
 </script>
 
 <style scoped>
@@ -341,6 +272,10 @@ function readStatusValue(statusData: StatusData, key: string) {
   background:
     radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
     var(--color-bg-deep);
+}
+
+.status-error {
+  margin-bottom: var(--space-5);
 }
 
 .status-panels {
