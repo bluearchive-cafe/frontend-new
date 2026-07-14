@@ -7,7 +7,9 @@ const article = {
   title: '测试新闻',
   summary: '测试摘要',
   category: '公告',
-  publishedAt: '2026-01-02'
+  publishedAt: '2026-01-02',
+  author: '测试作者',
+  slug: 'known-article'
 }
 
 vi.mock('../content/news', () => ({
@@ -16,9 +18,15 @@ vi.mock('../content/news', () => ({
 
 const { applyRouteSeo } = await import('./seo')
 
-function createRoute(name: string, fullPath: string, params: RouteLocationNormalizedLoaded['params'] = {}) {
+function createRoute(
+  name: string,
+  path: string,
+  params: RouteLocationNormalizedLoaded['params'] = {},
+  fullPath = path
+) {
   return {
     name,
+    path,
     fullPath,
     params
   } as RouteLocationNormalizedLoaded
@@ -54,5 +62,33 @@ describe('applyRouteSeo', () => {
 
     applyRouteSeo(createRoute('download', '/download'))
     expect(getMeta('property', 'article:published_time')).toBeNull()
+  })
+
+  it('excludes query and hash values from the canonical url', () => {
+    applyRouteSeo(createRoute('download', '/download', {}, '/download?show_hidden=1#options'))
+
+    expect(document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href).toBe(
+      'https://bluearchive.cafe/download'
+    )
+  })
+
+  it('marks missing routes and missing articles as noindex', () => {
+    applyRouteSeo(createRoute('not-found', '/missing'))
+    expect(getMeta('name', 'robots')?.content).toBe('noindex, follow')
+
+    applyRouteSeo(createRoute('news-article', '/news/missing', { slug: 'missing' }))
+    expect(getMeta('name', 'robots')?.content).toBe('noindex, follow')
+    expect(document.head.querySelector('script[id="jsonld-article"]')).toBeNull()
+  })
+
+  it('adds and removes article json-ld across navigation', () => {
+    applyRouteSeo(createRoute('news-article', '/news/known-article', { slug: 'known-article' }))
+    const schema = JSON.parse(document.head.querySelector('script[id="jsonld-article"]')?.textContent ?? '{}')
+
+    expect(schema.headline).toBe('测试新闻')
+    expect(schema.author.name).toBe('测试作者')
+
+    applyRouteSeo(createRoute('news', '/news'))
+    expect(document.head.querySelector('script[id="jsonld-article"]')).toBeNull()
   })
 })

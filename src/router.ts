@@ -1,17 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { staticRoutes } from './shared/site-routes.mjs'
 import { applyRouteSeo } from './utils/seo'
+
+const routeComponents = {
+  home: () => import('./pages/HomePage.vue'),
+  news: () => import('./pages/NewsPage.vue'),
+  download: () => import('./pages/DownloadPage.vue'),
+  status: () => import('./pages/StatusPage.vue'),
+  about: () => import('./pages/AboutPage.vue')
+}
+
+const publicRoutes = staticRoutes.map((route) => ({
+  path: route.path,
+  alias: [...route.alias],
+  name: route.name,
+  component: routeComponents[route.name]
+}))
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   // Public routes are lazy-loaded to keep the initial app bundle focused on shell code.
   routes: [
-    { path: '/', name: 'home', component: () => import('./pages/HomePage.vue') },
-    { path: '/news', alias: '/news/', name: 'news', component: () => import('./pages/NewsPage.vue') },
+    ...publicRoutes,
     { path: '/news/:slug(.+)', name: 'news-article', component: () => import('./pages/NewsArticlePage.vue') },
-    { path: '/download', name: 'download', component: () => import('./pages/DownloadPage.vue') },
-    { path: '/status', name: 'status', component: () => import('./pages/StatusPage.vue') },
-    { path: '/about', name: 'about', component: () => import('./pages/AboutPage.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('./pages/NotFoundPage.vue') }
   ],
   scrollBehavior(to) {

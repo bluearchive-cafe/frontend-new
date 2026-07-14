@@ -1,26 +1,31 @@
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
+import { notFoundSeo } from '../src/shared/site-routes.mjs'
 import { getSitemapRoutes } from './site-routes.mjs'
+import { renderRouteHtml } from './static-html.mjs'
 
-const distDir = resolve('dist')
-const indexFile = resolve(distDir, 'index.html')
-const fallbackFile = resolve(distDir, '404.html')
-
-if (!existsSync(indexFile)) {
-  throw new Error('dist/index.html was not found. Run the production build first.')
-}
-
-copyFileSync(indexFile, fallbackFile)
-
+const distDirectory = resolve('dist')
+const indexFile = resolve(distDirectory, 'index.html')
+const source = await readFile(indexFile, 'utf-8')
 const routes = await getSitemapRoutes()
 
-routes
-  .filter((route) => route.path !== '/')
-  .forEach((route) => {
-    const routeDirectory = resolve(distDir, route.path.replace(/^\//, ''))
-    mkdirSync(routeDirectory, { recursive: true })
-    copyFileSync(indexFile, resolve(routeDirectory, 'index.html'))
-  })
+for (const route of routes) {
+  const routeHtml = renderRouteHtml(source, route)
 
-console.log(`Created dist/404.html and ${routes.length - 1} route fallback pages for static hosting.`)
+  if (route.path === '/') {
+    await writeFile(indexFile, routeHtml)
+    continue
+  }
+
+  const routeDirectory = resolve(distDirectory, route.path.replace(/^\//, ''))
+  await mkdir(routeDirectory, { recursive: true })
+  await writeFile(resolve(routeDirectory, 'index.html'), routeHtml)
+}
+
+await writeFile(
+  resolve(distDirectory, '404.html'),
+  renderRouteHtml(source, notFoundSeo, { notFound: true })
+)
+
+console.log(`Created route-specific HTML for ${routes.length} routes and dist/404.html.`)
