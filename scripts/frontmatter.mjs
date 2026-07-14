@@ -14,9 +14,8 @@ export function parseBoolean(value) {
  * Returns `{ meta: Record<string, string>, body: string }`.
  * Throws when the source does not contain a frontmatter block.
  *
- * Both the Vite-based news pipeline (src/content/news.ts) and the Node.js build
- * scripts (scripts/news-entries.mjs) rely on this shared parser so that the
- * frontmatter format is defined in a single place.
+ * The build-time news module and sitemap entry reader rely on this shared
+ * parser so that the frontmatter format is defined in a single place.
  */
 export function parseFrontmatterRaw(source) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)

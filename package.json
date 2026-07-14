@@ -3,22 +3,28 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.18.0 <23"
+  },
   "scripts": {
-    "dev": "npm run optimize:hero && vite --host 127.0.0.1",
+    "dev": "npm run optimize:hero && npm run generate:news:dev && vite --host 127.0.0.1",
+    "generate:news:dev": "node scripts/generate-news-content.mjs --include-drafts",
+    "generate:news:prod": "node scripts/generate-news-content.mjs",
     "optimize:hero": "node scripts/optimize-hero-images.mjs",
     "prune:hero": "node scripts/prune-dist-hero-originals.mjs",
-    "typecheck": "vue-tsc -b",
-    "test": "vitest run",
-    "build": "npm run optimize:hero && npm run typecheck && vite build && npm run prune:hero && node scripts/create-pages-fallback.mjs && node scripts/generate-sitemap.mjs",
+    "typecheck": "npm run generate:news:dev && npm run typecheck:raw",
+    "typecheck:raw": "vue-tsc -b",
+    "test": "npm run generate:news:dev && vitest run",
+    "audit": "npm audit --audit-level=moderate",
+    "build": "npm run optimize:hero && npm run generate:news:prod && npm run typecheck:raw && vite build && npm run prune:hero && node scripts/create-pages-fallback.mjs && node scripts/generate-sitemap.mjs",
     "build:pages": "npm run build",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
     "@fontsource-utils/scss": "^0.2.2",
+    "@fontsource-variable/noto-sans-sc": "^5.2.10",
     "@fontsource/noto-sans": "^5.2.10",
-    "@fontsource/noto-sans-sc": "^5.2.9",
     "@mdi/js": "^7.4.47",
-    "markdown-it": "^14.1.1",
     "medium-zoom": "^1.1.0",
     "vite-plugin-vuetify": "^2.0.4",
     "vue": "^3.5.13",
@@ -27,12 +33,15 @@
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
+    "@types/sanitize-html": "^2.16.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "jsdom": "^29.1.1",
+    "markdown-it": "^14.3.0",
+    "sanitize-html": "^2.17.6",
     "sass-embedded": "^1.100.0",
     "sharp": "^0.34.5",
     "typescript": "^5.6.3",
-    "vite": "^6.0.1",
+    "vite": "^6.4.3",
     "vitest": "^4.1.8",
     "vue-tsc": "^2.1.10"
   }

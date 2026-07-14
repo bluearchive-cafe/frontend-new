@@ -53,7 +53,6 @@ import DraftBadge from '../components/DraftBadge.vue'
 import NotFoundState from '../components/NotFoundState.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
 import { findNewsArticle, formatPublishTime } from '../content/news'
-import { sanitizeHtml } from '../utils/sanitize-html'
 
 const route = useRoute()
 const markdownBodyRef = ref<HTMLElement | null>(null)
@@ -61,7 +60,7 @@ let imageZoom: Zoom | null = null
 
 const article = computed(() => findNewsArticle(String(route.params.slug)))
 const articleSlug = computed(() => article.value?.slug)
-const articleHtml = computed(() => article.value ? sanitizeHtml(article.value.html) : '')
+const articleHtml = computed(() => article.value?.html ?? '')
 
 function setupImageZoom() {
   imageZoom?.detach()

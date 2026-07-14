@@ -54,6 +54,9 @@ web_modules/
 # Generated responsive hero images
 public/assets/img/hero/optimized/
 
+# Generated news content module
+src/content/news.generated.ts
+
 # Optional eslint cache
 .eslintcache
 

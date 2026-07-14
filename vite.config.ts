@@ -1,15 +1,19 @@
 import { execSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
+import path from 'node:path'
 
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
 import { defineConfig } from 'vite'
+
+import { generateNewsModule } from './scripts/news-content.mjs'
 
 // Vite configuration for the Vue and Vuetify single-page app.
 const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8')) as {
   version: string
 }
 const githubPagesBase = process.env.GITHUB_PAGES === 'true' ? '/frontend-new/' : '/'
+const newsDirectory = path.resolve('src/content/news')
 // Prefer the CI-provided short SHA; local builds fall back to the current Git commit.
 const commitSha =
   process.env.GITHUB_SHA?.slice(0, 7) ??
@@ -36,9 +40,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Keep Markdown parsing and Vuetify framework code in stable shared chunks.
+        // Keep Vuetify framework code in a stable shared chunk.
         manualChunks: {
-          markdown: ['markdown-it'],
           vuetify: ['vuetify', 'vue', 'vue-router']
         }
       }
@@ -53,10 +56,30 @@ export default defineConfig({
     }
   },
   plugins: [
-    // Vue SFC support and Vuetify auto imports/styles are the only build-time plugins.
+    {
+      name: 'news-content-watcher',
+      configureServer(server) {
+        let generation: Promise<unknown> = Promise.resolve()
+
+        server.watcher.on('all', (_event, filePath) => {
+          const relativePath = path.relative(newsDirectory, filePath)
+
+          if (!relativePath || relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+            return
+          }
+
+          generation = generation
+            .then(() => generateNewsModule({ includeDrafts: true }))
+            .then(() => server.ws.send({ type: 'full-reload' }))
+            .catch((error: unknown) => {
+              server.config.logger.error(`News content generation failed: ${String(error)}`)
+            })
+        })
+      }
+    },
     vue(),
     vuetify({
-      autoImport: true,
+      autoImport: process.env.VITEST ? false : true,
       styles: { configFile: 'src/styles/settings.scss' }
     })
   ]
