@@ -22,8 +22,10 @@ describe('shared MD2 content primitives', () => {
     expect(newsSource).not.toContain('elevation="0"')
   })
 
-  it('uses one shared button geometry and removes homepage size exceptions', () => {
+  it('uses a compact desktop button token and restores mobile target size', () => {
     expect(globalStyles).toContain('.v-btn:not(.v-tab)')
+    expect(globalStyles).toContain('--button-height: 42px')
+    expect(globalStyles).toContain('@media (max-width: 640px)')
     expect(globalStyles).toContain('--button-height: 48px')
     expect(globalStyles).toContain('--button-padding-inline: 16px')
     expect(globalStyles).toContain('height: var(--button-height) !important')

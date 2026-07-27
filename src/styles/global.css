@@ -105,7 +105,7 @@
   --type-meta: 14px;
   --type-action: 15px;
   --type-overline: 12px;
-  --button-height: 48px;
+  --button-height: 42px;
   --button-padding-inline: 16px;
   --font-size-display: 48px;
   --font-size-page-title: 36px;
@@ -173,6 +173,7 @@ a {
 
 @media (max-width: 640px) {
   :root {
+    --button-height: 48px;
     --type-body: 16px;
     --type-meta: 13px;
     --type-action: 14px;
