@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
 .article-page {
   min-height: 72vh;
   padding-block: 88px;
-  background: var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .back-link {

@@ -17,7 +17,7 @@
         class="status-error"
         color="error"
         icon="$alertCircleOutline"
-        variant="tonal"
+        variant="outlined"
       >
         资源状态获取失败，请检查网络连接后重新获取。
         <template #append>
@@ -269,9 +269,7 @@ function stopToolbarLoading() {
 .status-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .status-error {
@@ -389,7 +387,7 @@ function stopToolbarLoading() {
   border-radius: 999px;
   color: var(--color-text-muted);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
@@ -456,7 +454,7 @@ function stopToolbarLoading() {
   background: var(--color-neutral-softer);
   color: var(--color-text-soft);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: var(--font-weight-action);
 }
 
 .status-table td {
@@ -467,7 +465,7 @@ function stopToolbarLoading() {
 .status-table .label {
   width: 120px;
   color: var(--color-text);
-  font-weight: 760;
+  font-weight: var(--font-weight-subheading);
 }
 
 @media (max-width: 640px) {
@@ -562,14 +560,14 @@ function stopToolbarLoading() {
     color: var(--color-text-subtle);
     content: attr(data-label);
     font-size: 12px;
-    font-weight: 800;
+    font-weight: var(--font-weight-meta);
   }
 
   .status-table .value::before {
     color: var(--color-text-subtle);
     content: attr(data-label);
     font-size: 13px;
-    font-weight: 800;
+    font-weight: var(--font-weight-meta);
   }
 }
 

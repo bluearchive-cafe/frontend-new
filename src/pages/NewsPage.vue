@@ -8,6 +8,7 @@
       />
 
       <v-btn-toggle
+        v-if="hasCategoryFilter"
         v-model="selectedCategory"
         class="category-filter"
         mandatory
@@ -19,7 +20,6 @@
           :value="category"
           :aria-pressed="selectedCategory === category"
           :color="selectedCategory === category ? 'primary' : undefined"
-          height="42"
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
         >
           {{ category }}<span class="category-count">{{ getCategoryCount(category) }}</span>
@@ -31,7 +31,7 @@
           v-for="article in filteredArticles"
           :key="article.slug"
           class="article-card"
-          elevation="0"
+          elevation="1"
           :to="`/news/${article.slug}`"
         >
           <v-card-text>
@@ -57,7 +57,7 @@
         </v-card>
       </div>
 
-      <v-card v-else class="empty-card" elevation="0">
+      <v-card v-else class="empty-card" elevation="1">
         <v-card-text class="empty-content">
           <p class="empty-label">{{ emptyLabel }}</p>
           <h2>{{ emptyTitle }}</h2>
@@ -83,6 +83,7 @@ import { formatPublishTime, newsArticles, newsCategories } from '../content/news
 
 const allCategoryLabel = '全部'
 const selectedCategory = ref(allCategoryLabel)
+const hasCategoryFilter = computed(() => newsCategories.length > 0)
 const categoryOptions = computed(() => [allCategoryLabel, ...newsCategories])
 
 function getCategoryCount(category: string) {
@@ -114,9 +115,7 @@ const emptyDescription = computed(() =>
 .news-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .category-filter {
@@ -146,7 +145,7 @@ const emptyDescription = computed(() =>
 .category-count {
   margin-left: var(--inline-gap);
   opacity: 0.72;
-  font-size: 12px;
+  font-size: var(--type-meta);
 }
 
 .article-list {
@@ -199,7 +198,7 @@ const emptyDescription = computed(() =>
   max-width: 760px;
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.7;
 }
 
@@ -222,8 +221,8 @@ const emptyDescription = computed(() =>
   border-radius: 999px;
   background: var(--color-primary-softer);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
@@ -240,8 +239,8 @@ const emptyDescription = computed(() =>
 .empty-label {
   margin: 0 0 var(--control-gap);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: var(--font-weight-heading);
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-overline);
 }
 
 .empty-content h2 {

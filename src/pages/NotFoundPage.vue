@@ -25,9 +25,7 @@ import NotFoundState from '../components/NotFoundState.vue'
   align-items: center;
   min-height: 72vh;
   padding-block: 88px;
-  background:
-    radial-gradient(circle at 82% 12%, var(--color-primary-soft), transparent 30%),
-    linear-gradient(180deg, var(--color-bg-deep) 0%, var(--color-bg) 100%);
+  background: var(--page-background-fill);
 }
 
 .not-found-page :deep(.v-container) {

@@ -43,8 +43,8 @@ defineProps<{
   gap: var(--inline-gap) var(--space-4);
   margin: 0;
   color: var(--color-secondary);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-meta);
 }
 
 .meta-item {

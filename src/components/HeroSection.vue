@@ -22,10 +22,10 @@
         </p>
 
         <div class="hero-actions">
-          <v-btn color="primary" size="large" to="/download" prepend-icon="$lightningBolt">
+          <v-btn color="primary" to="/download" prepend-icon="$lightningBolt">
             立即使用
           </v-btn>
-          <v-btn class="tutorial-link" variant="text" size="large" href="https://docs.bluearchive.cafe/platform/" rel="noopener noreferrer" append-icon="$arrowRight">
+          <v-btn class="tutorial-link" variant="text" href="https://docs.bluearchive.cafe/platform/" rel="noopener noreferrer" append-icon="$arrowRight">
             查看教程
           </v-btn>
         </div>
@@ -64,7 +64,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(25, 29, 36, 0.98), rgba(25, 29, 36, 0.92)),
-    var(--color-bg);
+    var(--home-module-fill, var(--color-bg));
 }
 
 .hero-image {
@@ -85,7 +85,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   inset: 0;
   background:
     linear-gradient(90deg, var(--color-bg) 0%, var(--color-bg) 32%, rgba(25, 29, 36, 0.98) 42%, rgba(25, 29, 36, 0.62) 58%, rgba(25, 29, 36, 0.24) 100%),
-    linear-gradient(180deg, transparent 74%, var(--color-bg-deep) 100%);
+    linear-gradient(180deg, transparent 74%, var(--home-module-fill, var(--color-bg-deep)) 100%);
 }
 
 .hero-content {
@@ -130,7 +130,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   max-width: 520px;
   margin: var(--space-6) 0 0;
   color: var(--color-text-muted);
-  font-size: 17px;
+  font-size: var(--type-body);
   line-height: 1.75;
 }
 
@@ -144,7 +144,6 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 .tutorial-link {
   color: rgba(255, 255, 255, 0.9);
-  min-height: 42px;
 }
 
 .hero-actions :deep(.v-btn) {
@@ -168,7 +167,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-shade {
     background:
-      linear-gradient(180deg, rgba(25, 29, 36, 0.08) 0%, rgba(25, 29, 36, 0.18) 30%, rgba(25, 29, 36, 0.78) 62%, var(--color-bg) 100%),
+      linear-gradient(180deg, rgba(25, 29, 36, 0.08) 0%, rgba(25, 29, 36, 0.18) 30%, rgba(25, 29, 36, 0.78) 62%, var(--home-module-fill, var(--color-bg)) 100%),
       linear-gradient(90deg, rgba(25, 29, 36, 0.4) 0%, rgba(25, 29, 36, 0.1) 58%, rgba(25, 29, 36, 0.22) 100%);
   }
 
@@ -184,7 +183,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-copy h1 {
     max-width: 9em;
-    font-size: clamp(30px, 9vw, 38px);
+    font-size: var(--md2-type-h4);
     line-height: 1.12;
   }
 

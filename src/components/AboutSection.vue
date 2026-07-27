@@ -97,7 +97,7 @@
     </v-container>
 
     <v-dialog v-model="isSponsorQrOpen" max-width="420">
-      <v-card class="sponsor-dialog" elevation="0">
+      <v-card class="sponsor-dialog" elevation="1">
         <v-card-text>
           <div class="sponsor-dialog-heading">
             <div>
@@ -173,9 +173,7 @@ const isSponsorQrOpen = ref(false)
 }
 
 .about-section {
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    linear-gradient(180deg, var(--color-bg-deep) 0%, var(--color-bg) 100%);
+  background: var(--page-background-fill);
 }
 
 .about-layout {

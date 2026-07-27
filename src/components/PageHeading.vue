@@ -29,8 +29,8 @@ withDefaults(
 .page-heading p {
   margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: var(--type-overline);
+  font-weight: var(--font-weight-overline);
   text-transform: uppercase;
 }
 
@@ -46,7 +46,7 @@ withDefaults(
   display: block;
   margin-top: 16px;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: var(--type-body);
   line-height: 1.8;
 }
 
