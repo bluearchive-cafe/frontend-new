@@ -396,7 +396,7 @@ function markDownloadAttempted() {
   min-width: min(320px, calc(100vw - 32px));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface) !important;
+  background-color: var(--color-surface) !important;
 }
 
 .variant-menu :deep(.v-list-item) {
@@ -446,7 +446,7 @@ function markDownloadAttempted() {
 .download-dialog {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface);
+  background-color: var(--color-surface);
   box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
 }
 

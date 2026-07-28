@@ -333,7 +333,7 @@ const isSponsorQrOpen = ref(false)
 
 .sponsor-dialog {
   border: 1px solid var(--color-border);
-  background: var(--gradient-card);
+  background-color: var(--md2-surface);
 }
 
 .sponsor-dialog :deep(.v-card-text) {

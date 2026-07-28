@@ -15,6 +15,7 @@ describe('shared MD2 content primitives', () => {
   it('uses fixed Material 2 heading and overline styles', () => {
     expect(headingSource).toContain('font-size: var(--type-overline)')
     expect(headingSource).toContain('font-size: var(--font-size-page-title)')
+    expect(globalStyles).toContain('--type-overline: 14px')
   })
 
   it('uses compact Material 2 badges and elevated news cards', () => {

@@ -16,11 +16,11 @@ describe('blueArchiveDarkTheme', () => {
       background: expect.any(String),
       surface: expect.any(String),
       error: expect.any(String),
-      onPrimary: expect.any(String),
-      onSecondary: expect.any(String),
-      onSurface: expect.any(String),
-      onBackground: expect.any(String),
-      onError: expect.any(String)
+      'on-primary': expect.any(String),
+      'on-secondary': expect.any(String),
+      'on-surface': expect.any(String),
+      'on-background': expect.any(String),
+      'on-error': expect.any(String)
     })
   })
 

@@ -44,7 +44,7 @@
   --color-accent: rgb(var(--v-theme-accent));
   --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, var(--md2-surface));
   --color-accent-softer: color-mix(in srgb, var(--color-accent) 8%, var(--md2-surface));
-  --color-accent-border: rgba(255, 215, 106, 0.34);
+  --color-accent-border: rgba(101, 216, 196, 0.34);
   --color-success: rgb(var(--v-theme-success));
   --color-success-soft: color-mix(in srgb, var(--color-success) 12%, var(--md2-surface));
   --color-success-border: rgba(120, 214, 163, 0.34);
@@ -104,7 +104,7 @@
   --type-body: 17px;
   --type-meta: 14px;
   --type-action: 15px;
-  --type-overline: 12px;
+  --type-overline: 14px;
   --button-height: 42px;
   --button-padding-inline: 16px;
   --font-size-display: 48px;
@@ -205,6 +205,17 @@ a {
 .v-card {
   border: 0 !important;
   box-shadow: var(--md2-elevation-card) !important;
+}
+
+.v-app-bar,
+.v-menu .v-list {
+  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04));
+}
+
+.v-overlay__content > .v-card,
+.v-dialog .v-card,
+.v-navigation-drawer {
+  background-image: linear-gradient(var(--md2-surface-overlay-16), var(--md2-surface-overlay-16));
 }
 
 .v-overlay__content > .v-card,
