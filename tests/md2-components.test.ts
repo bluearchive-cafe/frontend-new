@@ -80,6 +80,12 @@ describe('AppHeader MD2 compatibility contract', () => {
 })
 
 describe('dark-surface elevation contracts', () => {
+  it('keeps shared card elevation overrideable by page-level interaction states', () => {
+    expect(globalStyles).toContain('.v-card {')
+    expect(globalStyles).not.toContain('box-shadow: var(--md2-elevation-card) !important;')
+    expect(globalStyles).not.toContain('border: 0 !important;')
+  })
+
   it('forces the app bar overlay to remain visible over Vuetify surface styles', () => {
     expect(globalStyles).toContain('.v-app-bar,')
     expect(globalStyles).toContain('background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;')

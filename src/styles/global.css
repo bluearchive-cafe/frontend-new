@@ -203,8 +203,8 @@ a {
 }
 
 .v-card {
-  border: 0 !important;
-  box-shadow: var(--md2-elevation-card) !important;
+  border: 0;
+  box-shadow: var(--md2-elevation-card);
 }
 
 .v-app-bar,
