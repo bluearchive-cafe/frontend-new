@@ -447,7 +447,6 @@ function markDownloadAttempted() {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background-color: var(--color-surface);
-  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
 }
 
 .download-dialog :deep(.v-card-text) {

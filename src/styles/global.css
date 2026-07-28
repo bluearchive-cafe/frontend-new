@@ -209,7 +209,7 @@ a {
 
 .v-app-bar,
 .v-menu .v-list {
-  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04));
+  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;
 }
 
 .v-overlay__content > .v-card,

@@ -1,13 +1,21 @@
 <template>
   <v-app-bar class="app-header" color="surface" elevation="4" height="56">
     <v-container class="header-inner" max-width="1120">
+      <v-btn
+        class="mobile-menu"
+        icon="$menu"
+        variant="text"
+        aria-label="打开菜单"
+        ref="menuTrigger"
+        @click="drawer = true"
+      />
+
       <RouterLink class="brand" to="/" aria-label="BlueArchive.Cafe 首页">
         <span>蔚蓝咖啡厅</span>
       </RouterLink>
 
       <v-tabs
         class="desktop-tabs"
-        :model-value="activeNavValue"
         color="primary"
         slider-color="primary"
         bg-color="transparent"
@@ -23,20 +31,11 @@
           :to="item.to"
           class="nav-tab"
           height="56"
-          :ripple="false"
         >
           {{ item.label }}
         </v-tab>
       </v-tabs>
 
-      <v-btn
-        class="mobile-menu"
-        icon="$menu"
-        variant="text"
-        aria-label="打开菜单"
-        ref="menuTrigger"
-        @click="drawer = true"
-      />
     </v-container>
 
     <v-progress-linear
@@ -54,7 +53,7 @@
     v-model="drawer"
     class="app-drawer"
     temporary
-    location="right"
+    location="left"
     color="surface"
     width="280"
     scrim="rgba(0, 0, 0, 0.46)"
@@ -82,8 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick } from 'vue'
-import { ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { useToolbarLoader } from '../utils/toolbar-loader'
@@ -126,12 +124,24 @@ const navItems = computed(() => [
   }
 ])
 
-const activeNavValue = computed(() => navItems.value.find((item) => item.isActive())?.value)
-
 function closeDrawer() {
   drawer.value = false
   void nextTick(() => menuTrigger.value?.$el?.focus())
 }
+
+function handleGlobalKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && drawer.value) {
+    closeDrawer()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown)
+})
 </script>
 
 <style scoped>
@@ -197,22 +207,12 @@ function closeDrawer() {
   align-items: center;
 }
 
-.nav-tab :deep(.v-btn__overlay) {
-  opacity: 0;
-}
-
-.nav-tab:hover :deep(.v-btn__overlay) {
-  background: var(--color-primary);
-  opacity: 0.08;
-}
-
 .nav-tab.v-tab--selected {
   color: var(--color-text);
 }
 
 .mobile-menu {
   display: none;
-  margin-left: auto;
 }
 
 .app-drawer {
@@ -243,12 +243,24 @@ function closeDrawer() {
 }
 
 @media (max-width: 720px) {
+  .header-inner {
+    gap: var(--space-5);
+    padding-inline: var(--space-1);
+  }
+
+  .brand {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
   .desktop-tabs {
     display: none;
   }
 
   .mobile-menu {
     display: inline-grid;
+    height: 48px !important;
+    min-height: 48px;
   }
 }
 </style>

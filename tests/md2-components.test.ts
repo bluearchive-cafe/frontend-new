@@ -52,4 +52,44 @@ describe('AppHeader MD2 compatibility contract', () => {
     expect(appHeaderSource).toContain('box-shadow: var(--md2-elevation-drawer)')
     expect(appHeaderSource).toContain('min-height: 48px')
   })
+
+  it('uses a leading drawer and closes it from the global Escape key', () => {
+    expect(appHeaderSource).toContain('location="left"')
+    expect(appHeaderSource).toContain("window.addEventListener('keydown', handleGlobalKeydown)")
+    expect(appHeaderSource).toContain("window.removeEventListener('keydown', handleGlobalKeydown)")
+    expect(appHeaderSource).toContain("if (event.key === 'Escape' && drawer.value)")
+  })
+
+  it('keeps the mobile drawer trigger on the leading edge', () => {
+    expect(appHeaderSource).not.toMatch(/\.mobile-menu\s*\{[\s\S]*?margin-left:\s*auto;/)
+    expect(appHeaderSource.indexOf('class="mobile-menu"')).toBeLessThan(appHeaderSource.indexOf('<RouterLink class="brand"'))
+  })
+
+  it('uses the small MD2 app bar measurements on mobile', () => {
+    expect(appHeaderSource).toContain('padding-inline: var(--space-1);')
+    expect(appHeaderSource).toContain('gap: var(--space-5);')
+    expect(appHeaderSource).toContain('font-size: 20px;')
+    expect(appHeaderSource).toContain('font-weight: 500;')
+    expect(appHeaderSource).toContain('height: 48px !important;')
+  })
+
+  it('keeps full Material state feedback for navigation tabs', () => {
+    expect(appHeaderSource).not.toContain(':ripple="false"')
+    expect(appHeaderSource).not.toContain('.nav-tab :deep(.v-btn__overlay) {\n  opacity: 0;')
+  })
+})
+
+describe('dark-surface elevation contracts', () => {
+  it('forces the app bar overlay to remain visible over Vuetify surface styles', () => {
+    expect(globalStyles).toContain('.v-app-bar,')
+    expect(globalStyles).toContain('background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;')
+  })
+
+  it('uses the shared dialog elevation rather than a page-specific shadow', () => {
+    const downloadSource = readFileSync(new URL('../src/pages/DownloadPage.vue', import.meta.url), 'utf-8')
+
+    expect(downloadSource).not.toContain('box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42)')
+    expect(globalStyles).toContain('.v-dialog .v-card')
+    expect(globalStyles).toContain('box-shadow: var(--md2-elevation-dialog) !important;')
+  })
 })
