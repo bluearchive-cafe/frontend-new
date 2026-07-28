@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="app-header" color="surface" elevation="0" height="56">
+  <v-app-bar class="app-header" color="surface" elevation="4" height="56">
     <v-container class="header-inner" max-width="1120">
       <RouterLink class="brand" to="/" aria-label="BlueArchive.Cafe 首页">
         <span>蔚蓝咖啡厅</span>
@@ -34,6 +34,7 @@
         icon="$menu"
         variant="text"
         aria-label="打开菜单"
+        ref="menuTrigger"
         @click="drawer = true"
       />
     </v-container>
@@ -57,6 +58,7 @@
     color="surface"
     width="280"
     scrim="rgba(0, 0, 0, 0.46)"
+    @keydown.esc="closeDrawer"
   >
     <v-toolbar color="surface" density="comfortable">
       <v-toolbar-title class="drawer-title">站点导航</v-toolbar-title>
@@ -73,20 +75,21 @@
         :active="item.isActive()"
         color="primary"
         rounded="lg"
-        @click="drawer = false"
+        @click="closeDrawer"
       />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { useToolbarLoader } from '../utils/toolbar-loader'
 
 const drawer = ref(false)
+const menuTrigger = ref<{ $el?: HTMLElement } | null>(null)
 const route = useRoute()
 const { isToolbarLoading } = useToolbarLoader()
 
@@ -124,11 +127,17 @@ const navItems = computed(() => [
 ])
 
 const activeNavValue = computed(() => navItems.value.find((item) => item.isActive())?.value)
+
+function closeDrawer() {
+  drawer.value = false
+  void nextTick(() => menuTrigger.value?.$el?.focus())
+}
 </script>
 
 <style scoped>
 .app-header {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 0;
+  box-shadow: var(--md2-elevation-app-bar);
 }
 
 .header-inner {
@@ -146,7 +155,7 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   gap: var(--control-gap);
   color: var(--color-text);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: var(--font-weight-action);
 }
 
 .desktop-tabs {
@@ -172,7 +181,8 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   border-radius: 0 !important;
   padding-inline: var(--space-4);
   color: var(--color-nav-muted);
-  font-weight: 700;
+  font-size: var(--type-action);
+  font-weight: var(--font-weight-action);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -208,7 +218,8 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
 .app-drawer {
   top: 0 !important;
   height: 100dvh !important;
-  border-left: 1px solid var(--color-border);
+  border-left: 0;
+  box-shadow: var(--md2-elevation-drawer);
   z-index: 2400 !important;
 }
 
@@ -219,7 +230,7 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
 .drawer-title {
   color: var(--color-text);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: var(--font-weight-action);
 }
 
 .drawer-list {
@@ -227,7 +238,7 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
 }
 
 .drawer-list :deep(.v-list-item) {
-  min-height: 44px;
+  min-height: 48px;
   margin-bottom: var(--space-1);
 }
 

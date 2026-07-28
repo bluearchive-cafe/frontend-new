@@ -30,7 +30,7 @@ import SiteFooter from './components/SiteFooter.vue'
   padding: 10px 20px;
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   background: var(--color-primary);
-  color: #fff;
+  color: rgb(var(--v-theme-on-primary));
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;

@@ -94,7 +94,7 @@ strong {
 
 p {
   margin: 6px 0 0;
-  font-size: 13px;
+  font-size: var(--type-meta);
 }
 
 .footer-left {
@@ -108,12 +108,12 @@ p {
   gap: var(--inline-gap) var(--space-4);
   margin-top: var(--space-3);
   color: var(--color-text-subtle);
-  font-size: 13px;
+  font-size: var(--type-meta);
 }
 
 .friend-links span {
   color: rgba(255, 255, 255, 0.7);
-  font-weight: 700;
+  font-weight: var(--font-weight-meta);
 }
 
 .footer-right {
@@ -126,7 +126,7 @@ p {
 .footer-links {
   display: flex;
   gap: var(--space-5);
-  font-size: 14px;
+  font-size: var(--type-action);
 }
 
 .beian-list {
@@ -139,7 +139,7 @@ p {
 
 .beian-link {
   color: var(--color-text-subtle);
-  font-size: 13px;
+  font-size: var(--type-meta);
   line-height: 1.5;
 }
 

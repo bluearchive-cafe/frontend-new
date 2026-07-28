@@ -18,7 +18,7 @@
           v-for="platform in visiblePlatformLinks"
           :key="platform.name"
           class="platform-card"
-          elevation="0"
+          elevation="1"
         >
           <v-card-text>
             <div class="platform-head">
@@ -37,7 +37,7 @@
                 v-for="tag in platformTags(platform)"
                 :key="tag"
                 size="small"
-                variant="tonal"
+                variant="outlined"
                 color="primary"
               >
                 {{ tag }}
@@ -72,7 +72,7 @@
                           v-if="variant.recommended"
                           color="primary"
                           size="x-small"
-                          variant="tonal"
+                          variant="outlined"
                         >
                           推荐
                         </v-chip>
@@ -139,7 +139,7 @@
     </v-container>
 
     <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)" aria-labelledby="download-dialog-title">
-      <v-card class="download-dialog" elevation="0">
+      <v-card class="download-dialog" elevation="1">
         <v-card-text>
           <div class="dialog-head">
             <v-avatar class="doc-icon" rounded="lg">
@@ -161,7 +161,7 @@
             color="primary"
             density="comfortable"
             role="status"
-            variant="tonal"
+            variant="outlined"
           >
             如果下载没有开始，请重新点击继续下载，或先查看安装文档确认浏览器与系统权限设置。
           </v-alert>
@@ -173,7 +173,7 @@
             <v-btn
               v-if="selectedPlatform"
               color="primary"
-              variant="tonal"
+              variant="outlined"
               :href="selectedPlatform.docUrl"
               :target="selectedPlatform.docExternal ? '_blank' : undefined"
               :rel="selectedPlatform.docExternal ? 'noopener noreferrer' : undefined"
@@ -256,16 +256,14 @@ function markDownloadAttempted() {
 .download-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .docs-copy p {
   margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: var(--font-weight-overline);
   text-transform: uppercase;
 }
 
@@ -398,7 +396,7 @@ function markDownloadAttempted() {
   min-width: min(320px, calc(100vw - 32px));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface) !important;
+  background-color: var(--color-surface) !important;
 }
 
 .variant-menu :deep(.v-list-item) {
@@ -407,7 +405,7 @@ function markDownloadAttempted() {
 
 .variant-menu :deep(.v-list-item-title) {
   color: var(--color-text);
-  font-weight: 760;
+  font-weight: var(--font-weight-subheading);
 }
 
 .variant-menu :deep(.v-list-item-subtitle) {
@@ -448,7 +446,7 @@ function markDownloadAttempted() {
 .download-dialog {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface);
+  background-color: var(--color-surface);
   box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
 }
 
@@ -466,7 +464,7 @@ function markDownloadAttempted() {
   margin: 0 0 4px;
   color: var(--color-primary);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: var(--font-weight-overline);
 }
 
 .dialog-head h2 {

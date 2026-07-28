@@ -12,7 +12,7 @@
             v-for="item in latestNews"
             :key="item.slug"
             class="news-card"
-            elevation="0"
+            elevation="1"
             :to="`/news/${item.slug}`"
           >
             <v-card-text>
@@ -31,7 +31,7 @@
           </v-card>
         </div>
 
-        <v-card v-else class="news-empty-card" elevation="0">
+        <v-card v-else class="news-empty-card" elevation="1">
           <v-card-text>
             <p class="empty-label">No news</p>
             <h3>暂无新闻</h3>
@@ -60,7 +60,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-section {
-  background: var(--color-bg-deep);
+  background: var(--home-module-fill, var(--color-bg-deep));
 }
 
 .news-overview {
@@ -76,7 +76,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   margin: 0;
   color: var(--color-text);
   font-size: var(--font-size-section-title);
-  font-weight: var(--font-weight-heading);
+  font-weight: var(--font-weight-overline);
 }
 
 .all-news-link {
@@ -92,19 +92,18 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 .news-empty-card {
   grid-column: 1 / -1;
-  border: 1px solid var(--color-border);
   animation: fade-slide-up 520ms ease both;
   background: var(--gradient-card-strong);
 }
 
 .news-empty-card :deep(.v-card-text) {
-  padding: clamp(22px, 4vw, 34px);
+  padding: var(--space-8);
 }
 
 .empty-label {
   margin: 0 0 var(--control-gap);
   color: var(--color-primary);
-  font-size: 13px;
+  font-size: var(--type-meta);
   font-weight: var(--font-weight-heading);
 }
 
@@ -119,13 +118,12 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   max-width: 520px;
   margin: var(--control-gap) 0 0;
   color: var(--color-text-muted);
-  font-size: 15px;
+  font-size: var(--type-body);
   line-height: 1.75;
 }
 
 .news-card {
-  min-height: 164px;
-  border: 1px solid var(--color-border);
+  min-height: 184px;
   animation: fade-slide-up 520ms ease both;
   background: var(--gradient-card-strong);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
@@ -142,7 +140,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 .news-card :deep(.v-card-text) {
   display: flex;
   flex-direction: column;
-  min-height: 164px;
+  min-height: 184px;
   padding: var(--card-padding);
 }
 
@@ -165,8 +163,8 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 .news-date {
   color: var(--color-secondary);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-meta);
 }
 
 .read-more {
@@ -178,8 +176,8 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   border-radius: 999px;
   background: var(--color-primary-softer);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
@@ -195,7 +193,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 .news-card p {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.7;
 }
 
