@@ -7,14 +7,14 @@
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  min-height: 28px;
+  min-height: 32px;
   padding: var(--pill-padding);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--md2-radius-button);
   background: var(--color-neutral-soft);
   color: var(--color-text-muted);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--md2-type-caption);
+  font-weight: var(--font-weight-action);
   line-height: 1;
 }
 </style>

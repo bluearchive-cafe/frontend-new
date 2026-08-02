@@ -105,11 +105,11 @@ onBeforeUnmount(() => {
 .article-page {
   min-height: 72vh;
   padding-block: 88px;
-  background: var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .back-link {
-  animation: fade-slide-up 420ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   margin-bottom: var(--space-6);
 }
 
@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   padding: clamp(var(--space-7), 5vw, 50px);
-  animation: fade-slide-up 520ms ease 80ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 80ms both;
   background: var(--color-card);
 }
 
@@ -145,7 +145,7 @@ h1 {
 
 .article-meta {
   margin-top: var(--space-7);
-  font-size: 14px;
+  font-size: var(--md2-type-body2);
 }
 
 .markdown-body {
@@ -162,7 +162,7 @@ h1 {
   max-width: 740px;
   margin: 0 auto;
   color: var(--color-text-soft);
-  font-size: 16px;
+  font-size: var(--md2-type-body1);
   line-height: 1.65;
 }
 
@@ -320,6 +320,8 @@ h1 {
   color: var(--color-text);
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 85%;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .markdown-body :deep(pre) {

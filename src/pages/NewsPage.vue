@@ -8,6 +8,7 @@
       />
 
       <v-btn-toggle
+        v-if="hasCategoryFilter"
         v-model="selectedCategory"
         class="category-filter"
         mandatory
@@ -19,7 +20,6 @@
           :value="category"
           :aria-pressed="selectedCategory === category"
           :color="selectedCategory === category ? 'primary' : undefined"
-          height="42"
           :variant="selectedCategory === category ? 'flat' : 'outlined'"
         >
           {{ category }}<span class="category-count">{{ getCategoryCount(category) }}</span>
@@ -31,7 +31,7 @@
           v-for="article in filteredArticles"
           :key="article.slug"
           class="article-card"
-          elevation="0"
+          elevation="1"
           :to="`/news/${article.slug}`"
         >
           <v-card-text>
@@ -51,13 +51,16 @@
                 :word-count="article.wordCount"
                 label="新闻元信息"
               />
-              <span class="read-more">阅读全文</span>
+              <span class="read-more">
+                阅读全文
+                <v-icon icon="$arrowRight" size="16" aria-hidden="true" />
+              </span>
             </div>
           </v-card-text>
         </v-card>
       </div>
 
-      <v-card v-else class="empty-card" elevation="0">
+      <v-card v-else class="empty-card" elevation="1">
         <v-card-text class="empty-content">
           <p class="empty-label">{{ emptyLabel }}</p>
           <h2>{{ emptyTitle }}</h2>
@@ -83,6 +86,7 @@ import { formatPublishTime, newsArticles, newsCategories } from '../content/news
 
 const allCategoryLabel = '全部'
 const selectedCategory = ref(allCategoryLabel)
+const hasCategoryFilter = computed(() => newsCategories.length > 0)
 const categoryOptions = computed(() => [allCategoryLabel, ...newsCategories])
 
 function getCategoryCount(category: string) {
@@ -114,39 +118,26 @@ const emptyDescription = computed(() =>
 .news-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .category-filter {
-  display: flex;
-  flex-wrap: wrap;
   gap: var(--control-gap);
-  animation: fade-slide-up 520ms ease 80ms both;
-  margin-bottom: var(--space-6);
-  border: 0 !important;
-  box-shadow: none !important;
-  background: transparent;
-}
-
-.category-filter :deep(.v-btn) {
-  border-radius: var(--radius-card);
-  color: inherit;
-}
-
-.category-filter :deep(.v-btn--variant-flat) {
-  color: rgb(var(--v-theme-on-primary));
+  margin-bottom: var(--control-gap);
 }
 
 .category-filter :deep(.v-btn--variant-outlined) {
   border: thin solid currentColor;
 }
 
+.category-filter :deep(.v-btn) {
+  transition-property: box-shadow, transform, opacity;
+}
+
 .category-count {
   margin-left: var(--inline-gap);
   opacity: 0.72;
-  font-size: 12px;
+  font-size: var(--type-meta);
 }
 
 .article-list {
@@ -156,9 +147,9 @@ const emptyDescription = computed(() =>
 
 .article-card {
   border: 1px solid var(--color-border);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .article-card:nth-child(2) {
@@ -192,14 +183,14 @@ const emptyDescription = computed(() =>
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
   line-height: 1.35;
-  transition: color 160ms ease;
+  transition: color var(--md2-duration-shortest) var(--md2-easing-standard);
 }
 
 .article-card p {
   max-width: 760px;
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.7;
 }
 
@@ -216,20 +207,16 @@ const emptyDescription = computed(() =>
 .read-more {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 0 11px;
-  border: 1px solid var(--color-primary-border);
-  border-radius: 999px;
-  background: var(--color-primary-softer);
+  gap: var(--inline-gap);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
 .empty-card {
   border: 1px solid var(--color-border);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
 }
 
@@ -240,8 +227,8 @@ const emptyDescription = computed(() =>
 .empty-label {
   margin: 0 0 var(--control-gap);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: var(--font-weight-heading);
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-overline);
 }
 
 .empty-content h2 {
@@ -271,7 +258,6 @@ const emptyDescription = computed(() =>
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .category-filter,
   .article-card,
   .empty-card {
     animation: none;

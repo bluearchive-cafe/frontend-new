@@ -12,7 +12,7 @@
             v-for="item in latestNews"
             :key="item.slug"
             class="news-card"
-            elevation="0"
+            elevation="1"
             :to="`/news/${item.slug}`"
           >
             <v-card-text>
@@ -25,13 +25,16 @@
               <p>{{ item.summary }}</p>
               <div class="news-card-footer">
                 <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
-                <span class="read-more">查看详情</span>
+                <span class="read-more">
+                  查看详情
+                  <v-icon icon="$arrowRight" size="16" aria-hidden="true" />
+                </span>
               </div>
             </v-card-text>
           </v-card>
         </div>
 
-        <v-card v-else class="news-empty-card" elevation="0">
+        <v-card v-else class="news-empty-card" elevation="1">
           <v-card-text>
             <p class="empty-label">No news</p>
             <h3>暂无新闻</h3>
@@ -60,7 +63,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-section {
-  background: var(--color-bg-deep);
+  background: var(--home-module-fill, var(--color-bg-deep));
 }
 
 .news-overview {
@@ -68,7 +71,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--grid-gap);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   margin-bottom: var(--space-6);
 }
 
@@ -76,7 +79,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   margin: 0;
   color: var(--color-text);
   font-size: var(--font-size-section-title);
-  font-weight: var(--font-weight-heading);
+  font-weight: var(--font-weight-overline);
 }
 
 .all-news-link {
@@ -92,19 +95,18 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 .news-empty-card {
   grid-column: 1 / -1;
-  border: 1px solid var(--color-border);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card-strong);
 }
 
 .news-empty-card :deep(.v-card-text) {
-  padding: clamp(22px, 4vw, 34px);
+  padding: var(--space-8);
 }
 
 .empty-label {
   margin: 0 0 var(--control-gap);
   color: var(--color-primary);
-  font-size: 13px;
+  font-size: var(--type-meta);
   font-weight: var(--font-weight-heading);
 }
 
@@ -119,16 +121,17 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   max-width: 520px;
   margin: var(--control-gap) 0 0;
   color: var(--color-text-muted);
-  font-size: 15px;
+  font-size: var(--type-body);
   line-height: 1.75;
 }
 
 .news-card {
-  min-height: 164px;
-  border: 1px solid var(--color-border);
-  animation: fade-slide-up 520ms ease both;
+  display: flex;
+  flex-direction: column;
+  min-height: 184px;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card-strong);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .news-card:nth-child(2) {
@@ -140,9 +143,10 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-card :deep(.v-card-text) {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 164px;
+  min-height: 184px;
   padding: var(--card-padding);
 }
 
@@ -165,38 +169,42 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 
 .news-date {
   color: var(--color-secondary);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-meta);
 }
 
 .read-more {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 0 11px;
-  border: 1px solid var(--color-primary-border);
-  border-radius: 999px;
-  background: var(--color-primary-softer);
+  gap: var(--inline-gap);
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--type-meta);
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
 .news-card h3 {
+  display: -webkit-box;
+  overflow: hidden;
   margin: var(--control-gap) 0 var(--inline-gap);
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-subheading);
   line-height: 1.35;
-  transition: color 160ms ease;
+  transition: color var(--md2-duration-shortest) var(--md2-easing-standard);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .news-card p {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.7;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 @media (hover: hover) and (pointer: fine) {
