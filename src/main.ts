@@ -100,8 +100,11 @@ const vuetify = createVuetify({
   defaults: {
     // Shared component defaults keep common Vuetify controls visually consistent.
     VBtn: {
-      rounded: 'lg',
-      height: 42
+      rounded: 'sm',
+      height: 48
+    },
+    VAppBarNavIcon: {
+      rounded: 'circle'
     },
     VCard: {
       rounded: 'lg'

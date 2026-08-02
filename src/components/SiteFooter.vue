@@ -74,6 +74,7 @@ const friendLinks = [
 
 <style scoped>
 .site-footer {
+  flex-grow: 0;
   padding-block: var(--space-6);
   border-top: 1px solid var(--color-border);
   background: var(--color-footer);
@@ -89,12 +90,12 @@ const friendLinks = [
 
 strong {
   color: var(--color-text);
-  font-size: 16px;
+  font-size: var(--md2-type-body1);
 }
 
 p {
   margin: 6px 0 0;
-  font-size: 13px;
+  font-size: var(--type-meta);
 }
 
 .footer-left {
@@ -108,17 +109,18 @@ p {
   gap: var(--inline-gap) var(--space-4);
   margin-top: var(--space-3);
   color: var(--color-text-subtle);
-  font-size: 13px;
+  font-size: var(--type-meta);
 }
 
 .friend-links span {
   color: rgba(255, 255, 255, 0.7);
-  font-weight: 700;
+  font-weight: var(--font-weight-meta);
 }
 
 .footer-right {
   display: flex;
   align-items: flex-end;
+  flex-shrink: 0;
   flex-direction: column;
   gap: var(--control-gap);
 }
@@ -126,7 +128,11 @@ p {
 .footer-links {
   display: flex;
   gap: var(--space-5);
-  font-size: 14px;
+  font-size: var(--type-action);
+}
+
+.footer-links a {
+  white-space: nowrap;
 }
 
 .beian-list {
@@ -139,7 +145,7 @@ p {
 
 .beian-link {
   color: var(--color-text-subtle);
-  font-size: 13px;
+  font-size: var(--type-meta);
   line-height: 1.5;
 }
 
@@ -149,7 +155,7 @@ p {
   color: var(--color-primary);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 840px) {
   .footer-inner {
     align-items: flex-start;
     flex-direction: column;

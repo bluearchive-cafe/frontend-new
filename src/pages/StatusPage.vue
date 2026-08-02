@@ -17,7 +17,7 @@
         class="status-error"
         color="error"
         icon="$alertCircleOutline"
-        variant="tonal"
+        variant="outlined"
       >
         资源状态获取失败，请检查网络连接后重新获取。
         <template #append>
@@ -36,7 +36,6 @@
 
       <div
         class="status-panels"
-        aria-live="polite"
         :aria-busy="isStatusLoading"
       >
         <details
@@ -48,7 +47,7 @@
           <summary>
             <div class="status-panel-leading">
               <v-avatar :class="['status-symbol', `status-symbol--${panel.tone}`]" rounded="lg">
-                <v-icon :icon="panel.icon" size="24" />
+                <v-icon :icon="panel.icon" size="24" aria-hidden="true" />
               </v-avatar>
               <span class="status-panel-copy">
                 <span class="status-panel-title">{{ panel.title }}</span>
@@ -59,7 +58,7 @@
               <span class="status-chip" :data-status-state="statusResources[panel.key].status.state">
                 {{ statusResources[panel.key].status.label }}
               </span>
-              <v-icon class="status-panel-expand" icon="$chevronDown" size="22" />
+              <v-icon class="status-panel-expand" icon="$chevronDown" size="22" aria-hidden="true" />
             </div>
           </summary>
 
@@ -130,7 +129,7 @@ const statusPanels: StatusPanel[] = [
     key: 'ios',
     title: '应用包',
     description: 'iOS 专用客户端应用包',
-    icon: '$apple',
+    icon: '$appleIos',
     tone: 'ios'
   },
   {
@@ -269,9 +268,7 @@ function stopToolbarLoading() {
 .status-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .status-error {
@@ -297,7 +294,7 @@ function stopToolbarLoading() {
 .status-panel {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
   overflow: hidden;
 }
@@ -343,13 +340,13 @@ function stopToolbarLoading() {
 
 .status-panel-title {
   color: var(--color-text);
-  font-size: 18px;
+  font-size: var(--md2-type-subtitle1);
   font-weight: var(--font-weight-subheading);
 }
 
 .status-panel-desc {
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--md2-type-body2);
   line-height: 1.5;
 }
 
@@ -388,8 +385,8 @@ function stopToolbarLoading() {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   color: var(--color-text-muted);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--md2-type-caption);
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 
@@ -422,7 +419,7 @@ function stopToolbarLoading() {
 
 .status-panel-expand {
   color: var(--color-text-subtle);
-  transition: transform 160ms ease;
+  transition: transform var(--md2-duration-shortest) var(--md2-easing-standard);
 }
 
 .status-panel[open] .status-panel-expand {
@@ -455,19 +452,19 @@ function stopToolbarLoading() {
 .status-table th {
   background: var(--color-neutral-softer);
   color: var(--color-text-soft);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--md2-type-caption);
+  font-weight: var(--font-weight-action);
 }
 
 .status-table td {
   color: var(--color-text-muted);
-  font-size: 14px;
+  font-size: var(--md2-type-body2);
 }
 
 .status-table .label {
   width: 120px;
   color: var(--color-text);
-  font-weight: 760;
+  font-weight: var(--font-weight-subheading);
 }
 
 @media (max-width: 640px) {
@@ -555,21 +552,21 @@ function stopToolbarLoading() {
     border-bottom: 1px solid var(--color-border);
     background: var(--color-neutral-softer);
     color: var(--color-text);
-    font-size: 15px;
+    font-size: var(--md2-type-body2);
   }
 
   .status-table .label::after {
     color: var(--color-text-subtle);
     content: attr(data-label);
-    font-size: 12px;
-    font-weight: 800;
+    font-size: var(--md2-type-caption);
+    font-weight: var(--font-weight-meta);
   }
 
   .status-table .value::before {
     color: var(--color-text-subtle);
     content: attr(data-label);
-    font-size: 13px;
-    font-weight: 800;
+    font-size: var(--md2-type-caption);
+    font-weight: var(--font-weight-meta);
   }
 }
 

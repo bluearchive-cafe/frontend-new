@@ -1,14 +1,41 @@
 :root {
   color-scheme: dark;
   font-family: "Noto Sans", "Noto Sans SC Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "HarmonyOS Sans SC", sans-serif;
-  --color-bg: rgb(var(--v-theme-background));
-  --color-bg-deep: #15181f;
-  --color-footer: #14171d;
-  --color-surface: rgb(var(--v-theme-surface));
-  --color-surface-raised: rgb(var(--v-theme-surface-bright));
+  --md2-background: rgb(var(--v-theme-background));
+  --md2-surface: rgb(var(--v-theme-surface));
+  --md2-surface-overlay-01: rgba(255, 255, 255, 0.05);
+  --md2-surface-overlay-02: rgba(255, 255, 255, 0.07);
+  --md2-surface-overlay-04: rgba(255, 255, 255, 0.09);
+  --md2-surface-overlay-16: rgba(255, 255, 255, 0.12);
+  --md2-elevation-card: 0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --md2-elevation-button: 0 2px 4px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.24);
+  --md2-elevation-app-bar: 0 2px 4px rgba(0, 0, 0, 0.32), 0 3px 5px rgba(0, 0, 0, 0.24);
+  --md2-elevation-menu: 0 5px 5px rgba(0, 0, 0, 0.32), 0 8px 10px rgba(0, 0, 0, 0.24);
+  --md2-elevation-dialog: 0 8px 10px rgba(0, 0, 0, 0.36), 0 16px 24px rgba(0, 0, 0, 0.28);
+  --md2-elevation-drawer: 0 12px 17px rgba(0, 0, 0, 0.36), 0 24px 38px rgba(0, 0, 0, 0.28);
+  --md2-type-h1: 96px;
+  --md2-type-h2: 60px;
+  --md2-type-h3: 48px;
+  --md2-type-h4: 34px;
+  --md2-type-h5: 24px;
+  --md2-type-h6: 20px;
+  --md2-type-subtitle1: 16px;
+  --md2-type-subtitle2: 14px;
+  --md2-type-body1: 16px;
+  --md2-type-body2: 14px;
+  --md2-type-caption: 12px;
+  --md2-type-overline: 10px;
+  --md2-type-button: 14px;
+  --md2-radius-button: 4px;
+  --md2-radius-card: 8px;
+  --color-bg: var(--md2-background);
+  --color-bg-deep: var(--md2-background);
+  --color-footer: var(--md2-background);
+  --color-surface: var(--md2-surface);
+  --color-surface-raised: color-mix(in srgb, var(--md2-surface) 93%, white);
   --color-primary: rgb(var(--v-theme-primary));
-  --color-primary-soft: #173040;
-  --color-primary-softer: #172530;
+  --color-primary-soft: color-mix(in srgb, var(--color-primary) 12%, var(--md2-surface));
+  --color-primary-softer: color-mix(in srgb, var(--color-primary) 8%, var(--md2-surface));
   --color-primary-border: rgba(41, 174, 234, 0.32);
   --color-primary-border-strong: rgba(41, 174, 234, 0.42);
   --color-secondary: rgb(var(--v-theme-secondary));
@@ -16,18 +43,18 @@
   --color-info-soft: rgba(var(--v-theme-info), 0.1);
   --color-info-border: rgba(var(--v-theme-info), 0.34);
   --color-accent: rgb(var(--v-theme-accent));
-  --color-accent-soft: #302d24;
-  --color-accent-softer: #211f1f;
-  --color-accent-border: rgba(255, 215, 106, 0.34);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, var(--md2-surface));
+  --color-accent-softer: color-mix(in srgb, var(--color-accent) 8%, var(--md2-surface));
+  --color-accent-border: rgba(101, 216, 196, 0.34);
   --color-success: rgb(var(--v-theme-success));
-  --color-success-soft: #1b2f2b;
+  --color-success-soft: color-mix(in srgb, var(--color-success) 12%, var(--md2-surface));
   --color-success-border: rgba(120, 214, 163, 0.34);
   --color-success-border-strong: rgba(120, 214, 163, 0.38);
   --color-error: rgb(var(--v-theme-error));
-  --color-error-soft: #301d29;
-  --color-error-border: rgba(255, 107, 137, 0.36);
-  --color-neutral-soft: #303746;
-  --color-neutral-softer: #2a303b;
+  --color-error-soft: color-mix(in srgb, var(--color-error) 12%, var(--md2-surface));
+  --color-error-border: rgba(255, 138, 162, 0.36);
+  --color-neutral-soft: color-mix(in srgb, var(--md2-surface) 93%, white);
+  --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, white);
   --color-mark: #4a4125;
   --color-text: #fff;
   --color-text-soft: rgba(229, 241, 255, 0.82);
@@ -37,12 +64,26 @@
   --color-border: rgba(255, 255, 255, 0.08);
   --color-border-hover: rgba(41, 174, 234, 0.46);
   --color-card: rgb(var(--v-theme-surface));
-  --color-card-soft: #20252d;
-  --gradient-card: var(--color-card);
-  --gradient-card-strong: var(--color-card);
-  --radius-card: 8px;
+  --color-card-soft: color-mix(in srgb, var(--md2-surface) 95%, white);
+  --gradient-card: color-mix(in srgb, var(--md2-surface) 95%, white);
+  --gradient-card-strong: color-mix(in srgb, var(--md2-surface) 95%, white);
+  --page-background-fill:
+    radial-gradient(circle at 84% 12%, rgba(41, 174, 234, 0.12), transparent 34%),
+    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-deep) 100%);
+  --radius-card: var(--md2-radius-card);
+  --md2-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --md2-easing-deceleration: cubic-bezier(0, 0, 0.2, 1);
+  --md2-easing-acceleration: cubic-bezier(0.4, 0, 1, 1);
+  --md2-easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+  --md2-duration-shortest: 150ms;
+  --md2-duration-shorter: 200ms;
+  --md2-duration-short: 250ms;
+  --md2-duration-standard: 300ms;
+  --md2-duration-complex: 375ms;
+  --md2-duration-entering: 225ms;
+  --md2-duration-leaving: 195ms;
   --container-page: 1120px;
-  --shadow-hover: 0 18px 44px rgba(0, 0, 0, 0.18);
+  --shadow-hover: var(--md2-elevation-menu);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -60,19 +101,29 @@
   --content-section-gap: 40px;
   --content-divider-padding: 32px;
   --grid-gap: 16px;
-  --card-padding: 20px;
-  --card-padding-large: 24px;
+  --card-padding: 24px;
+  --card-padding-large: 28px;
   --inline-gap: 8px;
   --compact-gap: 6px;
   --control-gap: 12px;
   --pill-padding: 4px 10px;
-  --font-weight-heading: 850;
-  --font-weight-subheading: 760;
-  --font-size-display: clamp(38px, 5.4vw, 56px);
-  --font-size-page-title: clamp(34px, 4.8vw, 52px);
-  --font-size-article-title: clamp(28px, 3.8vw, 40px);
-  --font-size-section-title: clamp(28px, 3.4vw, 38px);
-  --font-size-card-title: clamp(20px, 2.4vw, 26px);
+  --font-weight-body: 400;
+  --font-weight-heading: 400;
+  --font-weight-subheading: 500;
+  --font-weight-meta: 500;
+  --font-weight-action: 500;
+  --font-weight-overline: 400;
+  --type-body: var(--md2-type-body1);
+  --type-meta: var(--md2-type-body2);
+  --type-action: var(--md2-type-button);
+  --type-overline: var(--md2-type-overline);
+  --button-height: 42px;
+  --button-padding-inline: 16px;
+  --font-size-display: var(--md2-type-h3);
+  --font-size-page-title: var(--md2-type-h4);
+  --font-size-article-title: var(--md2-type-h4);
+  --font-size-section-title: var(--md2-type-h4);
+  --font-size-card-title: var(--md2-type-h5);
   background: var(--color-bg);
   color: var(--color-text);
 }
@@ -93,9 +144,8 @@ body {
   min-width: 320px;
   margin: 0;
   font-family: "Noto Sans", "Noto Sans SC Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "HarmonyOS Sans SC", sans-serif;
-  background:
-    radial-gradient(circle at 78% 15%, rgba(41, 174, 234, 0.16), transparent 32%),
-    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-deep) 100%);
+  font-weight: var(--font-weight-body);
+  background: var(--md2-background);
 }
 
 a {
@@ -110,20 +160,92 @@ a {
 .page-surface {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .content-card {
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--gradient-card);
+  box-shadow: var(--md2-elevation-card);
 }
 
-.v-btn {
+@media (max-width: 1023px) {
+  :root {
+    --type-body: var(--md2-type-body1);
+    --type-meta: var(--md2-type-caption);
+    --type-action: var(--md2-type-button);
+    --type-overline: var(--md2-type-overline);
+    --font-size-display: var(--md2-type-h4);
+    --font-size-page-title: var(--md2-type-h4);
+    --font-size-article-title: var(--md2-type-h4);
+    --font-size-section-title: var(--md2-type-h4);
+    --font-size-card-title: var(--md2-type-h6);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --button-height: 48px;
+    --type-body: var(--md2-type-body1);
+    --type-meta: var(--md2-type-caption);
+    --type-action: var(--md2-type-button);
+    --type-overline: var(--md2-type-overline);
+    --font-size-display: var(--md2-type-h4);
+    --font-size-page-title: var(--md2-type-h5);
+    --font-size-article-title: var(--md2-type-h5);
+    --font-size-section-title: var(--md2-type-h5);
+    --font-size-card-title: var(--md2-type-h6);
+  }
+}
+
+.v-btn:not(.v-tab):not(.v-app-bar-nav-icon) {
   font-family: inherit;
+  font-size: var(--type-action) !important;
+  font-weight: var(--font-weight-action);
+  height: var(--button-height) !important;
   line-height: 1;
+  min-height: var(--button-height);
+  padding-inline: var(--button-padding-inline) !important;
+  border-radius: var(--md2-radius-button) !important;
+}
+
+.v-btn:not(.v-tab):not(.v-app-bar-nav-icon).v-btn--variant-elevated,
+.v-btn:not(.v-tab):not(.v-app-bar-nav-icon).v-btn--variant-flat {
+  box-shadow: var(--md2-elevation-button);
+}
+
+.v-card {
+  border: 0;
+  box-shadow: var(--md2-elevation-card);
+}
+
+.v-app-bar {
+  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;
+}
+
+.v-overlay__content > .v-card,
+.v-dialog .v-card,
+.v-navigation-drawer {
+  background-image: linear-gradient(var(--md2-surface-overlay-16), var(--md2-surface-overlay-16));
+}
+
+.v-overlay__content > .v-card,
+.v-dialog .v-card {
+  box-shadow: var(--md2-elevation-dialog) !important;
+}
+
+.v-menu > .v-overlay__content {
+  box-shadow: none;
+}
+
+.v-menu > .v-overlay__content > .v-list {
+  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;
+  box-shadow: var(--md2-elevation-menu);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 2px;
 }
 
 .v-btn__content,
@@ -149,7 +271,7 @@ a {
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 180ms ease;
+  transition: opacity var(--md2-duration-standard) var(--md2-easing-standard);
 }
 
 .page-enter-from,
@@ -197,10 +319,10 @@ a {
   *,
   *::before,
   *::after {
-    animation-duration: 1ms !important;
+    animation-duration: 0ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-    transition-duration: 1ms !important;
+    transition-duration: 0ms !important;
   }
 
   .page-enter-active,

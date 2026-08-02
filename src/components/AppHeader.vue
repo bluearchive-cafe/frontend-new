@@ -1,5 +1,16 @@
 <template>
-  <v-app-bar class="app-header" color="surface" elevation="0" height="56">
+  <v-app-bar class="app-header" color="surface" elevation="4" height="56">
+    <v-app-bar-nav-icon
+      class="mobile-menu"
+      aria-label="打开菜单"
+      ref="menuTrigger"
+      @click="drawer = true"
+    />
+
+    <v-toolbar-title class="mobile-brand">
+      <RouterLink to="/" aria-label="BlueArchive.Cafe 首页">蔚蓝咖啡厅</RouterLink>
+    </v-toolbar-title>
+
     <v-container class="header-inner" max-width="1120">
       <RouterLink class="brand" to="/" aria-label="BlueArchive.Cafe 首页">
         <span>蔚蓝咖啡厅</span>
@@ -7,7 +18,6 @@
 
       <v-tabs
         class="desktop-tabs"
-        :model-value="activeNavValue"
         color="primary"
         slider-color="primary"
         bg-color="transparent"
@@ -23,19 +33,11 @@
           :to="item.to"
           class="nav-tab"
           height="56"
-          :ripple="false"
         >
           {{ item.label }}
         </v-tab>
       </v-tabs>
 
-      <v-btn
-        class="mobile-menu"
-        icon="$menu"
-        variant="text"
-        aria-label="打开菜单"
-        @click="drawer = true"
-      />
     </v-container>
 
     <v-progress-linear
@@ -51,20 +53,13 @@
 
   <v-navigation-drawer
     v-model="drawer"
-    class="app-drawer"
     temporary
-    location="right"
+    location="left"
     color="surface"
-    width="280"
     scrim="rgba(0, 0, 0, 0.46)"
+    @keydown.esc="closeDrawer"
   >
-    <v-toolbar color="surface" density="comfortable">
-      <v-toolbar-title class="drawer-title">站点导航</v-toolbar-title>
-    </v-toolbar>
-
-    <v-divider />
-
-    <v-list class="drawer-list" nav density="comfortable">
+    <v-list>
       <v-list-item
         v-for="item in navItems"
         :key="item.label"
@@ -72,21 +67,20 @@
         :title="item.label"
         :active="item.isActive()"
         color="primary"
-        rounded="lg"
-        @click="drawer = false"
+        @click="closeDrawer"
       />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { useToolbarLoader } from '../utils/toolbar-loader'
 
 const drawer = ref(false)
+const menuTrigger = ref<{ $el?: HTMLElement } | null>(null)
 const route = useRoute()
 const { isToolbarLoading } = useToolbarLoader()
 
@@ -123,12 +117,33 @@ const navItems = computed(() => [
   }
 ])
 
-const activeNavValue = computed(() => navItems.value.find((item) => item.isActive())?.value)
+function closeDrawer() {
+  drawer.value = false
+  void nextTick(() => menuTrigger.value?.$el?.focus())
+}
+
+function handleGlobalKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && drawer.value) {
+    closeDrawer()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown)
+})
 </script>
 
 <style scoped>
-.app-header {
-  border-bottom: 1px solid var(--color-border);
+.app-header.v-app-bar.v-toolbar {
+  border-bottom: 0;
+  background-color: rgba(var(--v-theme-surface), 0.82) !important;
+  box-shadow: var(--md2-elevation-app-bar);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .header-inner {
@@ -145,8 +160,8 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   align-items: center;
   gap: var(--control-gap);
   color: var(--color-text);
-  font-size: 18px;
-  font-weight: 700;
+  font-size: var(--md2-type-subtitle1);
+  font-weight: var(--font-weight-action);
 }
 
 .desktop-tabs {
@@ -172,7 +187,8 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   border-radius: 0 !important;
   padding-inline: var(--space-4);
   color: var(--color-nav-muted);
-  font-weight: 700;
+  font-size: var(--type-action);
+  font-weight: var(--font-weight-action);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -187,57 +203,27 @@ const activeNavValue = computed(() => navItems.value.find((item) => item.isActiv
   align-items: center;
 }
 
-.nav-tab :deep(.v-btn__overlay) {
-  opacity: 0;
-}
-
-.nav-tab:hover :deep(.v-btn__overlay) {
-  background: var(--color-primary);
-  opacity: 0.08;
-}
-
 .nav-tab.v-tab--selected {
   color: var(--color-text);
 }
 
-.mobile-menu {
+.mobile-menu,
+.mobile-brand {
   display: none;
-  margin-left: auto;
-}
-
-.app-drawer {
-  top: 0 !important;
-  height: 100dvh !important;
-  border-left: 1px solid var(--color-border);
-  z-index: 2400 !important;
-}
-
-:global(.v-navigation-drawer__scrim) {
-  z-index: 2399 !important;
-}
-
-.drawer-title {
-  color: var(--color-text);
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.drawer-list {
-  padding: var(--space-3);
-}
-
-.drawer-list :deep(.v-list-item) {
-  min-height: 44px;
-  margin-bottom: var(--space-1);
 }
 
 @media (max-width: 720px) {
+  .header-inner {
+    display: none;
+  }
+
   .desktop-tabs {
     display: none;
   }
 
-  .mobile-menu {
-    display: inline-grid;
+  .mobile-menu,
+  .mobile-brand {
+    display: flex;
   }
 }
 </style>

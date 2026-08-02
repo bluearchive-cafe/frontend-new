@@ -23,14 +23,14 @@ withDefaults(
 <style scoped>
 .page-heading {
   margin-bottom: var(--page-heading-gap);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
 }
 
 .page-heading p {
   margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: var(--type-overline);
+  font-weight: var(--font-weight-overline);
   text-transform: uppercase;
 }
 
@@ -46,7 +46,7 @@ withDefaults(
   display: block;
   margin-top: 16px;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: var(--type-body);
   line-height: 1.8;
 }
 

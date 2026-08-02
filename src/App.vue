@@ -6,7 +6,7 @@
 
     <v-main id="main-content" class="app-main">
       <RouterView v-slot="{ Component, route }">
-        <Transition name="page" mode="out-in">
+        <Transition name="page">
           <component :is="Component" :key="route.fullPath" />
         </Transition>
       </RouterView>
@@ -30,12 +30,12 @@ import SiteFooter from './components/SiteFooter.vue'
   padding: 10px 20px;
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   background: var(--color-primary);
-  color: #fff;
-  font-size: 14px;
+  color: rgb(var(--v-theme-on-primary));
+  font-size: var(--md2-type-button);
   font-weight: 700;
   text-decoration: none;
   translate: 0 -100%;
-  transition: translate 120ms ease;
+  transition: translate var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .skip-link:focus-visible {

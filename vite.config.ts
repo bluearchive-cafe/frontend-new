@@ -4,7 +4,7 @@ import path from 'node:path'
 
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
-import { defineConfig } from 'vite'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 import { generateNewsModule } from './scripts/news-content.mjs'
 
@@ -38,14 +38,22 @@ export default defineConfig({
     })
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        // Keep Vuetify framework code in a stable shared chunk.
-        manualChunks: {
-          vuetify: ['vuetify', 'vue', 'vue-router']
+        // Keep the Vue framework stack in a stable shared chunk with Rolldown.
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vuetify',
+              test: /node_modules[\\/](?:vuetify|vue|vue-router)[\\/]/
+            }
+          ]
         }
       }
     }
+  },
+  test: {
+    exclude: [...configDefaults.exclude, '**/.worktrees/**']
   },
   css: {
     preprocessorOptions: {

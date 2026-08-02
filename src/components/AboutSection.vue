@@ -41,12 +41,12 @@
           >
             <template #prepend>
               <v-avatar :class="['social-icon', `social-icon--${link.tone}`]" rounded="lg">
-                <v-icon :icon="link.icon" size="22" />
+                <v-icon :icon="link.icon" size="22" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$openInNew" color="primary" size="18" />
+              <v-icon icon="$openInNew" color="primary" size="18" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>
@@ -66,12 +66,12 @@
           >
             <template #prepend>
               <v-avatar class="social-icon sponsor-icon--wechat" rounded="lg">
-                <v-icon icon="$imageOutline" size="22" />
+                <v-icon icon="$imageOutline" size="22" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$imageOutline" color="primary" size="18" />
+              <v-icon icon="$imageOutline" color="primary" size="18" aria-hidden="true" />
             </template>
           </v-list-item>
 
@@ -84,24 +84,24 @@
           >
             <template #prepend>
               <v-avatar class="social-icon sponsor-icon--afdian" rounded="lg">
-                <v-icon icon="$linkVariant" size="22" />
+                <v-icon icon="$linkVariant" size="22" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$openInNew" color="primary" size="18" />
+              <v-icon icon="$openInNew" color="primary" size="18" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>
       </section>
     </v-container>
 
-    <v-dialog v-model="isSponsorQrOpen" max-width="420">
-      <v-card class="sponsor-dialog" elevation="0">
+    <v-dialog v-model="isSponsorQrOpen" max-width="420" aria-labelledby="sponsor-dialog-title">
+      <v-card class="sponsor-dialog">
         <v-card-text>
           <div class="sponsor-dialog-heading">
             <div>
-              <h2>微信赞赏码</h2>
+              <h2 id="sponsor-dialog-title">微信赞赏码</h2>
               <p>感谢你的支持。</p>
             </div>
             <v-btn variant="text" color="primary" @click="isSponsorQrOpen = false">
@@ -173,9 +173,7 @@ const isSponsorQrOpen = ref(false)
 }
 
 .about-section {
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    linear-gradient(180deg, var(--color-bg-deep) 0%, var(--color-bg) 100%);
+  background: var(--page-background-fill);
 }
 
 .about-layout {
@@ -188,7 +186,7 @@ const isSponsorQrOpen = ref(false)
 .about-copy h1 {
   max-width: 520px;
   margin: 0;
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   color: var(--color-text);
   font-size: var(--font-size-section-title);
   font-weight: var(--font-weight-heading);
@@ -198,9 +196,9 @@ const isSponsorQrOpen = ref(false)
 .about-copy p {
   max-width: 560px;
   margin: var(--space-5) 0 0;
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: var(--md2-type-body1);
   line-height: 1.85;
 }
 
@@ -216,9 +214,9 @@ const isSponsorQrOpen = ref(false)
   padding: var(--card-padding);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--color-card-soft);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .about-copy p:nth-of-type(1) {
@@ -244,7 +242,7 @@ const isSponsorQrOpen = ref(false)
 .about-row h3 {
   margin: 0 0 6px;
   color: var(--color-text);
-  font-size: 18px;
+  font-size: var(--md2-type-subtitle1);
   font-weight: var(--font-weight-subheading);
 }
 
@@ -266,7 +264,7 @@ const isSponsorQrOpen = ref(false)
 
 .social-heading h2 {
   margin: 0;
-  animation: fade-slide-up 520ms ease 260ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 260ms both;
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-heading);
@@ -275,7 +273,7 @@ const isSponsorQrOpen = ref(false)
 .social-heading p {
   max-width: 560px;
   margin: var(--control-gap) 0 0;
-  animation: fade-slide-up 520ms ease 320ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 320ms both;
   color: var(--color-text-muted);
   line-height: 1.75;
 }
@@ -283,7 +281,7 @@ const isSponsorQrOpen = ref(false)
 .social-list {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  animation: fade-slide-up 520ms ease 320ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 320ms both;
   background: var(--color-card-soft) !important;
 }
 
@@ -303,7 +301,7 @@ const isSponsorQrOpen = ref(false)
 
 .sponsor-heading h2 {
   margin: 0;
-  animation: fade-slide-up 520ms ease 380ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 380ms both;
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-heading);
@@ -312,7 +310,7 @@ const isSponsorQrOpen = ref(false)
 .sponsor-heading p {
   max-width: 560px;
   margin: var(--control-gap) 0 0;
-  animation: fade-slide-up 520ms ease 440ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 440ms both;
   color: var(--color-text-muted);
   line-height: 1.75;
 }
@@ -335,7 +333,7 @@ const isSponsorQrOpen = ref(false)
 
 .sponsor-dialog {
   border: 1px solid var(--color-border);
-  background: var(--gradient-card);
+  background-color: var(--md2-surface);
 }
 
 .sponsor-dialog :deep(.v-card-text) {
@@ -353,7 +351,7 @@ const isSponsorQrOpen = ref(false)
 .sponsor-dialog-heading h2 {
   margin: 0;
   color: var(--color-text);
-  font-size: 22px;
+  font-size: var(--md2-type-h6);
   font-weight: var(--font-weight-heading);
 }
 
