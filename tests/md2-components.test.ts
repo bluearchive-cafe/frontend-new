@@ -83,7 +83,9 @@ describe('AppHeader MD2 compatibility contract', () => {
 
   it('keeps the mobile drawer trigger on the leading edge', () => {
     expect(appHeaderSource).not.toMatch(/\.mobile-menu\s*\{[\s\S]*?margin-left:\s*auto;/)
-    expect(appHeaderSource.indexOf('class="mobile-menu"')).toBeLessThan(appHeaderSource.indexOf('<RouterLink class="brand"'))
+    expect(appHeaderSource.indexOf('class="mobile-menu"')).toBeLessThan(
+      appHeaderSource.indexOf('<v-toolbar-title class="mobile-brand">')
+    )
   })
 
   it('uses Vuetify app bar components for the mobile navigation layout', () => {
