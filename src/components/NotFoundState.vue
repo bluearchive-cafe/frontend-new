@@ -1,5 +1,5 @@
 <template>
-  <v-card class="not-found-state" elevation="0">
+  <v-card class="not-found-state" elevation="1">
     <v-card-text class="not-found-content">
       <p class="status-code">404</p>
       <h1>{{ title }}</h1>
@@ -8,7 +8,6 @@
       <div class="actions">
         <v-btn
           color="primary"
-          size="large"
           :to="primaryTo"
           :prepend-icon="primaryPrependIcon"
           :append-icon="primaryAppendIcon"
@@ -18,7 +17,6 @@
         <v-btn
           v-if="secondaryLabel && secondaryTo"
           variant="outlined"
-          size="large"
           :to="secondaryTo"
           :prepend-icon="secondaryPrependIcon"
           :append-icon="secondaryAppendIcon"
@@ -58,18 +56,17 @@ withDefaults(
 <style scoped>
 .not-found-state {
   width: 100%;
-  border: 1px solid var(--color-border);
   background: var(--color-card);
 }
 
 .not-found-content {
-  padding: clamp(var(--space-8), 5vw, 52px) !important;
+  padding: var(--space-8) !important;
 }
 
 .status-code {
   margin: 0 0 var(--control-gap);
   color: var(--color-primary);
-  font-size: 14px;
+  font-size: var(--type-meta);
   font-weight: var(--font-weight-heading);
   letter-spacing: 0;
 }
@@ -86,7 +83,7 @@ h1 {
   max-width: 560px;
   margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: var(--type-body);
   line-height: 1.8;
 }
 

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { staticRoutes } from './shared/site-routes.mjs'
+import { trackNotFound } from './utils/analytics'
 import { applyRouteSeo } from './utils/seo'
 
 const routeComponents = {
@@ -44,6 +45,10 @@ const router = createRouter({
 router.afterEach((to) => {
   // SEO tags follow the resolved route after each successful navigation.
   applyRouteSeo(to)
+
+  if (to.name === 'not-found') {
+    trackNotFound(to.path)
+  }
 })
 
 export default router
