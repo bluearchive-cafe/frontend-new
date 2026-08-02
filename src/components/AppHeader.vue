@@ -12,9 +12,9 @@
     </v-toolbar-title>
 
     <v-container class="header-inner" max-width="1120">
-      <RouterLink class="brand" to="/" aria-label="BlueArchive.Cafe 首页">
-        <span>蔚蓝咖啡厅</span>
-      </RouterLink>
+      <v-toolbar-title class="brand">
+        <RouterLink to="/" aria-label="BlueArchive.Cafe 首页">蔚蓝咖啡厅</RouterLink>
+      </v-toolbar-title>
 
       <v-tabs
         class="desktop-tabs"
@@ -156,12 +156,8 @@ onBeforeUnmount(() => {
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--control-gap);
+  flex: 0 0 auto;
   color: var(--color-text);
-  font-size: var(--md2-type-subtitle1);
-  font-weight: var(--font-weight-action);
 }
 
 .desktop-tabs {
@@ -187,7 +183,7 @@ onBeforeUnmount(() => {
   border-radius: 0 !important;
   padding-inline: var(--space-4);
   color: var(--color-nav-muted);
-  font-size: var(--type-action);
+  font-size: var(--md2-type-subtitle1);
   font-weight: var(--font-weight-action);
   letter-spacing: 0;
   text-transform: none;
