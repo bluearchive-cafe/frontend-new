@@ -4,7 +4,7 @@ BlueArchive.Cafe 官网，使用 Vue 3、TypeScript、Vuetify 和 Vite 构建。
 
 ## 环境
 
-- Node.js 22，最低版本为 22.18.0
+- Node.js 24，最低版本为 24.11.0
 - npm 与 `package-lock.json`
 
 安装锁定依赖：
