@@ -1,5 +1,13 @@
+import type { StatusResourceKey } from '../utils/status'
+
+export type ClientStatusResourceKey = Extract<
+  StatusResourceKey,
+  'android' | 'ios' | 'windows' | 'macos'
+>
+
 export interface PlatformLink {
   name: string
+  statusKey: ClientStatusResourceKey
   icon: string
   tone: string
   docUrl: string
@@ -8,6 +16,8 @@ export interface PlatformLink {
   tags?: string[]
   variants: DownloadVariant[]
   hidden?: boolean
+  disabled?: boolean
+  disabledHint?: string
 }
 
 export interface DownloadVariant {
@@ -23,6 +33,7 @@ const baseDocUrl = 'https://docs.bluearchive.cafe/'
 export const platformLinks: PlatformLink[] = [
   {
     name: 'Android 客户端',
+    statusKey: 'android',
     icon: '$android',
     tone: 'android',
     docUrl: baseDocUrl + 'platform/android/',
@@ -31,21 +42,39 @@ export const platformLinks: PlatformLink[] = [
     tags: ['APK', '移动端', '模拟器'],
     variants: [
       {
+        name: 'APKS 安装包',
+        description: '需要通过支持 APKS 的安装器安装（例如 MT 管理器 和 InstallerX Revived、SAI），使用系统自带安装器可能无法正常安装。',
+        downloadUrl: 'https://download.bluearchive.cafe/android/latest',
+        recommended: true
+      },
+      {
+        name: 'Android 安装器（测试）',
+        description: '我们开发的 APKS 安装器，集成游戏下载 / 安装、汉化管理等功能。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Android/releases',
+      },
+      {
         name: '共存版（弃用）',
         description: '可与官方客户端共存安装。',
         downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk',
-        recommended: true,
         hidden: true
       },
       {
-        name: '安装包',
+        name: '独占版（弃用）',
         description: '需要卸载官方客户端才可安装，但对模拟器的兼容性更好。',
-        downloadUrl: 'https://download.bluearchive.cafe/android/latest'
+        downloadUrl: 'https://download.bluearchive.cafe/android/latest',
+        hidden: true
+      },
+      {
+        name: '替换文件（弃用）',
+        description: '在 GitHub 中查看完整内容',
+        downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases/latest',
+        hidden: true
       }
     ]
   },
   {
     name: 'iOS 客户端',
+    statusKey: 'ios',
     icon: '$appleIos',
     tone: 'ios',
     docUrl: baseDocUrl + 'platform/ios/',
@@ -69,6 +98,7 @@ export const platformLinks: PlatformLink[] = [
   },
   {
     name: 'Windows 启动器',
+    statusKey: 'windows',
     icon: '$microsoftWindows',
     tone: 'windows',
     docUrl: baseDocUrl + 'platform/windows/',
@@ -77,7 +107,7 @@ export const platformLinks: PlatformLink[] = [
     tags: ['Windows 10 / 11', '桌面端'],
     variants: [
       {
-        name: '便携版',
+        name: '便携版（旧）',
         description: '解压后直接运行，适合临时使用或放在自定义目录。',
         downloadUrl: 'https://download.bluearchive.cafe/launcher/latest'
       },
@@ -90,6 +120,7 @@ export const platformLinks: PlatformLink[] = [
   },
   {
     name: 'macOS 客户端',
+    statusKey: 'macos',
     icon: '$apple',
     tone: 'macos',
     docUrl: baseDocUrl + 'platform/macos/',

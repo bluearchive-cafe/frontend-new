@@ -9,7 +9,7 @@
       />
 
       <div class="guide-strip" role="note">
-        <v-icon icon="$infoOutline" color="info" size="22" />
+        <v-icon icon="$infoOutline" color="info" size="22" aria-hidden="true" />
         <p>不同平台的安装方式和系统权限要求可能不同。遇到签名、权限或网络问题时，请优先查看对应文档。</p>
       </div>
 
@@ -17,13 +17,13 @@
         <v-card
           v-for="platform in visiblePlatformLinks"
           :key="platform.name"
-          class="platform-card"
-          elevation="0"
+          :class="['platform-card', { 'platform-card--disabled': platform.disabled }]"
+          elevation="1"
         >
           <v-card-text>
             <div class="platform-head">
               <v-avatar :class="['platform-icon', `platform-icon--${platform.tone}`]" rounded="lg">
-                <v-icon :icon="platform.icon" size="26" />
+                <v-icon :icon="platform.icon" size="26" aria-hidden="true" />
               </v-avatar>
               <div>
                 <h2>{{ platform.name }}</h2>
@@ -37,7 +37,7 @@
                 v-for="tag in platformTags(platform)"
                 :key="tag"
                 size="small"
-                variant="tonal"
+                variant="outlined"
                 color="primary"
               >
                 {{ tag }}
@@ -45,7 +45,17 @@
             </div>
 
             <div class="platform-actions">
-              <template v-if="platform.variants.length > 1">
+              <template v-if="platform.disabled">
+                <v-btn
+                  color="secondary"
+                  variant="outlined"
+                  disabled
+                  prepend-icon="$infoOutline"
+                >
+                  {{ platform.disabledHint || '暂不可用' }}
+                </v-btn>
+              </template>
+              <template v-else-if="platform.variants.length > 1">
                 <v-menu location="bottom start" :offset="8">
                   <template #activator="{ props }">
                     <v-btn
@@ -72,7 +82,7 @@
                           v-if="variant.recommended"
                           color="primary"
                           size="x-small"
-                          variant="tonal"
+                          variant="outlined"
                         >
                           推荐
                         </v-chip>
@@ -126,12 +136,12 @@
           >
             <template #prepend>
               <v-avatar class="doc-icon" rounded="lg">
-                <v-icon :icon="doc.icon" size="22" />
+                <v-icon :icon="doc.icon" size="22" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon :icon="doc.external ? '$openInNew' : '$arrowRight'" color="primary" size="18" />
+              <v-icon :icon="doc.external ? '$openInNew' : '$arrowRight'" color="primary" size="18" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>
@@ -139,11 +149,11 @@
     </v-container>
 
     <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)" aria-labelledby="download-dialog-title">
-      <v-card class="download-dialog" elevation="0">
+      <v-card class="download-dialog">
         <v-card-text>
           <div class="dialog-head">
             <v-avatar class="doc-icon" rounded="lg">
-              <v-icon icon="$bookOpenOutline" size="24" />
+              <v-icon icon="$bookOpenOutline" size="24" aria-hidden="true" />
             </v-avatar>
             <div>
               <p>安装前确认</p>
@@ -156,12 +166,24 @@
           </p>
 
           <v-alert
+            v-if="selectedStatusNotice"
+            class="client-status-notice"
+            :color="selectedStatusNotice.color"
+            density="comfortable"
+            :icon="selectedStatusNotice.icon"
+            :role="selectedStatusNotice.role"
+            variant="outlined"
+          >
+            {{ selectedStatusNotice.message }}
+          </v-alert>
+
+          <v-alert
             v-if="downloadAttempted"
             class="download-feedback"
             color="primary"
             density="comfortable"
             role="status"
-            variant="tonal"
+            variant="outlined"
           >
             如果下载没有开始，请重新点击继续下载，或先查看安装文档确认浏览器与系统权限设置。
           </v-alert>
@@ -173,7 +195,7 @@
             <v-btn
               v-if="selectedPlatform"
               color="primary"
-              variant="tonal"
+              variant="outlined"
               :href="selectedPlatform.docUrl"
               :target="selectedPlatform.docExternal ? '_blank' : undefined"
               :rel="selectedPlatform.docExternal ? 'noopener noreferrer' : undefined"
@@ -201,10 +223,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import PageHeading from '../components/PageHeading.vue'
+import { trackDownloadClick } from '../utils/analytics'
+import {
+  fetchStatus,
+  mapStatusResources,
+  type StatusResourceView
+} from '../utils/status'
 import {
   documentLinks,
   filterVisiblePlatformLinks,
@@ -213,12 +241,24 @@ import {
   type PlatformLink
 } from '../content/downloads'
 
+type ClientStatusLoadState = 'loading' | 'ready' | 'failed'
+
+interface ClientStatusNotice {
+  color: 'info' | 'warning'
+  icon: '$infoOutline' | '$alertCircleOutline'
+  message: string
+  role: 'status' | 'alert'
+}
+
 const route = useRoute()
 
 const downloadDialog = ref(false)
 const downloadAttempted = ref(false)
 const selectedPlatform = ref<PlatformLink | null>(null)
 const selectedVariant = ref<DownloadVariant | null>(null)
+const statusRequestController = new AbortController()
+const clientStatusLoadState = ref<ClientStatusLoadState>('loading')
+const clientStatuses = ref<Record<PlatformLink['statusKey'], StatusResourceView> | null>(null)
 
 const showHidden = computed(() => route.query.show_hidden === '1')
 
@@ -232,6 +272,34 @@ const selectedDownloadTitle = computed(() => {
   return `${selectedPlatform.value.name} · ${selectedVariant.value.name}`
 })
 
+const selectedStatusNotice = computed<ClientStatusNotice | null>(() => {
+  const platform = selectedPlatform.value
+
+  if (!platform) {
+    return null
+  }
+
+  if (clientStatusLoadState.value === 'loading') {
+    return {
+      color: 'info',
+      icon: '$infoOutline',
+      message: '正在检查客户端状态……',
+      role: 'status'
+    }
+  }
+
+  if (clientStatusLoadState.value === 'failed') {
+    return {
+      color: 'warning',
+      icon: '$alertCircleOutline',
+      message: '暂时无法确认该客户端状态。你仍可继续下载，安装前请留意版本兼容性。',
+      role: 'alert'
+    }
+  }
+
+  return createStatusNotice(clientStatuses.value?.[platform.statusKey])
+})
+
 function platformTags(platform: PlatformLink) {
   return platform.tags ?? []
 }
@@ -240,7 +308,33 @@ function singleVariantButtonText(variant: DownloadVariant) {
   return `下载${variant.name}`
 }
 
+function createStatusNotice(statusResource?: StatusResourceView): ClientStatusNotice | null {
+  if (!statusResource || statusResource.status.state === 'loading') {
+    return {
+      color: 'warning',
+      icon: '$alertCircleOutline',
+      message: '暂时未取得该客户端状态。你仍可继续下载，安装前请留意版本兼容性。',
+      role: 'alert'
+    }
+  }
+
+  if (statusResource.status.state === 'error') {
+    return {
+      color: 'warning',
+      icon: '$alertCircleOutline',
+      message: '本地化客户端可能尚未同步到最新官方版本。你仍可继续下载。',
+      role: 'alert'
+    }
+  }
+
+  return null
+}
+
 function openDownloadGuide(platform: PlatformLink, variant: DownloadVariant) {
+  if (platform.disabled) {
+    return
+  }
+
   selectedPlatform.value = platform
   selectedVariant.value = variant
   downloadAttempted.value = false
@@ -248,24 +342,48 @@ function openDownloadGuide(platform: PlatformLink, variant: DownloadVariant) {
 }
 
 function markDownloadAttempted() {
+  if (selectedPlatform.value && selectedVariant.value) {
+    trackDownloadClick({
+      platform: selectedPlatform.value.name,
+      variant: selectedVariant.value.name,
+      downloadUrl: selectedVariant.value.downloadUrl
+    })
+  }
+
   downloadAttempted.value = true
 }
+
+onMounted(async () => {
+  try {
+    const statusData = await fetchStatus(statusRequestController.signal)
+    clientStatuses.value = mapStatusResources(statusData)
+    clientStatusLoadState.value = 'ready'
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      return
+    }
+
+    clientStatusLoadState.value = 'failed'
+  }
+})
+
+onBeforeUnmount(() => {
+  statusRequestController.abort()
+})
 </script>
 
 <style scoped>
 .download-page {
   min-height: 72vh;
   padding-block: var(--page-padding-block);
-  background:
-    radial-gradient(circle at 84% 12%, var(--color-primary-soft), transparent 30%),
-    var(--color-bg-deep);
+  background: var(--page-background-fill);
 }
 
 .docs-copy p {
   margin: 0 0 var(--inline-gap);
   color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: var(--md2-type-button);
+  font-weight: var(--font-weight-overline);
   text-transform: uppercase;
 }
 
@@ -281,7 +399,7 @@ function markDownloadAttempted() {
   display: block;
   margin-top: 16px;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: var(--md2-type-body1);
   line-height: 1.8;
 }
 
@@ -294,7 +412,7 @@ function markDownloadAttempted() {
   padding: var(--space-4) var(--space-5);
   border: 1px solid var(--color-info-border);
   border-radius: var(--radius-card);
-  animation: fade-slide-up 520ms ease 60ms both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 60ms both;
   background: var(--color-info-soft);
 }
 
@@ -316,9 +434,9 @@ function markDownloadAttempted() {
 
 .platform-card {
   border: 1px solid var(--color-border);
-  animation: fade-slide-up 520ms ease both;
+  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .platform-card:nth-child(2) {
@@ -383,7 +501,7 @@ function markDownloadAttempted() {
 .platform-description {
   margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
-  font-size: 15px;
+  font-size: var(--md2-type-body2);
   line-height: 1.75;
 }
 
@@ -398,7 +516,7 @@ function markDownloadAttempted() {
   min-width: min(320px, calc(100vw - 32px));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface) !important;
+  background-color: var(--color-surface) !important;
 }
 
 .variant-menu :deep(.v-list-item) {
@@ -407,7 +525,7 @@ function markDownloadAttempted() {
 
 .variant-menu :deep(.v-list-item-title) {
   color: var(--color-text);
-  font-weight: 760;
+  font-weight: var(--font-weight-subheading);
 }
 
 .variant-menu :deep(.v-list-item-subtitle) {
@@ -448,8 +566,7 @@ function markDownloadAttempted() {
 .download-dialog {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
-  background: var(--color-surface);
-  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.42);
+  background-color: var(--color-surface);
 }
 
 .download-dialog :deep(.v-card-text) {
@@ -465,14 +582,14 @@ function markDownloadAttempted() {
 .dialog-head p {
   margin: 0 0 4px;
   color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--md2-type-caption);
+  font-weight: var(--font-weight-overline);
 }
 
 .dialog-head h2 {
   margin: 0;
   color: var(--color-text);
-  font-size: 22px;
+  font-size: var(--md2-type-h6);
   font-weight: var(--font-weight-subheading);
   line-height: 1.3;
 }
@@ -483,6 +600,7 @@ function markDownloadAttempted() {
   line-height: 1.75;
 }
 
+.client-status-notice,
 .download-feedback {
   margin-top: var(--space-5);
 }
@@ -499,8 +617,7 @@ function markDownloadAttempted() {
 @media (hover: hover) and (pointer: fine) {
   .platform-card:hover {
     border-color: var(--color-border-hover);
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-4px);
+    box-shadow: var(--md2-elevation-card);
   }
 }
 
@@ -538,5 +655,14 @@ function markDownloadAttempted() {
   .platform-card {
     animation: none;
   }
+}
+
+.platform-card--disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.platform-card--disabled .platform-actions {
+  pointer-events: auto;
 }
 </style>
