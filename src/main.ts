@@ -45,9 +45,13 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import App from './App.vue'
 import router from './router'
 import { blueArchiveDarkTheme } from './theme'
+import { enableClickSound } from './utils/easter-egg'
 import { printConsoleBrand } from './utils/console-brand'
 
 printConsoleBrand()
+
+// 5% 概率彩蛋音效，挂载前就位。
+enableClickSound()
 
 // Vuetify is configured here so icon aliases, theme tokens, and component defaults are app-wide.
 const vuetify = createVuetify({

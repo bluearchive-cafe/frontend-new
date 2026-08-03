@@ -315,6 +315,44 @@ a {
   }
 }
 
+/* 点击彩蛋贴图：在点击坐标弹出 kuyashi 表情，弹入后淡出消失。
+   贴图大小与旋转由 --ee-sticker-size / --ee-rot 覆盖，时长由 --ee-sticker-duration 覆盖。 */
+.easter-egg-sticker {
+  width: var(--ee-sticker-size, 160px);
+  height: auto;
+  display: block;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  animation: easter-egg-sticker var(--ee-sticker-duration, 1250ms) var(--md2-easing-standard)
+    var(--ee-rot, -8deg) both;
+}
+
+@keyframes easter-egg-sticker {
+  0% {
+    opacity: 0;
+    scale: 0.2;
+    rotate: 0deg;
+  }
+
+  20% {
+    opacity: 1;
+    scale: 1.15;
+    rotate: var(--ee-rot, -8deg);
+  }
+
+  85% {
+    opacity: 1;
+    scale: 1;
+    rotate: var(--ee-rot, -8deg);
+  }
+
+  100% {
+    opacity: 0;
+    scale: 0.7;
+    rotate: var(--ee-rot, -8deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
