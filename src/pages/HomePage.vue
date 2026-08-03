@@ -2,10 +2,12 @@
   <div class="home-page">
     <HeroSection />
     <NewsSection />
+    <FloatingScrollHint />
   </div>
 </template>
 
 <script setup lang="ts">
+import FloatingScrollHint from '../components/FloatingScrollHint.vue'
 import HeroSection from '../components/HeroSection.vue'
 import NewsSection from '../components/NewsSection.vue'
 </script>
