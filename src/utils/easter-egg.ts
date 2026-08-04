@@ -1,6 +1,6 @@
 // 点击可交互元素时以 5%（1/20）概率触发彩蛋：播放音效并在点击位置弹出贴图，
-// 动画结束后自动消失。每次触发从 kuyashi / panpakapann / gousyuzinsama
-// 中随机选一组，音效与贴图始终来自同一组，不会出现声音和图片不匹配。
+// 动画结束后自动消失。每次触发从 kuyashi / panpakapann / gousyuzinsama / yuzu /
+// nihahahaha / reisa 中随机选一组，音效与贴图始终来自同一组，不会出现声音和图片不匹配。
 // 使用全局 pointerup 捕获委托：任何按钮、链接、输入框等被点击后都走这里判定，
 // 无需为每个组件单独注册监听。交互元素需满足 closest 交互选择器，
 // 且其祖先上没有标记 data-easter-egg="off" 的排除区。
@@ -31,6 +31,18 @@ const EASTER_EGG_ASSETS = [
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/panpakapann.ogg`,
     stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/panpakapann.jpg`,
+  },
+  {
+    audioUrl: `${import.meta.env.BASE_URL}assets/audio/yuzu.ogg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/yuzu.jpg`,
+  },
+  {
+    audioUrl: `${import.meta.env.BASE_URL}assets/audio/nihahahaha.ogg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/nihahahaha.png`,
+  },
+  {
+    audioUrl: `${import.meta.env.BASE_URL}assets/audio/reisa.ogg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/reisa.jpg`,
   },
 ]
 

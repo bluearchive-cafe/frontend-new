@@ -269,8 +269,40 @@ describe('easter-egg click sound', () => {
     expect(document.querySelector('img.easter-egg-sticker')).toBeNull()
   })
 
-  it('picks one asset group and plays its matching audio and sticker', () => {
-    // 第一个随机数用于概率判定（0 必中），第二个用于素材选择（0.99 落在第三组 panpakapann）。
+  it('plays yuzu when the pick lands on the fourth group', () => {
+    // 素材选择 0.5 × 6 = 3.0 → 索引 3 → yuzu。
+    mockRandomSequence([0, 0.5])
+    enableClickSound()
+    document.body.innerHTML = '<button id="btn">click me</button>'
+    const play = vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
+
+    dispatchClick(0, document.getElementById('btn')!)
+
+    const played = play.mock.instances[0] as HTMLAudioElement
+    expect(played.src).toContain('/assets/audio/yuzu.ogg')
+    expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
+      '/assets/img/easter-egg/yuzu.jpg'
+    )
+  })
+
+  it('plays nihahahaha when the pick lands on the fifth group', () => {
+    // 素材选择 0.8 × 6 = 4.8 → 索引 4 → nihahahaha。
+    mockRandomSequence([0, 0.8])
+    enableClickSound()
+    document.body.innerHTML = '<button id="btn">click me</button>'
+    const play = vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
+
+    dispatchClick(0, document.getElementById('btn')!)
+
+    const played = play.mock.instances[0] as HTMLAudioElement
+    expect(played.src).toContain('/assets/audio/nihahahaha.ogg')
+    expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
+      '/assets/img/easter-egg/nihahahaha.png'
+    )
+  })
+
+  it('plays reisa when the pick lands on the sixth group', () => {
+    // 素材选择 0.99 × 6 = 5.94 → 索引 5 → reisa。
     mockRandomSequence([0, 0.99])
     enableClickSound()
     document.body.innerHTML = '<button id="btn">click me</button>'
@@ -278,12 +310,28 @@ describe('easter-egg click sound', () => {
 
     dispatchClick(0, document.getElementById('btn')!)
 
-    // 概率判定通过（0 < 1），素材选择命中第三组 panpakapann。
     const played = play.mock.instances[0] as HTMLAudioElement
-    expect(played.src).toContain('/assets/audio/panpakapann.ogg')
+    expect(played.src).toContain('/assets/audio/reisa.ogg')
+    expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
+      '/assets/img/easter-egg/reisa.jpg'
+    )
+  })
+
+  it('picks one asset group and plays its matching audio and sticker', () => {
+    // 第一个随机数用于概率判定（0 必中），第二个用于素材选择（0.8 落在第五组 nihahahaha）。
+    mockRandomSequence([0, 0.8])
+    enableClickSound()
+    document.body.innerHTML = '<button id="btn">click me</button>'
+    const play = vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
+
+    dispatchClick(0, document.getElementById('btn')!)
+
+    // 概率判定通过（0 < 1），素材选择命中第五组 nihahahaha。
+    const played = play.mock.instances[0] as HTMLAudioElement
+    expect(played.src).toContain('/assets/audio/nihahahaha.ogg')
     const sticker = document.querySelector('img.easter-egg-sticker')
     expect(sticker?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/panpakapann.jpg'
+      '/assets/img/easter-egg/nihahahaha.png'
     )
   })
 
@@ -303,8 +351,8 @@ describe('easter-egg click sound', () => {
   })
 
   it('plays gousyuzinsama when the pick lands on the second group', () => {
-    // 素材选择 0.66 × 3 = 1.98 → 索引 1 → gousyuzinsama。
-    mockRandomSequence([0, 0.66])
+    // 素材选择 0.3 × 4 = 1.2 → 索引 1 → gousyuzinsama。
+    mockRandomSequence([0, 0.3])
     enableClickSound()
     document.body.innerHTML = '<button id="btn">click me</button>'
     const play = vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
