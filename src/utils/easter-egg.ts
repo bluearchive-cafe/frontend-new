@@ -1,4 +1,4 @@
-// 点击可交互元素时以 5%（1/20）概率触发彩蛋：播放音效并在点击位置弹出贴图，
+// 点击可交互元素时以 1%（1/100）概率触发彩蛋：播放音效并在点击位置弹出贴图，
 // 动画结束后自动消失。每次触发从 kuyashi / panpakapann / gousyuzinsama / yuzu /
 // nihahahaha / reisa 中随机选一组，音效与贴图始终来自同一组，不会出现声音和图片不匹配。
 // 使用全局 pointerup 捕获委托：任何按钮、链接、输入框等被点击后都走这里判定，
@@ -47,7 +47,7 @@ const EASTER_EGG_ASSETS = [
 ]
 
 // 默认触发概率；调试时可在 URL 上追加 ?kuyashi=1（100%）或 ?kuyashi=0.5（50%）覆盖。
-const DEFAULT_CHANCE = 5 / 100
+const DEFAULT_CHANCE = 1 / 100
 
 // 贴图直径与展示时长，均可通过全局样式中的 CSS 变量覆盖。
 const STICKER_SIZE_PX = 160
