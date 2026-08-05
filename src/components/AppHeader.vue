@@ -3,6 +3,8 @@
     <v-app-bar-nav-icon
       class="mobile-menu"
       aria-label="打开菜单"
+      :aria-expanded="drawer ? 'true' : 'false'"
+      aria-controls="app-drawer"
       ref="menuTrigger"
       @click="drawer = true"
     />
@@ -52,11 +54,13 @@
   </v-app-bar>
 
   <v-navigation-drawer
+    id="app-drawer"
     v-model="drawer"
     temporary
     location="left"
     color="surface"
     scrim="rgba(0, 0, 0, 0.46)"
+    retain-focus
     @keydown.esc="closeDrawer"
   >
     <v-list>
@@ -67,14 +71,14 @@
         :title="item.label"
         :active="item.isActive()"
         color="primary"
-        @click="closeDrawer"
+        @click="() => closeDrawerFromDestination(item.to)"
       />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { useToolbarLoader } from '../utils/toolbar-loader'
@@ -83,7 +87,22 @@ const drawer = ref(false)
 const menuTrigger = ref<{ $el?: HTMLElement } | null>(null)
 const route = useRoute()
 const { isToolbarLoading } = useToolbarLoader()
+let closeByRouteChange = false
 
+// MD2 modal drawer: opening moves focus to the active destination, closing
+// returns it to the hamburger button — unless the close came from choosing a
+// destination, in which case focus follows the navigation to the new page.
+watch(drawer, (open) => {
+  if (open) {
+    closeByRouteChange = false
+    void nextTick(() => {
+      document.getElementById('app-drawer')
+        ?.querySelector<HTMLElement>('.v-list-item--active')?.focus()
+    })
+  } else if (!closeByRouteChange) {
+    void nextTick(() => menuTrigger.value?.$el?.focus())
+  }
+})
 const navItems = computed(() => [
   {
     label: '首页',
@@ -119,7 +138,15 @@ const navItems = computed(() => [
 
 function closeDrawer() {
   drawer.value = false
-  void nextTick(() => menuTrigger.value?.$el?.focus())
+}
+
+// The drawer item is a router link: the click handler runs before the
+// navigation, so only a destination pointing elsewhere really navigates and
+// focus must stay on the new page. A same-route click merely closes the
+// drawer, which restores focus to the hamburger.
+function closeDrawerFromDestination(to: string) {
+  closeByRouteChange = to !== route.path
+  closeDrawer()
 }
 
 function handleGlobalKeydown(event: KeyboardEvent) {

@@ -81,6 +81,26 @@ describe('AppHeader MD2 compatibility contract', () => {
     expect(appHeaderSource).toContain("if (event.key === 'Escape' && drawer.value)")
   })
 
+  it('moves focus into the drawer on open and back to the trigger on close', () => {
+    expect(appHeaderSource).toContain("watch(drawer, (open) => {")
+    expect(appHeaderSource).toContain("getElementById('app-drawer')")
+    expect(appHeaderSource).toContain("querySelector<HTMLElement>('.v-list-item--active')?.focus()")
+    expect(appHeaderSource).toContain("menuTrigger.value?.$el?.focus()")
+    expect(appHeaderSource).toContain('retain-focus')
+    expect(appHeaderSource).not.toContain('@after-leave')
+  })
+
+  it('keeps focus on the new page after choosing a drawer destination', () => {
+    expect(appHeaderSource).toContain('closeDrawerFromDestination')
+    expect(appHeaderSource).toContain("closeByRouteChange = to !== route.path")
+  })
+
+  it('announces drawer state from the hamburger button', () => {
+    expect(appHeaderSource).toContain(':aria-expanded="drawer ? \'true\' : \'false\'"')
+    expect(appHeaderSource).toContain('aria-controls="app-drawer"')
+    expect(appHeaderSource).toContain('id="app-drawer"')
+  })
+
   it('keeps the mobile drawer trigger on the leading edge', () => {
     expect(appHeaderSource).not.toMatch(/\.mobile-menu\s*\{[\s\S]*?margin-left:\s*auto;/)
     expect(appHeaderSource.indexOf('class="mobile-menu"')).toBeLessThan(
