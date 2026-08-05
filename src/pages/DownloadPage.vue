@@ -165,6 +165,15 @@
             下载前建议先查看安装文档，确认系统版本、权限设置和常见问题处理方式。
           </p>
 
+          <div
+            v-if="selectedVariant?.notice"
+            class="variant-notice"
+            role="note"
+          >
+            <v-icon icon="$bookOpenOutline" size="20" aria-hidden="true" />
+            <p>{{ selectedVariant.notice }}</p>
+          </div>
+
           <v-alert
             v-if="selectedStatusNotice"
             class="client-status-notice"
@@ -598,6 +607,29 @@ onBeforeUnmount(() => {
   margin: var(--space-5) 0 0;
   color: var(--color-text-muted);
   line-height: 1.75;
+}
+
+.variant-notice {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: var(--control-gap);
+  align-items: start;
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-card);
+  background: var(--color-primary-soft);
+}
+
+.variant-notice :deep(.v-icon) {
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.variant-notice p {
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.7;
 }
 
 .client-status-notice,
