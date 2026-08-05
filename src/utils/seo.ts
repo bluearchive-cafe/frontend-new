@@ -12,7 +12,7 @@ import {
   staticRoutes
 } from '../shared/site-routes.mjs'
 
-type SeoInfo = {
+interface SeoInfo {
   title: string
   description: string
   keywords?: string

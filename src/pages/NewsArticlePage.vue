@@ -23,6 +23,8 @@
           />
         </header>
 
+        <!-- articleHtml is sanitized by sanitizeRenderedHtml before rendering -->
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <div ref="markdownBodyRef" class="markdown-body" v-html="articleHtml" />
       </article>
 

@@ -1,4 +1,4 @@
-export type DownloadClickInput = {
+export interface DownloadClickInput {
   platform: string
   variant: string
   downloadUrl: string

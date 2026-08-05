@@ -11,14 +11,15 @@ Use Node.js 22, matching GitHub Actions, and install locked dependencies with `n
 - `npm run dev`: optimize hero images, then start Vite on `127.0.0.1`.
 - `npm test`: run the Vitest suite once.
 - `npm run typecheck`: run strict Vue and TypeScript checks without emitting files.
+- `npm run lint`: run ESLint over `src/`, `scripts/`, `tests/`, and `vite.config.ts` with the flat config in `eslint.config.js`.
 - `npm run build`: optimize assets, type-check, build `dist/`, prune originals, and generate Pages fallbacks and the sitemap.
 - `npm run preview`: serve the production build locally.
 
-Run `npm test` and `npm run build` before submitting changes.
+Run `npm test`, `npm run lint`, and `npm run build` before submitting changes.
 
 ## Coding Style & Naming Conventions
 
-Follow the existing two-space indentation, single quotes in TypeScript, and no-semicolon style. Use `PascalCase.vue` for components and pages, kebab-case for utility and script filenames, and camelCase for TypeScript symbols. Keep Vue components in `<template>`, `<script setup lang="ts">`, then `<style scoped>` order. TypeScript is strict and rejects unused locals, unused parameters, and fallthrough switch cases. No standalone formatter or linter is configured, so preserve the surrounding file's formatting exactly.
+Follow the existing two-space indentation, single quotes in TypeScript, and no-semicolon style. Use `PascalCase.vue` for components and pages, kebab-case for utility and script filenames, and camelCase for TypeScript symbols. Keep Vue components in `<template>`, `<script setup lang="ts">`, then `<style scoped>` order. TypeScript is strict and rejects unused locals, unused parameters, and fallthrough switch cases. ESLint enforces these conventions (`npm run lint`); template layout rules are disabled because templates are hand-formatted, so preserve the surrounding formatting exactly and let `--fix` handle only script style.
 
 ## Testing Guidelines
 

@@ -22,7 +22,7 @@ vi.mock('vue-router', () => ({
 
 import DownloadPage from './DownloadPage.vue'
 
-const mountedApps: Array<{ app: App; container: HTMLElement }> = []
+const mountedApps: { app: App; container: HTMLElement }[] = []
 
 afterEach(() => {
   mountedApps.splice(0).forEach(({ app, container }) => {
@@ -34,7 +34,9 @@ afterEach(() => {
 
 describe('DownloadPage client status notice', () => {
   it('shows a non-blocking status while the initial request is pending', async () => {
-    fetchStatusMock.mockImplementation(() => new Promise(() => {}))
+    fetchStatusMock.mockImplementation(() => new Promise(() => {
+      // Intentionally never resolves: keeps the status request pending.
+    }))
     const { container } = mountDownloadPage()
 
     clickButton(container, '下载应用包')

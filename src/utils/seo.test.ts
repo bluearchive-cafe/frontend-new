@@ -83,7 +83,10 @@ describe('applyRouteSeo', () => {
 
   it('adds and removes article json-ld across navigation', () => {
     applyRouteSeo(createRoute('news-article', '/news/known-article', { slug: 'known-article' }))
-    const schema = JSON.parse(document.head.querySelector('script[id="jsonld-article"]')?.textContent ?? '{}')
+    const schema = JSON.parse(document.head.querySelector('script[id="jsonld-article"]')?.textContent ?? '{}') as {
+      headline: string
+      author: { name: string }
+    }
 
     expect(schema.headline).toBe('测试新闻')
     expect(schema.author.name).toBe('测试作者')

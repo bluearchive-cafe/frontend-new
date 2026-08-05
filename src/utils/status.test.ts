@@ -44,20 +44,21 @@ describe('mapStatusResources', () => {
 
 describe('fetchStatus', () => {
   it('returns an object response from the exact status endpoint', async () => {
-    const fetchImplementation = vi.fn(async () => new Response(JSON.stringify(statusData), {
+    const fetchImplementation = vi.fn(() => Promise.resolve(new Response(JSON.stringify(statusData), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
-    }))
+    })))
 
     await expect(fetchStatus(undefined, fetchImplementation)).resolves.toEqual(statusData)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- expect.any() returns unknown by design in Vitest matchers
     expect(fetchImplementation).toHaveBeenCalledWith(statusEndpoint, expect.objectContaining({ signal: expect.any(AbortSignal) }))
   })
 
   it('rejects http errors and non-object responses', async () => {
-    const failedFetch = vi.fn(async () => new Response('', { status: 503 }))
+    const failedFetch = vi.fn(() => Promise.resolve(new Response('', { status: 503 })))
     await expect(fetchStatus(undefined, failedFetch)).rejects.toThrow('Status request failed: 503')
 
-    const invalidFetch = vi.fn(async () => new Response('[]', { status: 200 }))
+    const invalidFetch = vi.fn(() => Promise.resolve(new Response('[]', { status: 200 })))
     await expect(fetchStatus(undefined, invalidFetch)).rejects.toThrow('Status response must be an object')
   })
 
@@ -96,12 +97,12 @@ describe('fetchStatus', () => {
 function createAbortableFetch() {
   return vi.fn((_input: RequestInfo | URL, init?: RequestInit) => new Promise<Response>((_resolve, reject) => {
     if (init?.signal?.aborted) {
-      reject(init.signal.reason ?? new DOMException('Aborted', 'AbortError'))
+      reject(new DOMException('Aborted', 'AbortError'))
       return
     }
 
     init?.signal?.addEventListener('abort', () => {
-      reject(init.signal?.reason ?? new DOMException('Aborted', 'AbortError'))
+      reject(new DOMException('Aborted', 'AbortError'))
     }, { once: true })
   }))
 }

@@ -18,7 +18,7 @@ vi.mock('vue-router', () => ({
 
 import DownloadPage from './DownloadPage.vue'
 
-const mountedApps: Array<{ app: App; container: HTMLElement }> = []
+const mountedApps: { app: App; container: HTMLElement }[] = []
 
 afterEach(() => {
   mountedApps.splice(0).forEach(({ app, container }) => {

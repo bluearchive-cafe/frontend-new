@@ -14,7 +14,7 @@ vi.mock('../utils/status', async (importOriginal) => ({
 
 import StatusPage from './StatusPage.vue'
 
-const mountedApps: Array<{ app: App; container: HTMLElement }> = []
+const mountedApps: { app: App; container: HTMLElement }[] = []
 
 afterEach(() => {
   mountedApps.splice(0).forEach(({ app, container }) => {

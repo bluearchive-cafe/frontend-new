@@ -172,7 +172,7 @@ function showSticker(x: number, y: number, stickerUrl: string) {
 
 // 解析 CSS 时长（如 1250ms / 1.25s）；解析失败时回退到默认值。
 function parseMs(value: string) {
-  const match = value.trim().match(/^([\d.]+)(ms|s)$/)
+  const match = /^([\d.]+)(ms|s)$/.exec(value.trim())
   if (!match) {
     return STICKER_DURATION_MS
   }

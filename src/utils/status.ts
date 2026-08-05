@@ -164,7 +164,7 @@ function createStatusChip(officialVersion: string | null, localizedVersion: stri
 }
 
 function readStatusValue(value: unknown) {
-  if (value === null || value === undefined || value === '') {
+  if (typeof value !== 'string' && typeof value !== 'number' && typeof value !== 'boolean') {
     return null
   }
 
