@@ -25,7 +25,7 @@
           <v-btn color="primary" to="/download" prepend-icon="$lightningBolt">
             立即使用
           </v-btn>
-          <v-btn class="tutorial-link" variant="text" href="https://docs.bluearchive.cafe/platform/" rel="noopener noreferrer" append-icon="$arrowRight">
+          <v-btn class="tutorial-link" variant="text" :href="tutorialUrl" rel="noopener noreferrer" append-icon="$arrowRight">
             查看教程
           </v-btn>
         </div>
@@ -38,8 +38,10 @@
 import { ref } from 'vue'
 
 import heroImageNames from '../content/hero-images.json'
+import { baseDocUrl } from '../content/downloads'
 
 const publicAssetBase = import.meta.env.BASE_URL
+const tutorialUrl = `${baseDocUrl}platform/`
 
 const heroImages = heroImageNames.map((name) => {
   const basePath = `${publicAssetBase}assets/img/hero/optimized/${name}`

@@ -1,9 +1,16 @@
-import type { StatusResourceKey } from '../utils/status'
+import { clientPlatforms, type ClientPlatformKey } from './platforms'
 
-export type ClientStatusResourceKey = Extract<
-  StatusResourceKey,
-  'android' | 'ios' | 'windows' | 'macos'
->
+export type ClientStatusResourceKey = ClientPlatformKey
+
+function clientMeta(key: ClientPlatformKey) {
+  const meta = clientPlatforms.find((platform) => platform.key === key)
+
+  if (!meta) {
+    throw new Error(`Missing client platform metadata for key: ${key}`)
+  }
+
+  return meta
+}
 
 export interface PlatformLink {
   name: string
@@ -30,14 +37,14 @@ export interface DownloadVariant {
   hidden?: boolean
 }
 
-const baseDocUrl = 'https://docs.bluearchive.cafe/'
+export const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 export const platformLinks: PlatformLink[] = [
   {
     name: 'Android 客户端',
     statusKey: 'android',
-    icon: '$android',
-    tone: 'android',
+    icon: clientMeta('android').icon,
+    tone: clientMeta('android').downloadTone,
     docUrl: baseDocUrl + 'platform/android/',
     docExternal: true,
     description: '适用于手机、平板与安卓模拟器。下载后请根据安装文档确认存储权限和系统兼容性。',
@@ -82,8 +89,8 @@ export const platformLinks: PlatformLink[] = [
   {
     name: 'iOS 客户端',
     statusKey: 'ios',
-    icon: '$appleIos',
-    tone: 'ios',
+    icon: clientMeta('ios').icon,
+    tone: clientMeta('ios').downloadTone,
     docUrl: baseDocUrl + 'platform/ios/',
     docExternal: true,
     description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
@@ -108,8 +115,8 @@ export const platformLinks: PlatformLink[] = [
   {
     name: 'Windows 启动器',
     statusKey: 'windows',
-    icon: '$microsoftWindows',
-    tone: 'windows',
+    icon: clientMeta('windows').icon,
+    tone: clientMeta('windows').downloadTone,
     docUrl: baseDocUrl + 'platform/windows/',
     docExternal: true,
     description: '适用于 Windows 10 / 11。下载后请按文档检查运行库、解压路径与杀毒软件拦截情况。',
@@ -132,8 +139,8 @@ export const platformLinks: PlatformLink[] = [
   {
     name: 'macOS 客户端',
     statusKey: 'macos',
-    icon: '$apple',
-    tone: 'macos',
+    icon: clientMeta('macos').icon,
+    tone: clientMeta('macos').downloadTone,
     docUrl: baseDocUrl + 'platform/macos/',
     docExternal: true,
     description: '适用于 Apple Silicon Mac。首次打开时可能需要在系统设置中确认安全权限。',

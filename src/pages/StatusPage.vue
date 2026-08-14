@@ -95,6 +95,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import PageHeading from '../components/PageHeading.vue'
+import { clientPlatforms, type ClientPlatformKey } from '../content/platforms'
 import {
   createStatusResources,
   fetchStatus,
@@ -117,35 +118,22 @@ const statusAnnouncement = ref('正在获取资源状态')
 const toolbarLoadingDelayMs = 400
 let toolbarLoadingDelayId: number | undefined
 
+// 客户端平台面板的 icon/tone 从 platforms.ts 单一派生;
+// 状态页特有的标题与描述仍保留在本页。
+const clientPanelCopy: Record<ClientPlatformKey, { title: string; description: string }> = {
+  android: { title: '安装包', description: 'Android 专用客户端安装包' },
+  ios: { title: '应用包', description: 'iOS 专用客户端应用包' },
+  windows: { title: '资源包', description: 'Windows 专用启动器资源包' },
+  macos: { title: '资源包', description: 'macOS 专用客户端资源包' }
+}
+
 const statusPanels: StatusPanel[] = [
-  {
-    key: 'android',
-    title: '安装包',
-    description: 'Android 专用客户端安装包',
-    icon: '$android',
-    tone: 'android'
-  },
-  {
-    key: 'ios',
-    title: '应用包',
-    description: 'iOS 专用客户端应用包',
-    icon: '$appleIos',
-    tone: 'ios'
-  },
-  {
-    key: 'windows',
-    title: '资源包',
-    description: 'Windows 专用启动器资源包',
-    icon: '$microsoftWindows',
-    tone: 'asset'
-  },
-  {
-    key: 'macos',
-    title: '资源包',
-    description: 'macOS 专用客户端资源包',
-    icon: '$apple',
-    tone: 'ios'
-  },
+  ...clientPlatforms.map((platform) => ({
+    key: platform.key,
+    ...clientPanelCopy[platform.key],
+    icon: platform.icon,
+    tone: platform.statusTone
+  })),
   {
     key: 'notice',
     title: '公告包',
@@ -266,7 +254,7 @@ function stopToolbarLoading() {
 
 <style scoped>
 .status-page {
-  min-height: 72vh;
+  min-height: var(--page-min-height);
   padding-block: var(--page-padding-block);
   background: var(--page-background-fill);
 }
@@ -278,17 +266,6 @@ function stopToolbarLoading() {
 .status-panels {
   display: grid;
   gap: var(--space-4);
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 .status-panel {
