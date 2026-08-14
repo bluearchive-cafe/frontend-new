@@ -1,38 +1,40 @@
 import { JSDOM } from 'jsdom'
 
+import { defaultImage, siteName } from '../src/shared/site-routes.mjs'
 import {
-  defaultImage,
-  defaultKeywords,
-  siteName,
-  siteTitle,
-  siteUrl
-} from '../src/shared/site-routes.mjs'
-import { getRouteUrl } from './site-routes.mjs'
+  buildArticleSchema,
+  buildRouteUrl,
+  buildSiteSchemas,
+  resolveRouteSeo
+} from '../src/shared/seo.mjs'
 
+// 静态回退页的 SEO 元数据与 JSON-LD 与浏览器端 src/utils/seo.ts
+// 共用 src/shared/seo.mjs 的派生逻辑,保证两者永不漂移。
 export function renderRouteHtml(source, route, { notFound = false } = {}) {
   const dom = new JSDOM(source)
   const { document } = dom.window
-  const url = notFound ? '' : getRouteUrl(route.path)
-  const type = route.type ?? 'website'
+  const seo = resolveRouteSeo(route, { notFound })
+  const url = notFound ? '' : buildRouteUrl(route.path)
 
-  document.title = route.title
-  setMeta(document, 'name', 'description', route.description)
-  setMeta(document, 'name', 'keywords', route.keywords ?? defaultKeywords)
-  setMeta(document, 'name', 'robots', route.robots ?? (notFound ? 'noindex, follow' : 'index, follow'))
+  document.title = seo.title
+  setMeta(document, 'name', 'description', seo.description)
+  setMeta(document, 'name', 'keywords', seo.keywords)
+  setMeta(document, 'name', 'robots', seo.robots)
   setMeta(document, 'property', 'og:site_name', siteName)
   setMeta(document, 'property', 'og:locale', 'zh_CN')
-  setMeta(document, 'property', 'og:type', type)
-  setMeta(document, 'property', 'og:title', route.title)
-  setMeta(document, 'property', 'og:description', route.description)
+  setMeta(document, 'property', 'og:type', seo.type)
+  setMeta(document, 'property', 'og:title', seo.title)
+  setMeta(document, 'property', 'og:description', seo.description)
   setOptionalMeta(document, 'property', 'og:url', url)
   setMeta(document, 'property', 'og:image', defaultImage)
   setMeta(document, 'name', 'twitter:card', 'summary')
-  setMeta(document, 'name', 'twitter:title', route.title)
-  setMeta(document, 'name', 'twitter:description', route.description)
+  setMeta(document, 'name', 'twitter:title', seo.title)
+  setMeta(document, 'name', 'twitter:description', seo.description)
   setMeta(document, 'name', 'twitter:image', defaultImage)
-  setOptionalMeta(document, 'property', 'article:published_time', route.publishedAt ?? '')
+  setOptionalMeta(document, 'property', 'article:published_time', seo.publishedAt)
   setCanonical(document, url)
   setArticleSchema(document, route)
+  setSiteSchemas(document)
 
   return dom.serialize()
 }
@@ -82,30 +84,25 @@ function setArticleSchema(document, route) {
     return
   }
 
-  const script = document.createElement('script')
-  script.id = 'jsonld-article'
-  script.type = 'application/ld+json'
-  script.textContent = serializeJsonLd({
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: getArticleHeadline(route.title),
-    author: { '@type': 'Person', name: route.author },
-    datePublished: route.publishedAt,
-    description: route.description,
-    url: new URL(`news/${route.slug}`, siteUrl).toString(),
-    publisher: {
-      '@type': 'Organization',
-      name: siteName,
-      url: siteUrl,
-      logo: { '@type': 'ImageObject', url: defaultImage }
-    }
-  })
-  document.head.append(script)
+  appendJsonLd(document, 'jsonld-article', buildArticleSchema(route))
 }
 
-function getArticleHeadline(title) {
-  const suffix = ` - ${siteTitle}`
-  return title.endsWith(suffix) ? title.slice(0, -suffix.length) : title
+function setSiteSchemas(document) {
+  for (const schema of buildSiteSchemas()) {
+    appendJsonLd(document, '', schema)
+  }
+}
+
+function appendJsonLd(document, id, data) {
+  const script = document.createElement('script')
+
+  if (id) {
+    script.id = id
+  }
+
+  script.type = 'application/ld+json'
+  script.textContent = serializeJsonLd(data)
+  document.head.append(script)
 }
 
 function serializeJsonLd(data) {

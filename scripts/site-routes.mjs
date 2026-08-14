@@ -1,39 +1,36 @@
 import {
   defaultDescription,
-  defaultKeywords,
   siteTitle,
-  siteUrl,
   staticRoutes
 } from '../src/shared/site-routes.mjs'
+import { buildArticleSeo } from '../src/shared/seo.mjs'
 import { readNewsEntries } from './news-entries.mjs'
 
-export { siteUrl, staticRoutes }
+export { staticRoutes }
+
+// 路径 → 绝对 URL:与浏览器端 src/utils/seo.ts 共用同一实现。
+export { buildRouteUrl as getRouteUrl } from '../src/shared/seo.mjs'
 
 export async function getSitemapRoutes() {
-  const newsRoutes = (await readNewsEntries()).map((article) => ({
-    path: `/news/${article.slug}`,
-    title: `${article.title} - ${siteTitle}`,
-    description: article.summary || `${article.title}，来自 BlueArchive.Cafe 的新闻与公告。`,
-    keywords: `${article.category},${defaultKeywords}`,
-    type: 'article',
-    author: article.author,
-    publishedAt: article.publishedAt,
-    slug: article.slug,
-    changefreq: 'monthly',
-    priority: '0.6',
-    lastmod: formatLastmod(article.publishedAt)
-  }))
+  const newsRoutes = (await readNewsEntries()).map((article) => {
+    const seo = buildArticleSeo(article)
+
+    return {
+      path: `/news/${article.slug}`,
+      ...seo,
+      author: article.author,
+      slug: article.slug,
+      summary: article.summary,
+      changefreq: 'monthly',
+      priority: '0.6',
+      lastmod: formatLastmod(article.publishedAt)
+    }
+  })
 
   return staticRoutes.map((route) => ({
     ...route,
     description: route.description || defaultDescription
   })).concat(newsRoutes)
-}
-
-export function getRouteUrl(routePath) {
-  const normalizedPath = routePath === '/' ? '' : routePath.replace(/^\//, '')
-
-  return new URL(normalizedPath, siteUrl).toString()
 }
 
 function formatLastmod(value) {

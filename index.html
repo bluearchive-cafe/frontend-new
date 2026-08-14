@@ -3,70 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。"
-    />
-    <meta
-      name="keywords"
-      content="蔚蓝档案,蔚蓝档案汉化,Blue Archive,BlueArchive.Cafe,蔚蓝咖啡厅,汉化教程,客户端下载"
-    />
-    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#191d24" />
-    <meta property="og:site_name" content="BlueArchive.Cafe" />
-    <meta property="og:locale" content="zh_CN" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="蔚蓝咖啡厅" />
-    <meta
-      property="og:description"
-      content="BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。"
-    />
-    <meta property="og:url" content="https://bluearchive.cafe/" />
-    <meta property="og:image" content="https://bluearchive.cafe/favicon.jpg" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="蔚蓝咖啡厅" />
-    <meta
-      name="twitter:description"
-      content="BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。"
-    />
-    <meta name="twitter:image" content="https://bluearchive.cafe/favicon.jpg" />
-    <link rel="canonical" href="https://bluearchive.cafe/" />
+    <!-- 路由级 description/keywords/og/twitter/canonical 与站点 JSON-LD
+         由 src/shared/seo.mjs 单一派生:运行时走 src/utils/seo.ts,
+         构建期走 scripts/static-html.mjs,本文件不再维护重复副本。 -->
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" />
     <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
     <title>蔚蓝咖啡厅</title>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "蔚蓝咖啡厅",
-        "alternateName": "BlueArchive.Cafe",
-        "url": "https://bluearchive.cafe/",
-        "logo": "https://bluearchive.cafe/favicon.jpg",
-        "description": "BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。",
-        "email": "feedback@bluearchive.cafe",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "email": "feedback@bluearchive.cafe",
-          "contactType": "customer support",
-          "availableLanguage": ["Chinese", "English"]
-        },
-        "sameAs": [
-          "https://space.bilibili.com/3706947316484682",
-          "https://github.com/bluearchive-cafe"
-        ]
-      }
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "蔚蓝咖啡厅",
-        "url": "https://bluearchive.cafe/",
-        "description": "BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。",
-        "inLanguage": "zh-CN"
-      }
-    </script>
     <!-- Google tag (gtag.js) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L9C6BQBHSG"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

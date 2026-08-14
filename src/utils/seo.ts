@@ -2,38 +2,34 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 import { findNewsArticle } from '../content/news'
 import {
+  buildArticleSchema,
+  buildArticleSeo,
+  buildRouteUrl,
+  resolveRouteSeo
+} from '../shared/seo.mjs'
+import {
   defaultDescription,
   defaultImage,
-  defaultKeywords,
   notFoundSeo,
+  routeNames,
   siteName,
   siteTitle,
-  siteUrl,
   staticRoutes
 } from '../shared/site-routes.mjs'
 
-interface SeoInfo {
-  title: string
-  description: string
-  keywords?: string
-  robots?: string
-  type?: 'website' | 'article'
-  publishedAt?: string
-}
-
 export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
   const seo = getRouteSeo(route)
-  const url = getRouteUrl(route)
+  const url = buildRouteUrl(route.path)
 
   document.title = seo.title
   setMeta('name', 'description', seo.description)
-  setMeta('name', 'keywords', seo.keywords ?? defaultKeywords)
-  setMeta('name', 'robots', seo.robots ?? 'index, follow')
+  setMeta('name', 'keywords', seo.keywords)
+  setMeta('name', 'robots', seo.robots)
   setCanonical(url)
 
   setMeta('property', 'og:site_name', siteName)
   setMeta('property', 'og:locale', 'zh_CN')
-  setMeta('property', 'og:type', seo.type ?? 'website')
+  setMeta('property', 'og:type', seo.type)
   setMeta('property', 'og:title', seo.title)
   setMeta('property', 'og:description', seo.description)
   setMeta('property', 'og:url', url)
@@ -50,11 +46,11 @@ export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
     removeMeta('property', 'article:published_time')
   }
 
-  if (route.name === 'news-article') {
+  if (route.name === routeNames.newsArticle) {
     const article = findRouteArticle(route)
 
     if (article) {
-      injectArticleSchema(article)
+      setJsonLd('jsonld-article', buildArticleSchema(article))
       return
     }
   }
@@ -62,35 +58,28 @@ export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
   removeArticleSchema()
 }
 
-function getRouteSeo(route: RouteLocationNormalizedLoaded): SeoInfo {
-  if (route.name === 'news-article') {
+function getRouteSeo(route: RouteLocationNormalizedLoaded) {
+  if (route.name === routeNames.newsArticle) {
     const article = findRouteArticle(route)
 
     if (!article) {
-      return notFoundSeo
+      return resolveRouteSeo(notFoundSeo)
     }
 
-    return {
-      title: `${article.title} - ${siteTitle}`,
-      description: article.summary || `${article.title}，来自 BlueArchive.Cafe 的新闻与公告。`,
-      keywords: `${article.category},${defaultKeywords}`,
-      type: 'article',
-      publishedAt: article.publishedAt
-    }
+    return buildArticleSeo(article)
   }
 
   if (typeof route.name === 'string') {
     const staticRoute = staticRoutes.find((item) => item.name === route.name)
 
     if (staticRoute) {
-      return staticRoute
+      return resolveRouteSeo(staticRoute)
     }
   }
 
-  return route.name === 'not-found' ? notFoundSeo : {
-    title: siteTitle,
-    description: defaultDescription
-  }
+  return route.name === routeNames.notFound
+    ? resolveRouteSeo(notFoundSeo)
+    : resolveRouteSeo({ title: siteTitle, description: defaultDescription })
 }
 
 function findRouteArticle(route: RouteLocationNormalizedLoaded) {
@@ -98,11 +87,6 @@ function findRouteArticle(route: RouteLocationNormalizedLoaded) {
   const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam
 
   return typeof slug === 'string' ? findNewsArticle(slug) : undefined
-}
-
-function getRouteUrl(route: RouteLocationNormalizedLoaded) {
-  const normalizedPath = route.path === '/' ? '' : route.path.replace(/^\//, '').replace(/\/+$/, '')
-  return new URL(normalizedPath, siteUrl).toString()
 }
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
@@ -149,24 +133,6 @@ function setJsonLd(id: string, data: Record<string, unknown>) {
 
 function removeJsonLd(id: string) {
   document.head.querySelector(`script[id="${id}"]`)?.remove()
-}
-
-function injectArticleSchema(article: { title: string; author: string; publishedAt: string; summary: string; slug: string }) {
-  setJsonLd('jsonld-article', {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: article.title,
-    author: { '@type': 'Person', name: article.author },
-    datePublished: article.publishedAt,
-    description: article.summary || `${article.title}，来自 BlueArchive.Cafe 的新闻与公告。`,
-    url: new URL(`news/${article.slug}`, siteUrl).toString(),
-    publisher: {
-      '@type': 'Organization',
-      name: siteName,
-      url: siteUrl,
-      logo: { '@type': 'ImageObject', url: defaultImage }
-    }
-  })
 }
 
 function removeArticleSchema() {
