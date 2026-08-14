@@ -383,7 +383,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .download-page {
-  min-height: 72vh;
+  min-height: var(--page-min-height);
   padding-block: var(--page-padding-block);
   background: var(--page-background-fill);
 }

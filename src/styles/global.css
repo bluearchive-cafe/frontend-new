@@ -28,6 +28,9 @@
   --md2-type-button: 14px;
   --md2-radius-button: 4px;
   --md2-radius-card: 8px;
+  --app-bar-height: 56px;
+  --anchor-offset: 72px;
+  --page-min-height: 72vh;
   --color-bg: var(--md2-background);
   --color-bg-deep: var(--md2-background);
   --color-footer: var(--md2-background);
@@ -36,8 +39,8 @@
   --color-primary: rgb(var(--v-theme-primary));
   --color-primary-soft: color-mix(in srgb, var(--color-primary) 12%, var(--md2-surface));
   --color-primary-softer: color-mix(in srgb, var(--color-primary) 8%, var(--md2-surface));
-  --color-primary-border: rgba(41, 174, 234, 0.32);
-  --color-primary-border-strong: rgba(41, 174, 234, 0.42);
+  --color-primary-border: rgba(var(--v-theme-primary), 0.32);
+  --color-primary-border-strong: rgba(var(--v-theme-primary), 0.42);
   --color-secondary: rgb(var(--v-theme-secondary));
   --color-info: rgb(var(--v-theme-info));
   --color-info-soft: rgba(var(--v-theme-info), 0.1);
@@ -45,14 +48,14 @@
   --color-accent: rgb(var(--v-theme-accent));
   --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, var(--md2-surface));
   --color-accent-softer: color-mix(in srgb, var(--color-accent) 8%, var(--md2-surface));
-  --color-accent-border: rgba(101, 216, 196, 0.34);
+  --color-accent-border: rgba(var(--v-theme-secondary), 0.34);
   --color-success: rgb(var(--v-theme-success));
   --color-success-soft: color-mix(in srgb, var(--color-success) 12%, var(--md2-surface));
-  --color-success-border: rgba(120, 214, 163, 0.34);
-  --color-success-border-strong: rgba(120, 214, 163, 0.38);
+  --color-success-border: rgba(var(--v-theme-success), 0.34);
+  --color-success-border-strong: rgba(var(--v-theme-success), 0.38);
   --color-error: rgb(var(--v-theme-error));
   --color-error-soft: color-mix(in srgb, var(--color-error) 12%, var(--md2-surface));
-  --color-error-border: rgba(255, 138, 162, 0.36);
+  --color-error-border: rgba(var(--v-theme-error), 0.36);
   --color-neutral-soft: color-mix(in srgb, var(--md2-surface) 93%, white);
   --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, white);
   --color-mark: #4a4125;
@@ -62,13 +65,13 @@
   --color-text-subtle: rgba(255, 255, 255, 0.58);
   --color-nav-muted: rgba(255, 255, 255, 0.78);
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(41, 174, 234, 0.46);
+  --color-border-hover: rgba(var(--v-theme-primary), 0.46);
   --color-card: rgb(var(--v-theme-surface));
   --color-card-soft: color-mix(in srgb, var(--md2-surface) 95%, white);
   --gradient-card: color-mix(in srgb, var(--md2-surface) 95%, white);
   --gradient-card-strong: color-mix(in srgb, var(--md2-surface) 95%, white);
   --page-background-fill:
-    radial-gradient(circle at 84% 12%, rgba(41, 174, 234, 0.12), transparent 34%),
+    radial-gradient(circle at 84% 12%, rgba(var(--v-theme-primary), 0.12), transparent 34%),
     linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-deep) 100%);
   --radius-card: var(--md2-radius-card);
   --md2-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -137,7 +140,7 @@ html {
 }
 
 [id] {
-  scroll-margin-top: 72px;
+  scroll-margin-top: var(--anchor-offset);
 }
 
 body {
@@ -157,16 +160,16 @@ a {
   color: var(--color-primary);
 }
 
-.page-surface {
-  min-height: 72vh;
-  padding-block: var(--page-padding-block);
-  background: var(--page-background-fill);
-}
-
-.content-card {
-  border-radius: var(--radius-card);
-  background: var(--gradient-card);
-  box-shadow: var(--md2-elevation-card);
+/* 视觉隐藏工具类:组件内不再各自复制 .sr-only。 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 1023px) {

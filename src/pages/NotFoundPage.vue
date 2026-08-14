@@ -23,7 +23,7 @@ import NotFoundState from '../components/NotFoundState.vue'
 .not-found-page {
   display: flex;
   align-items: center;
-  min-height: 72vh;
+  min-height: var(--page-min-height);
   padding-block: 88px;
   background: var(--page-background-fill);
 }
