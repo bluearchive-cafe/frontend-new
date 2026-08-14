@@ -6,8 +6,6 @@ import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
 import { configDefaults, defineConfig } from 'vitest/config'
 
-import { generateNewsModule } from './scripts/news-content.mjs'
-
 // Vite configuration for the Vue and Vuetify single-page app.
 const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8')) as {
   version: string
@@ -76,8 +74,10 @@ export default defineConfig({
             return
           }
 
+          // 内容生成管线(含 markdown-it 与 sanitize-html)仅在开发监听
+          // 需要时按需加载,避免生产构建加载无关的重依赖。
           generation = generation
-            .then(() => generateNewsModule({ includeDrafts: true }))
+            .then(() => import('./scripts/news-content.mjs').then(({ generateNewsModule }) => generateNewsModule({ includeDrafts: true })))
             .then(() => server.ws.send({ type: 'full-reload' }))
             .catch((error: unknown) => {
               server.config.logger.error(`News content generation failed: ${String(error)}`)
