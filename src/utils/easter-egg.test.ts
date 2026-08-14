@@ -148,19 +148,21 @@ describe('easter-egg click sound', () => {
     expect(play).toHaveBeenCalledTimes(2)
   })
 
-  it('reuses a single audio element and restarts it from the beginning', () => {
-    mockRandom(0)
+  it('reuses the cached audio element and restarts it from the beginning', () => {
+    // 两次都命中第一组 kuyashi,断言走的是同一个缓存实例且已重置到开头。
+    mockRandomSequence([0, 0])
     enableClickSound()
     document.body.innerHTML = '<button id="btn">click me</button>'
     const button = document.getElementById('btn')!
     const play = vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
-    const audio = new window.Audio()
 
     dispatchClick(0, button)
     dispatchClick(400, button)
 
     expect(play).toHaveBeenCalledTimes(2)
-    expect(audio.currentTime).toBe(0)
+    const [firstInstance, secondInstance] = play.mock.instances as HTMLAudioElement[]
+    expect(secondInstance).toBe(firstInstance)
+    expect(firstInstance.currentTime).toBe(0)
   })
 
   it('stops playing after disable and resumes after re-enable', () => {

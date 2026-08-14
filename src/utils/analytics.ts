@@ -1,3 +1,5 @@
+import { siteUrl } from '../shared/site-routes.mjs'
+
 export interface DownloadClickInput {
   platform: string
   variant: string
@@ -43,7 +45,7 @@ function host(value: string) {
 
 function pathname(value: string) {
   try {
-    return new URL(value, 'https://bluearchive.cafe').pathname
+    return new URL(value, siteUrl).pathname
   } catch {
     return '/'
   }

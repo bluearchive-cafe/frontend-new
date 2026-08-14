@@ -1,6 +1,6 @@
 // Redirect www to apex domain before any app initialization
-if (window.location.hostname === 'www.bluearchive.cafe') {
-  window.location.replace('https://bluearchive.cafe' + window.location.pathname + window.location.search + window.location.hash)
+if (shouldRedirectToApex(window.location.hostname)) {
+  window.location.replace(buildApexRedirectUrl(window.location))
 }
 
 import 'vuetify/styles'
@@ -46,12 +46,13 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import App from './App.vue'
 import router from './router'
 import { blueArchiveDarkTheme } from './theme'
+import { buildApexRedirectUrl, shouldRedirectToApex } from './utils/apex-redirect'
 import { enableClickSound } from './utils/easter-egg'
 import { printConsoleBrand } from './utils/console-brand'
 
 printConsoleBrand()
 
-// 5% 概率彩蛋音效，挂载前就位。
+// 1% 概率彩蛋音效，挂载前就位。
 enableClickSound()
 
 // Vuetify is configured here so icon aliases, theme tokens, and component defaults are app-wide.

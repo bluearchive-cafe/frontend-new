@@ -156,27 +156,39 @@ function showSticker(x: number, y: number, stickerUrl: string) {
   sticker.style.zIndex = '3000'
   sticker.style.left = `${x}px`
   sticker.style.top = `${y}px`
-  sticker.style.marginLeft = `${-STICKER_SIZE_PX / 2}px`
-  sticker.style.marginTop = `${-STICKER_SIZE_PX / 2}px`
+  // 直径与时长一样由 CSS 变量驱动:居中偏移读取同一变量,
+  // 覆盖 --ee-sticker-size 后贴图仍保持居中。
+  const size = readCssNumber('--ee-sticker-size', STICKER_SIZE_PX)
+  sticker.style.marginLeft = `${-size / 2}px`
+  sticker.style.marginTop = `${-size / 2}px`
   sticker.style.animation = FALLBACK_STYLE
 
-  // 时长通过 CSS 变量读取（样式表覆盖时优先），否则用回退时长。
-  const duration = getComputedStyle(document.documentElement)
-    .getPropertyValue('--ee-sticker-duration')
-    .trim()
-  const removeAfter = duration ? parseMs(duration) : STICKER_DURATION_MS
+  // 时长通过 CSS 变量读取(样式表覆盖时优先),否则用回退时长。
+  const removeAfter = readCssNumber('--ee-sticker-duration', STICKER_DURATION_MS)
 
   document.documentElement.append(sticker)
   window.setTimeout(() => sticker.remove(), removeAfter)
 }
 
-// 解析 CSS 时长（如 1250ms / 1.25s）；解析失败时回退到默认值。
-function parseMs(value: string) {
-  const match = /^([\d.]+)(ms|s)$/.exec(value.trim())
-  if (!match) {
-    return STICKER_DURATION_MS
+// 解析 CSS 时长/尺寸(如 1250ms / 1.25s / 160px);缺失或解析失败时回退到默认值。
+function readCssNumber(property: string, fallback: number) {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(property).trim()
+
+  if (!value) {
+    return fallback
   }
+
+  const match = /^([\d.]+)(ms|s|px)$/.exec(value)
+
+  if (!match) {
+    return fallback
+  }
+
   const amount = Number(match[1])
-  const fallback = Number.isFinite(amount) ? amount : 0
-  return match[2] === 's' ? fallback * 1000 : fallback
+
+  if (!Number.isFinite(amount)) {
+    return fallback
+  }
+
+  return match[2] === 's' ? amount * 1000 : amount
 }
