@@ -6,7 +6,7 @@ This repository is a Vue 3, TypeScript, Vuetify, and Vite single-page site. Appl
 
 ## Build, Test, and Development Commands
 
-Use Node.js 22, matching GitHub Actions, and install locked dependencies with `npm ci`.
+Use Node.js 24 (minimum 24.11.0, see `.nvmrc` and `engines` in `package.json`), matching GitHub Actions, and install locked dependencies with `npm ci`.
 
 - `npm run dev`: optimize hero images, then start Vite on `127.0.0.1`.
 - `npm test`: run the Vitest suite once.
