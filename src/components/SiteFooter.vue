@@ -21,11 +21,7 @@
         </div>
         <div class="footer-right">
           <div class="footer-links">
-            <RouterLink to="/">首页</RouterLink>
-            <RouterLink to="/news">新闻</RouterLink>
-            <RouterLink to="/download">下载</RouterLink>
-            <RouterLink to="/status">状态</RouterLink>
-            <RouterLink to="/about">关于</RouterLink>
+            <RouterLink v-for="link in footerNavLinks" :key="link.name" :to="link.path">{{ link.label }}</RouterLink>
           </div>
           <div class="beian-list" aria-label="备案信息">
             <a
@@ -56,20 +52,15 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-const friendLinks = [
-  {
-    label: 'ブルーアーカイブ',
-    href: 'https://bluearchive.jp/'
-  },
-  {
-    label: 'Yostar JP',
-    href: 'https://www.yostar.co.jp/'
-  },
-  {
-    label: 'Shittim Canvas',
-    href: 'https://sc.japerz.com/'
-  }
-]
+import { friendLinks } from '../content/site-content'
+import { staticRoutes } from '../shared/site-routes.mjs'
+
+// 页脚链接从共享路由表派生,footerNavOrder 仅表达展示顺序。
+const footerNavOrder = ['home', 'news', 'download', 'status', 'about'] as const
+
+const footerNavLinks = footerNavOrder
+  .map((name) => staticRoutes.find((item) => item.name === name))
+  .filter((item) => item !== undefined)
 </script>
 
 <style scoped>

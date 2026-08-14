@@ -113,8 +113,9 @@ src/
   pages/              # 路由级页面组件
   components/         # 可复用 UI 组件
   utils/              # 状态查询、SEO、分析、彩蛋、控制台品牌
-  content/            # 新闻 Markdown 与生成产物、下载配置
+  content/            # 新闻 Markdown 与生成产物、下载/平台/站点内容配置
   shared/site-routes.mjs   # 静态路由 / SEO / sitemap 共享配置
+  shared/seo.mjs           # 路由 SEO 元数据与 JSON-LD 派生(浏览器端与构建脚本共用)
   styles/             # Vuetify 主题与全局样式
 public/               # 静态资源：hero 图、彩蛋贴图与音频、favicon
 scripts/              # 构建与内容生成脚本（含各自的测试）
@@ -123,7 +124,7 @@ scripts/              # 构建与内容生成脚本（含各自的测试）
 
 ## 路由与部署
 
-静态路由、SEO、sitemap 和 GitHub Pages 回退页面共享 `src/shared/site-routes.mjs`。新增静态页面时同时添加页面组件映射，测试会检查共享路由是否注册到 Vue Router。
+静态路由、SEO、sitemap 和 GitHub Pages 回退页面共享 `src/shared/site-routes.mjs`，路由级 SEO 元数据与 JSON-LD 的派生逻辑统一在 `src/shared/seo.mjs`（浏览器端 `src/utils/seo.ts` 与构建脚本 `scripts/static-html.mjs` 共用）。新增静态页面时：在 `src/shared/site-routes.mjs` 的 `staticRoutes` 中添加条目（含导航标签 `label`），并在 `src/router.ts` 的 `routeComponents` 注册页面组件——顶部导航与页脚链接会自动派生；测试会检查共享路由是否注册到 Vue Router。
 
 推送到 `main` 或 `master` 后，GitHub Actions 会测试并部署 `dist/`。Pull Request 会独立执行依赖审计、测试、类型检查和 GitHub Pages 模式构建。
 

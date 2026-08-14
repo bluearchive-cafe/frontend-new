@@ -81,6 +81,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
+import { staticRoutes } from '../shared/site-routes.mjs'
 import { useToolbarLoader } from '../utils/toolbar-loader'
 
 const drawer = ref(false)
@@ -103,38 +104,27 @@ watch(drawer, (open) => {
     void nextTick(() => menuTrigger.value?.$el?.focus())
   }
 })
-const navItems = computed(() => [
-  {
-    label: '首页',
-    value: 'home',
-    to: '/',
-    isActive: () => route.path === '/'
-  },
-  {
-    label: '新闻',
-    value: 'news',
-    to: '/news',
-    isActive: () => route.path.startsWith('/news')
-  },
-  {
-    label: '下载',
-    value: 'download',
-    to: '/download',
-    isActive: () => route.path === '/download'
-  },
-  {
-    label: '状态',
-    value: 'status',
-    to: '/status',
-    isActive: () => route.path === '/status'
-  },
-  {
-    label: '关于',
-    value: 'about',
-    to: '/about',
-    isActive: () => route.path === '/about'
-  }
-])
+
+// 导航项从共享路由表派生:path/标签与 router 注册保持单一来源;
+// headerNavOrder 只表达展示顺序,不重复任何路由知识。
+// 激活判定:首页仅精确匹配,其余路由同时匹配其子路径(如 /news/:slug)。
+const headerNavOrder = ['home', 'news', 'download', 'status', 'about'] as const
+
+function matchesPath(path: string) {
+  return route.path === path || route.path.startsWith(`${path}/`)
+}
+
+const navItems = computed(() =>
+  headerNavOrder
+    .map((name) => staticRoutes.find((item) => item.name === name))
+    .filter((item) => item !== undefined)
+    .map((item) => ({
+      label: item.label,
+      value: item.name,
+      to: item.path,
+      isActive: () => matchesPath(item.path)
+    }))
+)
 
 function closeDrawer() {
   drawer.value = false
