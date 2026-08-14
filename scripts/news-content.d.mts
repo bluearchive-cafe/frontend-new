@@ -1,3 +1,5 @@
+import type { NewsArticle } from '../src/content/news-types'
+
 export interface NewsGenerationOptions {
   newsDirectory?: string
   outputFile?: string
@@ -10,21 +12,8 @@ export interface NewsAsset {
   placeholder: string
 }
 
-// 生成产物(news.generated.ts)中的文章形状,与 src/content/news-types.ts 一致。
-export interface GeneratedNewsArticle {
-  title: string
-  author: string
-  publishedAt: string
-  publishedAtDateTime: string
-  publishedAtTimestamp: number
-  category: string
-  summary: string
-  pinned: boolean
-  draft: boolean
-  slug: string
-  html: string
-  wordCount: number
-}
+// 生成产物与浏览器消费方共用 NewsArticle,字段只在 news-types.ts 定义。
+export type GeneratedNewsArticle = NewsArticle
 
 // 读取阶段多带原始 Markdown 正文。
 export interface NewsArticleData extends GeneratedNewsArticle {

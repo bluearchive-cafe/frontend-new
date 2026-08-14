@@ -46,7 +46,11 @@
         >
           <summary>
             <div class="status-panel-leading">
-              <v-avatar :class="['status-symbol', `status-symbol--${panel.tone}`]" rounded="lg">
+              <v-avatar
+                :class="['status-symbol', panel.tone ? `status-symbol--${panel.tone}` : undefined]"
+                :style="panel.colorTokens ? clientPlatformColorStyle(panel.colorTokens) : undefined"
+                rounded="lg"
+              >
                 <v-icon :icon="panel.icon" size="24" aria-hidden="true" />
               </v-avatar>
               <span class="status-panel-copy">
@@ -95,7 +99,12 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import PageHeading from '../components/PageHeading.vue'
-import { clientPlatforms, type ClientPlatformKey } from '../content/platforms'
+import {
+  clientPlatformColorStyle,
+  clientPlatforms,
+  type ClientPlatformColorTokens,
+  type ClientPlatformKey
+} from '../content/platforms'
 import {
   createStatusResources,
   fetchStatus,
@@ -109,7 +118,8 @@ interface StatusPanel {
   title: string
   description: string
   icon: string
-  tone: string
+  tone?: string
+  colorTokens?: ClientPlatformColorTokens
 }
 
 const isStatusLoading = ref(true)
@@ -118,7 +128,7 @@ const statusAnnouncement = ref('正在获取资源状态')
 const toolbarLoadingDelayMs = 400
 let toolbarLoadingDelayId: number | undefined
 
-// 客户端平台面板的 icon/tone 从 platforms.ts 单一派生;
+// 客户端平台面板的 icon/颜色 token 从 platforms.ts 单一派生;
 // 状态页特有的标题与描述仍保留在本页。
 const clientPanelCopy: Record<ClientPlatformKey, { title: string; description: string }> = {
   android: { title: '安装包', description: 'Android 专用客户端安装包' },
@@ -132,7 +142,7 @@ const statusPanels: StatusPanel[] = [
     key: platform.key,
     ...clientPanelCopy[platform.key],
     icon: platform.icon,
-    tone: platform.statusTone
+    colorTokens: platform.colorTokens
   })),
   {
     key: 'notice',
@@ -331,25 +341,6 @@ function stopToolbarLoading() {
   border: 1px solid var(--color-primary-border);
   background: var(--color-primary-soft);
   color: var(--color-secondary);
-}
-
-.status-symbol--android {
-  border-color: var(--color-success-border-strong);
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-
-.status-symbol--ios {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: var(--color-neutral-soft);
-  color: var(--color-text);
-}
-
-.status-symbol--windows,
-.status-symbol--asset {
-  border-color: var(--color-primary-border-strong);
-  background: var(--color-primary-soft);
-  color: var(--color-info);
 }
 
 .status-chip {

@@ -1,6 +1,5 @@
 import {
   defaultDescription,
-  siteTitle,
   staticRoutes
 } from '../src/shared/site-routes.mjs'
 import { buildArticleSeo } from '../src/shared/seo.mjs'

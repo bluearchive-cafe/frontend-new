@@ -55,12 +55,8 @@ import { RouterLink } from 'vue-router'
 import { friendLinks } from '../content/site-content'
 import { staticRoutes } from '../shared/site-routes.mjs'
 
-// 页脚链接从共享路由表派生,footerNavOrder 仅表达展示顺序。
-const footerNavOrder = ['home', 'news', 'download', 'status', 'about'] as const
-
-const footerNavLinks = footerNavOrder
-  .map((name) => staticRoutes.find((item) => item.name === name))
-  .filter((item) => item !== undefined)
+// 页脚链接与展示顺序都从共享路由表派生。
+const footerNavLinks = staticRoutes
 </script>
 
 <style scoped>

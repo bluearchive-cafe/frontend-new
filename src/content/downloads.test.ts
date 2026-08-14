@@ -2,12 +2,18 @@ import { describe, expect, it } from 'vitest'
 
 import { filterVisiblePlatformLinks, platformLinks, type PlatformLink } from './downloads'
 
+const testColorTokens = {
+  border: '--color-primary-border',
+  background: '--color-primary-soft',
+  foreground: '--color-primary'
+}
+
 const links: PlatformLink[] = [
   {
     name: 'Visible',
     statusKey: 'android',
     icon: '$download',
-    tone: 'test',
+    colorTokens: testColorTokens,
     docUrl: '/docs',
     docExternal: false,
     description: 'Visible platform',
@@ -20,7 +26,7 @@ const links: PlatformLink[] = [
     name: 'Hidden',
     statusKey: 'ios',
     icon: '$download',
-    tone: 'test',
+    colorTokens: testColorTokens,
     docUrl: '/docs',
     docExternal: false,
     description: 'Hidden platform',

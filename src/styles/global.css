@@ -31,6 +31,8 @@
   --app-bar-height: 56px;
   --anchor-offset: 72px;
   --page-min-height: 72vh;
+  --ee-sticker-size: 160px;
+  --ee-sticker-duration: 1250ms;
   --color-bg: var(--md2-background);
   --color-bg-deep: var(--md2-background);
   --color-footer: var(--md2-background);
@@ -58,6 +60,7 @@
   --color-error-border: rgba(var(--v-theme-error), 0.36);
   --color-neutral-soft: color-mix(in srgb, var(--md2-surface) 93%, white);
   --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, white);
+  --color-neutral-border: rgba(255, 255, 255, 0.22);
   --color-mark: #4a4125;
   --color-text: #fff;
   --color-text-soft: rgba(229, 241, 255, 0.82);
@@ -321,12 +324,12 @@ a {
 /* 点击彩蛋贴图：在点击坐标弹出 kuyashi 表情，弹入后淡出消失。
    贴图大小与旋转由 --ee-sticker-size / --ee-rot 覆盖，时长由 --ee-sticker-duration 覆盖。 */
 .easter-egg-sticker {
-  width: var(--ee-sticker-size, 160px);
+  width: var(--ee-sticker-size);
   height: auto;
   display: block;
   pointer-events: none;
   transform-origin: 50% 50%;
-  animation: easter-egg-sticker var(--ee-sticker-duration, 1250ms) var(--md2-easing-standard)
+  animation: easter-egg-sticker var(--ee-sticker-duration) var(--md2-easing-standard)
     var(--ee-rot, -8deg) both;
 }
 

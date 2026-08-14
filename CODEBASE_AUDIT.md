@@ -317,7 +317,7 @@
 
 ## 整改状态(2026-08-14,修复后更新)
 
-验证命令全部通过:`npm run audit`(0 漏洞)、`npm run lint`、`npm run typecheck`(含新接入的 node 项目)、`vitest run --pool=threads`(**133/133 通过**)、`npm run build`(构建 + 9 个路由回退页 + sitemap,产物抽查确认 JSON-LD/meta/canonical 注入正确)。
+验证命令全部通过:`npm run audit`(0 漏洞)、`npm run lint`、`npm run typecheck`(含新接入的 node 项目)、`vitest run`(**141/141 通过**)、`npm run build`(构建 + 9 个路由回退页 + sitemap,产物抽查确认 JSON-LD/meta/canonical 注入正确)。
 
 | 发现 | 状态 | 处理 |
 |---|---|---|
@@ -325,17 +325,17 @@
 | D2 vue-eslint-parser | ✅ | 显式加入 devDependencies(^10.4.1) |
 | D3 未用 devDeps | ✅ | 移除 @eslint/markdown、@types/markdown-it、@types/sanitize-html |
 | A1/A2/A3/M2/M3 SEO 多源与类型契约 | ✅ | 新建 `src/shared/seo.mjs`(+`.d.mts`)单一派生;seo.ts / static-html.mjs / scripts/site-routes.mjs 共用;index.html 只留结构(+preconnect);tsconfig references 接入 typecheck;补齐 news-content/news-entries 类型声明 |
-| A4/M1 路由 4 处重复 | ✅ | staticRoutes 增加 label,AppHeader/SiteFooter 派生导航(顺序数组仅表达展示),router 用共享 routeNames;README 同步 |
+| A4/M1 路由 4 处重复 | ✅ | staticRoutes 增加 label 并成为导航顺序唯一来源,AppHeader/SiteFooter 直接派生;router 对缺失组件显式失败;声明不再复制路由名 union;README 同步 |
 | A5 formatPublishTime | ✅ | 删除空实现,调用点直接用 publishedAt |
 | M4/M9e 文档矛盾 | ✅ | AGENTS.md 改为 Node 24(最低 24.11.0);main.ts 注释改 1%;.nvmrc 锁 24.11.0 |
 | M5 超大文件 | ⚠️ 部分 | news-content.mjs 拆为 sanitize/markdown/主模块(527→~230 行);页面大文件仅做数据下移与 token 化,长样式保留(手写模板约束) |
 | M6 颜色多份维护 | ✅ | rgba 改为 `rgba(var(--v-theme-*))`,console-brand 从 theme.ts 取色 |
-| M7 72/72vh 魔法值 | ✅ | `--app-bar-height/--anchor-offset/--page-min-height` token,router.ts 运行时读取变量(回退 72) |
-| M8 平台 icon/tone | ✅ | 新建 `src/content/platforms.ts`,downloads.ts 与 StatusPage 派生 |
+| M7 72/72vh 魔法值 | ✅ | `--app-bar-height/--anchor-offset/--page-min-height` token,AppHeader 与 router 运行时读取必需 token,不再维护 JS 回退值 |
+| M8 平台 icon/tone | ✅ | `src/content/platforms.ts` 统一维护 icon 与颜色 token,DownloadPage/StatusPage 共用同一纯函数生成样式 |
 | M9a 死 CSS | ✅ | 删除 .page-surface/.content-card |
 | M9b .sr-only ×3 | ✅ | 全局工具类;StatusPage 媒体查询内的 thead 隐藏块保留(结构不同) |
 | M9c 域名硬编码 | ✅ | apex-redirect.ts / analytics.ts 从 siteUrl 派生 |
-| M9d 彩蛋尺寸双份 | ✅ | 居中偏移与时长统一由 CSS 变量驱动 |
+| M9d 彩蛋尺寸双份 | ✅ | `:root` 定义尺寸与时长默认 token,CSS 与 TS 均直接消费,不再复制默认数值 |
 | S1 sanitize 兜底 | ✅ | 保留 html:true(现有文章含内嵌 HTML),补 script/iframe/事件属性/javascript:/data: 回归测试 |
 | S2 CI 权限过宽 | ✅ | build job 仅 contents:read;pages:write/id-token:write 下放 deploy job |
 | P1 字体 4.5MB | ⚠️ 部分 | 删除 noto-sans-sc 的 latin 冗余子集、noto-sans 字重裁剪为 400/500/700;完整 CJK webfont 保留(品牌设计决策,浏览器按 unicode-range 分片下载) |

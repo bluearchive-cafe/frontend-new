@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { routeNames, staticRoutes } from './shared/site-routes.mjs'
 import { trackNotFound } from './utils/analytics'
+import { readCssPixelToken } from './utils/css-tokens'
 import { applyRouteSeo } from './utils/seo'
 
 const routeComponents = {
@@ -12,20 +13,29 @@ const routeComponents = {
   about: () => import('./pages/AboutPage.vue')
 }
 
-const publicRoutes = staticRoutes.map((route) => ({
-  path: route.path,
-  alias: [...route.alias],
-  name: route.name,
-  component: routeComponents[route.name]
-}))
+type RouteComponentName = keyof typeof routeComponents
+
+function hasRouteComponent(name: string): name is RouteComponentName {
+  return Object.hasOwn(routeComponents, name)
+}
+
+const publicRoutes = staticRoutes.map((route) => {
+  if (!hasRouteComponent(route.name)) {
+    throw new Error(`Missing page component for static route: ${route.name}`)
+  }
+
+  return {
+    path: route.path,
+    alias: [...route.alias],
+    name: route.name,
+    component: routeComponents[route.name]
+  }
+})
 
 // 锚点偏移与 global.css 的 --anchor-offset 单一来源:固定应用栏高度 +
-// 16px 呼吸间距,由样式表 token 驱动,JS 侧仅在无法读取时回退到 72。
+// 16px 呼吸间距,由样式表 token 驱动。
 function readAnchorOffset() {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset').trim()
-  const value = Number.parseFloat(raw)
-
-  return Number.isFinite(value) ? value : 72
+  return readCssPixelToken('--anchor-offset')
 }
 
 const router = createRouter({

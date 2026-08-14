@@ -54,7 +54,8 @@ describe('AppHeader MD2 compatibility contract', () => {
 
   it('keeps the existing top-level tabs while adding keyboard drawer dismissal', () => {
     expect(appHeaderSource).toContain('<v-tabs')
-    expect(appHeaderSource).toContain('height="56"')
+    expect(appHeaderSource).toContain(':height="appBarHeight"')
+    expect(globalStyles).toContain('--app-bar-height: 56px')
     expect(appHeaderSource).toContain('@keydown.esc="closeDrawer"')
     expect(appHeaderSource).toContain('function closeDrawer()')
   })

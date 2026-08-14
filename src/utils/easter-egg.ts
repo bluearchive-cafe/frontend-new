@@ -4,6 +4,8 @@
 // 使用全局 pointerup 捕获委托：任何按钮、链接、输入框等被点击后都走这里判定，
 // 无需为每个组件单独注册监听。交互元素需满足 closest 交互选择器，
 // 且其祖先上没有标记 data-easter-egg="off" 的排除区。
+import { readCssDurationToken, readCssPixelToken } from './css-tokens'
+
 const INTERACTIVE_SELECTOR = [
   'a',
   'button',
@@ -49,13 +51,8 @@ const EASTER_EGG_ASSETS = [
 // 默认触发概率；调试时可在 URL 上追加 ?kuyashi=1（100%）或 ?kuyashi=0.5（50%）覆盖。
 const DEFAULT_CHANCE = 1 / 100
 
-// 贴图直径与展示时长，均可通过全局样式中的 CSS 变量覆盖。
-const STICKER_SIZE_PX = 160
-const STICKER_DURATION_MS = 1250
-
-// 贴图样式由全局样式表的 .easter-egg-sticker 提供；此处仅设置位置，
-// 内联动画仅作为样式表缺失时的回退。
-const FALLBACK_STYLE = `opacity:0;animation:${STICKER_DURATION_MS}ms cubic-bezier(0.2,0,0,1) both`
+// 贴图时长由根 CSS token 提供,内联仅保留动画声明的最低样式保障。
+const INLINE_ANIMATION_STYLE = 'opacity:0;animation:var(--ee-sticker-duration) cubic-bezier(0.2,0,0,1) both'
 
 let lastPlayAt = -COOLDOWN_MS
 let chance = DEFAULT_CHANCE
@@ -158,37 +155,14 @@ function showSticker(x: number, y: number, stickerUrl: string) {
   sticker.style.top = `${y}px`
   // 直径与时长一样由 CSS 变量驱动:居中偏移读取同一变量,
   // 覆盖 --ee-sticker-size 后贴图仍保持居中。
-  const size = readCssNumber('--ee-sticker-size', STICKER_SIZE_PX)
+  const size = readCssPixelToken('--ee-sticker-size')
   sticker.style.marginLeft = `${-size / 2}px`
   sticker.style.marginTop = `${-size / 2}px`
-  sticker.style.animation = FALLBACK_STYLE
+  sticker.style.animation = INLINE_ANIMATION_STYLE
 
-  // 时长通过 CSS 变量读取(样式表覆盖时优先),否则用回退时长。
-  const removeAfter = readCssNumber('--ee-sticker-duration', STICKER_DURATION_MS)
+  // 展示时长直接读取根 CSS token,避免与样式表维护两份默认值。
+  const removeAfter = readCssDurationToken('--ee-sticker-duration')
 
   document.documentElement.append(sticker)
   window.setTimeout(() => sticker.remove(), removeAfter)
-}
-
-// 解析 CSS 时长/尺寸(如 1250ms / 1.25s / 160px);缺失或解析失败时回退到默认值。
-function readCssNumber(property: string, fallback: number) {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(property).trim()
-
-  if (!value) {
-    return fallback
-  }
-
-  const match = /^([\d.]+)(ms|s|px)$/.exec(value)
-
-  if (!match) {
-    return fallback
-  }
-
-  const amount = Number(match[1])
-
-  if (!Number.isFinite(amount)) {
-    return fallback
-  }
-
-  return match[2] === 's' ? amount * 1000 : amount
 }

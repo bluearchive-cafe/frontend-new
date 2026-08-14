@@ -1,10 +1,14 @@
 // @vitest-environment jsdom
 
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import router from './router'
 
 type ScrollBehaviorArgs = Parameters<NonNullable<typeof router.options.scrollBehavior>>
+
+beforeEach(() => {
+  document.documentElement.style.setProperty('--anchor-offset', '72px')
+})
 
 afterEach(() => {
   document.documentElement.style.removeProperty('--anchor-offset')
@@ -29,15 +33,15 @@ describe('router scroll behavior', () => {
     expect(result).toEqual({ el: '#news', behavior: 'smooth', top: 72 })
   })
 
-  it('honors a --anchor-offset override and falls back when unset', () => {
+  it('honors a --anchor-offset override and returns to the configured token', () => {
     document.documentElement.style.setProperty('--anchor-offset', '88px')
 
     const overridden = router.options.scrollBehavior?.(resolved('/news/hello-world#news'), resolved('/'), null)
     expect(overridden).toEqual({ el: '#news', behavior: 'smooth', top: 88 })
 
-    document.documentElement.style.removeProperty('--anchor-offset')
+    document.documentElement.style.setProperty('--anchor-offset', '72px')
 
-    const fallback = router.options.scrollBehavior?.(resolved('/news/hello-world#news'), resolved('/'), null)
-    expect(fallback).toEqual({ el: '#news', behavior: 'smooth', top: 72 })
+    const configured = router.options.scrollBehavior?.(resolved('/news/hello-world#news'), resolved('/'), null)
+    expect(configured).toEqual({ el: '#news', behavior: 'smooth', top: 72 })
   })
 })

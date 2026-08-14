@@ -5,11 +5,14 @@ import { disableClickSound, enableClickSound } from './easter-egg'
 describe('easter-egg click sound', () => {
   beforeEach(() => {
     disableClickSound()
+    document.documentElement.style.setProperty('--ee-sticker-size', '160px')
+    document.documentElement.style.setProperty('--ee-sticker-duration', '1250ms')
     vi.spyOn(window.HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
   })
 
   afterEach(() => {
     disableClickSound()
+    document.documentElement.style.removeProperty('--ee-sticker-size')
     document.documentElement.style.removeProperty('--ee-sticker-duration')
     // 移除测试泄漏的贴图，避免污染后续用例。
     document.querySelectorAll('img.easter-egg-sticker').forEach((sticker) => sticker.remove())
@@ -207,6 +210,8 @@ describe('easter-egg click sound', () => {
     expect(sticker?.getAttribute('src')).toContain('/assets/img/easter-egg/kuyashi.jpg')
     expect(stickerStyle?.left).toBe('0px')
     expect(stickerStyle?.top).toBe('0px')
+    expect(stickerStyle?.marginLeft).toBe('-80px')
+    expect(stickerStyle?.marginTop).toBe('-80px')
 
     vi.advanceTimersByTime(1_300)
     expect(document.querySelector('img.easter-egg-sticker')).toBeNull()
@@ -226,6 +231,19 @@ describe('easter-egg click sound', () => {
 
     vi.advanceTimersByTime(800)
     expect(document.querySelector('img.easter-egg-sticker')).toBeNull()
+  })
+
+  it('honors the CSS overridden sticker size when centering it', () => {
+    mockRandom(0)
+    document.documentElement.style.setProperty('--ee-sticker-size', '200px')
+    enableClickSound()
+    document.body.innerHTML = '<button id="btn">click me</button>'
+
+    dispatchClick(0, document.getElementById('btn')!)
+    const sticker = document.querySelector<HTMLImageElement>('img.easter-egg-sticker')
+
+    expect(sticker?.style.marginLeft).toBe('-100px')
+    expect(sticker?.style.marginTop).toBe('-100px')
   })
 
   it('does not leak stickers when the draw misses', () => {

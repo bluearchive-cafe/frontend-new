@@ -25,16 +25,6 @@ export const staticRoutes = [
     priority: '1.0'
   },
   {
-    name: 'download',
-    label: '下载',
-    path: '/download',
-    alias: [],
-    title: `下载 - ${siteTitle}`,
-    description: '获取 BlueArchive.Cafe Android、iOS、macOS 与 Windows 客户端下载入口，并查看安装文档。',
-    changefreq: 'weekly',
-    priority: '0.9'
-  },
-  {
     name: 'news',
     label: '新闻',
     path: '/news',
@@ -43,6 +33,16 @@ export const staticRoutes = [
     description: '查看 BlueArchive.Cafe 的汉化更新、使用说明、站点公告与重要资讯。',
     changefreq: 'weekly',
     priority: '0.8'
+  },
+  {
+    name: 'download',
+    label: '下载',
+    path: '/download',
+    alias: [],
+    title: `下载 - ${siteTitle}`,
+    description: '获取 BlueArchive.Cafe Android、iOS、macOS 与 Windows 客户端下载入口，并查看安装文档。',
+    changefreq: 'weekly',
+    priority: '0.9'
   },
   {
     name: 'status',

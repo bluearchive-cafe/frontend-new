@@ -1,4 +1,8 @@
-import { clientPlatforms, type ClientPlatformKey } from './platforms'
+import {
+  clientPlatforms,
+  type ClientPlatformColorTokens,
+  type ClientPlatformKey
+} from './platforms'
 
 export type ClientStatusResourceKey = ClientPlatformKey
 
@@ -16,7 +20,7 @@ export interface PlatformLink {
   name: string
   statusKey: ClientStatusResourceKey
   icon: string
-  tone: string
+  colorTokens: ClientPlatformColorTokens
   docUrl: string
   docExternal: boolean
   description: string
@@ -44,7 +48,7 @@ export const platformLinks: PlatformLink[] = [
     name: 'Android 客户端',
     statusKey: 'android',
     icon: clientMeta('android').icon,
-    tone: clientMeta('android').downloadTone,
+    colorTokens: clientMeta('android').colorTokens,
     docUrl: baseDocUrl + 'platform/android/',
     docExternal: true,
     description: '适用于手机、平板与安卓模拟器。下载后请根据安装文档确认存储权限和系统兼容性。',
@@ -90,7 +94,7 @@ export const platformLinks: PlatformLink[] = [
     name: 'iOS 客户端',
     statusKey: 'ios',
     icon: clientMeta('ios').icon,
-    tone: clientMeta('ios').downloadTone,
+    colorTokens: clientMeta('ios').colorTokens,
     docUrl: baseDocUrl + 'platform/ios/',
     docExternal: true,
     description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
@@ -116,7 +120,7 @@ export const platformLinks: PlatformLink[] = [
     name: 'Windows 启动器',
     statusKey: 'windows',
     icon: clientMeta('windows').icon,
-    tone: clientMeta('windows').downloadTone,
+    colorTokens: clientMeta('windows').colorTokens,
     docUrl: baseDocUrl + 'platform/windows/',
     docExternal: true,
     description: '适用于 Windows 10 / 11。下载后请按文档检查运行库、解压路径与杀毒软件拦截情况。',
@@ -140,7 +144,7 @@ export const platformLinks: PlatformLink[] = [
     name: 'macOS 客户端',
     statusKey: 'macos',
     icon: clientMeta('macos').icon,
-    tone: clientMeta('macos').downloadTone,
+    colorTokens: clientMeta('macos').colorTokens,
     docUrl: baseDocUrl + 'platform/macos/',
     docExternal: true,
     description: '适用于 Apple Silicon Mac。首次打开时可能需要在系统设置中确认安全权限。',

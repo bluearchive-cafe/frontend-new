@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="app-header" color="surface" elevation="4" height="56">
+  <v-app-bar class="app-header" color="surface" elevation="4" :height="appBarHeight">
     <v-app-bar-nav-icon
       class="mobile-menu"
       aria-label="打开菜单"
@@ -24,7 +24,7 @@
         slider-color="primary"
         bg-color="transparent"
         density="comfortable"
-        height="56"
+        :height="appBarHeight"
         :show-arrows="false"
         aria-label="主导航"
       >
@@ -34,7 +34,7 @@
           :value="item.value"
           :to="item.to"
           class="nav-tab"
-          height="56"
+          :height="appBarHeight"
         >
           {{ item.label }}
         </v-tab>
@@ -78,16 +78,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { staticRoutes } from '../shared/site-routes.mjs'
+import { readCssPixelToken } from '../utils/css-tokens'
 import { useToolbarLoader } from '../utils/toolbar-loader'
 
 const drawer = ref(false)
 const menuTrigger = ref<{ $el?: HTMLElement } | null>(null)
 const route = useRoute()
 const { isToolbarLoading } = useToolbarLoader()
+const appBarHeight = readCssPixelToken('--app-bar-height')
 let closeByRouteChange = false
 
 // MD2 modal drawer: opening moves focus to the active destination, closing
@@ -105,26 +107,18 @@ watch(drawer, (open) => {
   }
 })
 
-// 导航项从共享路由表派生:path/标签与 router 注册保持单一来源;
-// headerNavOrder 只表达展示顺序,不重复任何路由知识。
+// 导航项与展示顺序都从共享路由表派生:path/标签与 router 注册保持单一来源。
 // 激活判定:首页仅精确匹配,其余路由同时匹配其子路径(如 /news/:slug)。
-const headerNavOrder = ['home', 'news', 'download', 'status', 'about'] as const
-
 function matchesPath(path: string) {
   return route.path === path || route.path.startsWith(`${path}/`)
 }
 
-const navItems = computed(() =>
-  headerNavOrder
-    .map((name) => staticRoutes.find((item) => item.name === name))
-    .filter((item) => item !== undefined)
-    .map((item) => ({
-      label: item.label,
-      value: item.name,
-      to: item.path,
-      isActive: () => matchesPath(item.path)
-    }))
-)
+const navItems = staticRoutes.map((item) => ({
+  label: item.label,
+  value: item.name,
+  to: item.path,
+  isActive: () => matchesPath(item.path)
+}))
 
 function closeDrawer() {
   drawer.value = false

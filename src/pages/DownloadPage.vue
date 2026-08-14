@@ -22,7 +22,11 @@
         >
           <v-card-text>
             <div class="platform-head">
-              <v-avatar :class="['platform-icon', `platform-icon--${platform.tone}`]" rounded="lg">
+              <v-avatar
+                class="platform-icon"
+                :style="clientPlatformColorStyle(platform.colorTokens)"
+                rounded="lg"
+              >
                 <v-icon :icon="platform.icon" size="26" aria-hidden="true" />
               </v-avatar>
               <div>
@@ -249,6 +253,7 @@ import {
   type DownloadVariant,
   type PlatformLink
 } from '../content/downloads'
+import { clientPlatformColorStyle } from '../content/platforms'
 
 type ClientStatusLoadState = 'loading' | 'ready' | 'failed'
 
@@ -486,25 +491,6 @@ onBeforeUnmount(() => {
   border: 1px solid var(--color-primary-border);
   background: var(--color-primary-soft);
   color: var(--color-secondary);
-}
-
-.platform-icon--android {
-  border-color: var(--color-success-border-strong);
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-
-.platform-icon--ios,
-.platform-icon--macos {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: var(--color-neutral-soft);
-  color: var(--color-text);
-}
-
-.platform-icon--windows {
-  border-color: var(--color-primary-border-strong);
-  background: var(--color-primary-soft);
-  color: var(--color-info);
 }
 
 .platform-description {
