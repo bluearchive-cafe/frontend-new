@@ -52,6 +52,40 @@ describe('sanitizeRenderedHtml', () => {
     expect(output).not.toContain('type="text"')
     expect(output).toContain('type="checkbox" checked disabled')
   })
+
+  it('strips script, iframe and event handler payloads', () => {
+    const output = sanitizeRenderedHtml(
+      '<p>ok</p><script>alert(1)</script><iframe src="https://evil.example"></iframe><img src="https://example.com/a.png" onclick="steal()" onerror="steal()">'
+    )
+
+    expect(output).toContain('<p>ok</p>')
+    expect(output).not.toContain('<script')
+    expect(output).not.toContain('<iframe')
+    expect(output).not.toContain('onclick')
+    expect(output).not.toContain('onerror')
+  })
+
+  it('rejects javascript: and data: urls', () => {
+    const output = sanitizeRenderedHtml(
+      '<a href="javascript:alert(1)">js</a><a href="data:text/html,<script>alert(1)</script>">data</a><img src="data:text/html,evil">'
+    )
+
+    expect(output).toContain('<a>js</a>')
+    expect(output).toContain('<a>data</a>')
+    expect(output).not.toContain('javascript:')
+    expect(output).not.toContain('data:')
+  })
+
+  it('rejects style attributes and dangerous svg descendants', () => {
+    const output = sanitizeRenderedHtml(
+      '<p style="color:red">styled</p><svg><style>*{display:none}</style><foreignObject><iframe></iframe></foreignObject></svg>'
+    )
+
+    expect(output).toContain('<p>styled</p>')
+    expect(output).not.toContain('style=')
+    expect(output).not.toContain('<foreignObject')
+    expect(output).not.toContain('<iframe')
+  })
 })
 
 describe('generateNewsModule', () => {
@@ -114,6 +148,18 @@ describe('generateNewsModule', () => {
       newsDirectory: fixture.newsDirectory,
       outputFile: fixture.outputFile
     })).rejects.toThrow('outside the news directory')
+  })
+
+  it('rejects duplicate news slugs', async () => {
+    const fixture = await createFixture()
+    await writeFile(path.join(fixture.newsDirectory, 'a.md'), articleSource('first article'))
+    await mkdir(path.join(fixture.newsDirectory, 'a'), { recursive: true })
+    await writeFile(path.join(fixture.newsDirectory, 'a', 'index.md'), articleSource('second article'))
+
+    await expect(generateNewsModule({
+      newsDirectory: fixture.newsDirectory,
+      outputFile: fixture.outputFile
+    })).rejects.toThrow('Duplicate news slug: a')
   })
 })
 

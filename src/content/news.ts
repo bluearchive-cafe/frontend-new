@@ -1,19 +1,6 @@
 import { generatedNewsArticles } from './news.generated'
 
-export interface NewsArticle {
-  title: string
-  author: string
-  publishedAt: string
-  publishedAtDateTime: string
-  publishedAtTimestamp: number
-  category: string
-  summary: string
-  pinned: boolean
-  draft: boolean
-  slug: string
-  html: string
-  wordCount: number
-}
+export type { NewsArticle } from './news-types'
 
 export const newsArticles = generatedNewsArticles.sort((left, right) => {
   if (left.pinned !== right.pinned) {
@@ -30,7 +17,3 @@ export function findNewsArticle(slug: string) {
 }
 
 export const newsCategories = Array.from(new Set(newsArticles.map((article) => article.category)))
-
-export function formatPublishTime(value: string) {
-  return value
-}

@@ -46,7 +46,7 @@
               <ArticleMeta
                 class="article-meta"
                 :author="article.author"
-                :published-at="formatPublishTime(article.publishedAt)"
+                :published-at="article.publishedAt"
                 :published-at-date-time="article.publishedAtDateTime"
                 :word-count="article.wordCount"
                 label="新闻元信息"
@@ -82,7 +82,7 @@ import CategoryBadge from '../components/CategoryBadge.vue'
 import DraftBadge from '../components/DraftBadge.vue'
 import PageHeading from '../components/PageHeading.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
-import { formatPublishTime, newsArticles, newsCategories } from '../content/news'
+import { newsArticles, newsCategories } from '../content/news'
 
 const allCategoryLabel = '全部'
 const selectedCategory = ref(allCategoryLabel)
@@ -116,7 +116,7 @@ const emptyDescription = computed(() =>
 
 <style scoped>
 .news-page {
-  min-height: 72vh;
+  min-height: var(--page-min-height);
   padding-block: var(--page-padding-block);
   background: var(--page-background-fill);
 }

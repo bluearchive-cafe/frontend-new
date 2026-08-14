@@ -16,7 +16,7 @@
           <ArticleMeta
             class="article-meta"
             :author="article.author"
-            :published-at="formatPublishTime(article.publishedAt)"
+            :published-at="article.publishedAt"
             :published-at-date-time="article.publishedAtDateTime"
             :word-count="article.wordCount"
             label="当前新闻元信息"
@@ -54,7 +54,7 @@ import CategoryBadge from '../components/CategoryBadge.vue'
 import DraftBadge from '../components/DraftBadge.vue'
 import NotFoundState from '../components/NotFoundState.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
-import { findNewsArticle, formatPublishTime } from '../content/news'
+import { findNewsArticle } from '../content/news'
 
 const route = useRoute()
 const markdownBodyRef = ref<HTMLElement | null>(null)
@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .article-page {
-  min-height: 72vh;
+  min-height: var(--page-min-height);
   padding-block: 88px;
   background: var(--page-background-fill);
 }

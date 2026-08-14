@@ -24,7 +24,7 @@
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
               <div class="news-card-footer">
-                <div class="news-date">{{ formatPublishTime(item.publishedAt) }}</div>
+                <div class="news-date">{{ item.publishedAt }}</div>
                 <span class="read-more">
                   查看详情
                   <v-icon icon="$arrowRight" size="16" aria-hidden="true" />
@@ -52,7 +52,7 @@ import { computed } from 'vue'
 import CategoryBadge from './CategoryBadge.vue'
 import DraftBadge from './DraftBadge.vue'
 import PinnedBadge from './PinnedBadge.vue'
-import { formatPublishTime, newsArticles } from '../content/news'
+import { newsArticles } from '../content/news'
 
 const latestNews = computed(() => newsArticles.slice(0, 3))
 </script>
