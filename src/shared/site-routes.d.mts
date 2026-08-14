@@ -1,7 +1,13 @@
 export type StaticRouteName = 'home' | 'download' | 'news' | 'status' | 'about'
 
+export const routeNames: {
+  readonly newsArticle: 'news-article'
+  readonly notFound: 'not-found'
+}
+
 export interface StaticRouteDefinition {
   name: StaticRouteName
+  label: string
   path: string
   alias: readonly string[]
   title: string
