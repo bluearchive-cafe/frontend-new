@@ -3,12 +3,19 @@
 import { createApp, type App, type Component, nextTick } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const { trackDownloadClickMock } = vi.hoisted(() => ({
-  trackDownloadClickMock: vi.fn()
+const { trackDownloadClickMock, fetchStatusMock } = vi.hoisted(() => ({
+  trackDownloadClickMock: vi.fn(),
+  fetchStatusMock: vi.fn()
 }))
 
 vi.mock('../utils/analytics', () => ({
   trackDownloadClick: trackDownloadClickMock
+}))
+
+// 打桩状态接口:单元测试不得发起真实网络请求。
+vi.mock('../utils/status', async (importOriginal) => ({
+  ...await importOriginal<typeof import('../utils/status')>(),
+  fetchStatus: fetchStatusMock
 }))
 
 vi.mock('vue-router', () => ({
@@ -25,11 +32,14 @@ afterEach(() => {
     container.remove()
   })
   trackDownloadClickMock.mockReset()
+  fetchStatusMock.mockReset()
 })
 
 describe('DownloadPage analytics wiring', () => {
   it('tracks the selected download only when the user continues', async () => {
+    fetchStatusMock.mockResolvedValue({})
     const { container } = mountDownloadPage()
+    await flushUpdates()
 
     clickButton(container, '下载应用包')
     await flushUpdates()
@@ -44,6 +54,18 @@ describe('DownloadPage analytics wiring', () => {
       variant: '应用包',
       downloadUrl: 'https://download.bluearchive.cafe/ios/latest'
     })
+  })
+
+  it('keeps the download flow available when the status request fails', async () => {
+    fetchStatusMock.mockRejectedValue(new Error('Network failed'))
+    const { container } = mountDownloadPage()
+    await flushUpdates()
+
+    clickButton(container, '下载应用包')
+    await flushUpdates()
+
+    expect(container.textContent).toContain('暂时无法确认该客户端状态')
+    expect(container.textContent).toContain('继续下载')
   })
 })
 
