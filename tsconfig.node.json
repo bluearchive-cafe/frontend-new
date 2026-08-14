@@ -6,11 +6,21 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "allowJs": true,
+    "checkJs": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "scripts/**/*.d.mts"]
+  "include": [
+    "vite.config.ts",
+    "scripts/**/*.mjs",
+    "scripts/**/*.d.mts",
+    "src/content/news-types.ts",
+    "src/shared/**/*.mjs",
+    "src/shared/**/*.d.mts"
+  ],
+  "exclude": ["scripts/**/*.test.mjs"]
 }

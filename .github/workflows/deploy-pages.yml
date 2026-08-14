@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          lfs: true
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -30,6 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Audit dependencies
+        run: npm run audit
+
+      - name: Lint
+        run: npm run lint
 
       - name: Test
         run: npm test

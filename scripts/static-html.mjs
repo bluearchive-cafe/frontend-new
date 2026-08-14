@@ -8,13 +8,24 @@ import {
   resolveRouteSeo
 } from '../src/shared/seo.mjs'
 
+/**
+ * @typedef {Omit<import('../src/shared/seo.mjs').SeoRouteInput, 'type'> & { path?: string, type?: 'website' }} WebsiteRoute
+ * @typedef {import('../src/shared/seo.mjs').ArticleSchemaInput & import('../src/shared/seo.mjs').SeoRouteInput & { path: string, type: 'article' }} ArticleRoute
+ * @typedef {WebsiteRoute | ArticleRoute} RenderRoute
+ */
+
 // 静态回退页的 SEO 元数据与 JSON-LD 与浏览器端 src/utils/seo.ts
 // 共用 src/shared/seo.mjs 的派生逻辑,保证两者永不漂移。
+/**
+ * @param {string} source
+ * @param {RenderRoute} route
+ * @param {{ notFound?: boolean }} [options]
+ */
 export function renderRouteHtml(source, route, { notFound = false } = {}) {
   const dom = new JSDOM(source)
   const { document } = dom.window
   const seo = resolveRouteSeo(route, { notFound })
-  const url = notFound ? '' : buildRouteUrl(route.path)
+  const url = notFound ? '' : buildRouteUrl(route.path ?? '/')
 
   document.title = seo.title
   setMeta(document, 'name', 'description', seo.description)
@@ -39,6 +50,12 @@ export function renderRouteHtml(source, route, { notFound = false } = {}) {
   return dom.serialize()
 }
 
+/**
+ * @param {Document} document
+ * @param {'name' | 'property'} attribute
+ * @param {string} key
+ * @param {string} content
+ */
 function setMeta(document, attribute, key, content) {
   let meta = document.head.querySelector(`meta[${attribute}="${key}"]`)
 
@@ -51,6 +68,12 @@ function setMeta(document, attribute, key, content) {
   meta.setAttribute('content', content)
 }
 
+/**
+ * @param {Document} document
+ * @param {'name' | 'property'} attribute
+ * @param {string} key
+ * @param {string} content
+ */
 function setOptionalMeta(document, attribute, key, content) {
   if (!content) {
     document.head.querySelector(`meta[${attribute}="${key}"]`)?.remove()
@@ -60,6 +83,10 @@ function setOptionalMeta(document, attribute, key, content) {
   setMeta(document, attribute, key, content)
 }
 
+/**
+ * @param {Document} document
+ * @param {string} href
+ */
 function setCanonical(document, href) {
   let link = document.head.querySelector('link[rel="canonical"]')
 
@@ -77,6 +104,10 @@ function setCanonical(document, href) {
   link.setAttribute('href', href)
 }
 
+/**
+ * @param {Document} document
+ * @param {RenderRoute} route
+ */
 function setArticleSchema(document, route) {
   document.head.querySelector('script[id="jsonld-article"]')?.remove()
 
@@ -87,12 +118,18 @@ function setArticleSchema(document, route) {
   appendJsonLd(document, 'jsonld-article', buildArticleSchema(route))
 }
 
+/** @param {Document} document */
 function setSiteSchemas(document) {
   for (const schema of buildSiteSchemas()) {
     appendJsonLd(document, '', schema)
   }
 }
 
+/**
+ * @param {Document} document
+ * @param {string} id
+ * @param {Record<string, unknown>} data
+ */
 function appendJsonLd(document, id, data) {
   const script = document.createElement('script')
 
@@ -105,10 +142,11 @@ function appendJsonLd(document, id, data) {
   document.head.append(script)
 }
 
+/** @param {Record<string, unknown>} data */
 function serializeJsonLd(data) {
   return JSON.stringify(data).replace(/[<>&]/g, (character) => ({
     '<': '\\u003c',
     '>': '\\u003e',
     '&': '\\u0026'
-  })[character])
+  })[character] ?? character)
 }

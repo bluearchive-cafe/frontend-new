@@ -26,12 +26,18 @@ export async function getSitemapRoutes() {
     }
   })
 
-  return staticRoutes.map((route) => ({
+  const staticSitemapRoutes = staticRoutes.map((route) => ({
     ...route,
     description: route.description || defaultDescription
-  })).concat(newsRoutes)
+  }))
+
+  return [...staticSitemapRoutes, ...newsRoutes]
 }
 
+/**
+ * @param {string} value
+ * @returns {string | undefined}
+ */
 function formatLastmod(value) {
   if (!value) {
     return undefined

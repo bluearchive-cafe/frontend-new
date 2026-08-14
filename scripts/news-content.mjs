@@ -9,15 +9,39 @@ import { createMarkdownRenderer, splitAssetReference } from './news-markdown.mjs
 import { sanitizeRenderedHtml } from './news-sanitize.mjs'
 import { parseBoolean, parseFrontmatterRaw } from './frontmatter.mjs'
 
+/**
+ * @typedef {import('../src/content/news-types').NewsArticle} NewsArticle
+ * @typedef {object} NewsGenerationOptions
+ * @property {string} [newsDirectory]
+ * @property {string} [outputFile]
+ * @property {boolean} [includeDrafts]
+ *
+ * @typedef {object} NewsAsset
+ * @property {string} filePath
+ * @property {string} importName
+ * @property {string} placeholder
+ *
+ * @typedef {Omit<NewsArticle, 'html'> & { body: string }} ParsedNewsArticle
+ * @typedef {NewsArticle & { body: string }} NewsArticleData
+ * @typedef {{ articles: NewsArticleData[], assets: NewsAsset[] }} NewsContentResult
+ * @typedef {{ articles: NewsArticleData[], assets: NewsAsset[], output: string }} GeneratedNewsResult
+ */
+
 export { sanitizeRenderedHtml } from './news-sanitize.mjs'
 
+/**
+ * @param {{ newsDirectory?: string, includeDrafts?: boolean }} [options]
+ * @returns {Promise<NewsContentResult>}
+ */
 export async function readNewsArticles({
   newsDirectory = path.resolve('src/content/news'),
   includeDrafts = false
 } = {}) {
   const markdownFiles = await findMarkdownFiles(newsDirectory)
+  /** @type {Map<string, NewsAsset>} */
   const assetRegistry = new Map()
   const slugs = new Set()
+  /** @type {NewsArticleData[]} */
   const articles = []
 
   for (const filePath of markdownFiles) {
@@ -36,7 +60,7 @@ export async function readNewsArticles({
 
     const markdown = createMarkdownRenderer()
     const renderedHtml = markdown.render(article.body, {
-      resolveAsset: (src) => registerNewsAsset(src, filePath, newsDirectory, assetRegistry)
+      resolveAsset: (/** @type {string} */ src) => registerNewsAsset(src, filePath, newsDirectory, assetRegistry)
     })
 
     articles.push({
@@ -51,6 +75,10 @@ export async function readNewsArticles({
   }
 }
 
+/**
+ * @param {NewsGenerationOptions} [options]
+ * @returns {Promise<GeneratedNewsResult>}
+ */
 export async function generateNewsModule({
   newsDirectory = path.resolve('src/content/news'),
   outputFile = path.resolve('src/content/news.generated.ts'),
@@ -64,6 +92,12 @@ export async function generateNewsModule({
   return { articles, assets, output }
 }
 
+/**
+ * @param {string} source
+ * @param {string} filePath
+ * @param {string} newsDirectory
+ * @returns {ParsedNewsArticle}
+ */
 function parseNewsArticle(source, filePath, newsDirectory) {
   const { meta, body } = parseFrontmatterRaw(source)
   const publishedAt = parsePublishedAt(meta.publishedAt ?? '', filePath)
@@ -82,6 +116,10 @@ function parseNewsArticle(source, filePath, newsDirectory) {
   }
 }
 
+/**
+ * @param {string} value
+ * @param {string} filePath
+ */
 function parsePublishedAt(value, filePath) {
   const publishedAt = value.trim()
 
@@ -99,6 +137,10 @@ function parsePublishedAt(value, filePath) {
   return { publishedAt, publishedAtDateTime, publishedAtTimestamp }
 }
 
+/**
+ * @param {string} directory
+ * @returns {Promise<string[]>}
+ */
 async function findMarkdownFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true })
   const nestedFiles = await Promise.all(
@@ -116,6 +158,10 @@ async function findMarkdownFiles(directory) {
   return nestedFiles.flat().sort()
 }
 
+/**
+ * @param {string} newsDirectory
+ * @param {string} filePath
+ */
 function getSlugFromPath(newsDirectory, filePath) {
   const relativePath = path.relative(newsDirectory, filePath).replaceAll(path.sep, '/')
   const normalizedPath = relativePath.replace(/\.md$/, '')
@@ -123,6 +169,12 @@ function getSlugFromPath(newsDirectory, filePath) {
   return normalizedPath.endsWith('/index') ? normalizedPath.slice(0, -'/index'.length) : normalizedPath
 }
 
+/**
+ * @param {string} src
+ * @param {string} sourcePath
+ * @param {string} newsDirectory
+ * @param {Map<string, NewsAsset>} assetRegistry
+ */
 function registerNewsAsset(src, sourcePath, newsDirectory, assetRegistry) {
   const { pathname, suffix } = splitAssetReference(src)
   const assetPath = path.resolve(path.dirname(sourcePath), pathname)
@@ -162,6 +214,11 @@ function registerNewsAsset(src, sourcePath, newsDirectory, assetRegistry) {
   return `${asset.placeholder}${suffix}`
 }
 
+/**
+ * @param {NewsArticleData[]} articles
+ * @param {NewsAsset[]} assets
+ * @param {string} outputFile
+ */
 function renderGeneratedModule(articles, assets, outputFile) {
   const importLines = assets.map((asset) => {
     const relativePath = toImportPath(path.relative(path.dirname(outputFile), asset.filePath))
@@ -194,6 +251,10 @@ ${articleLines.join(',\n')}
 `
 }
 
+/**
+ * @param {string} html
+ * @param {NewsAsset[]} assets
+ */
 function renderHtmlExpression(html, assets) {
   const assetByPlaceholder = new Map(assets.map((asset) => [asset.placeholder, asset.importName]))
   const pattern = /__NEWS_ASSET_\d+__/g
@@ -218,11 +279,13 @@ function renderHtmlExpression(html, assets) {
   return parts.length === 1 ? parts[0] : `[${parts.join(', ')}].join('')`
 }
 
+/** @param {string} value */
 function toImportPath(value) {
   const normalized = value.replaceAll(path.sep, '/')
   return normalized.startsWith('.') ? normalized : `./${normalized}`
 }
 
+/** @param {string} markdownBody */
 function countWords(markdownBody) {
   const plainText = markdownBody
     .replace(/```[\s\S]*?```/g, ' ')

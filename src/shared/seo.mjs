@@ -11,9 +11,47 @@ import {
   siteUrl
 } from './site-routes.mjs'
 
+/**
+ * @typedef {object} SeoRouteInput
+ * @property {string} title
+ * @property {string} [description]
+ * @property {string} [keywords]
+ * @property {string} [robots]
+ * @property {'website' | 'article'} [type]
+ * @property {string} [publishedAt]
+ *
+ * @typedef {object} SeoInfo
+ * @property {string} title
+ * @property {string} description
+ * @property {string} keywords
+ * @property {string} robots
+ * @property {'website' | 'article'} type
+ * @property {string} publishedAt
+ *
+ * @typedef {object} ArticleSeoInput
+ * @property {string} title
+ * @property {string} summary
+ * @property {string} category
+ * @property {string} publishedAt
+ *
+ * @typedef {object} ArticleSchemaInput
+ * @property {string} title
+ * @property {string} author
+ * @property {string} publishedAt
+ * @property {string} [summary]
+ * @property {string} [description]
+ * @property {string} slug
+ */
+
+/** @type {(title: string) => string} */
 export const articleFallbackDescription = (title) => `${title}，来自 BlueArchive.Cafe 的新闻与公告。`
 
 // 路由 → SEO 元数据;未声明的字段按站点默认值补齐。
+/**
+ * @param {SeoRouteInput} route
+ * @param {{ notFound?: boolean }} [options]
+ * @returns {SeoInfo}
+ */
 export function resolveRouteSeo(route, { notFound = false } = {}) {
   return {
     title: route.title,
@@ -26,17 +64,23 @@ export function resolveRouteSeo(route, { notFound = false } = {}) {
 }
 
 // 新闻文章 → 路由级 SEO 元数据(标题带站点后缀,描述回退到统一文案)。
+/**
+ * @param {ArticleSeoInput} article
+ * @returns {SeoInfo}
+ */
 export function buildArticleSeo(article) {
   return {
     title: `${article.title} - ${siteTitle}`,
     description: article.summary || articleFallbackDescription(article.title),
     keywords: `${article.category},${defaultKeywords}`,
+    robots: 'index, follow',
     type: 'article',
     publishedAt: article.publishedAt
   }
 }
 
 // 规范化站点内路径为绝对 URL;首页与空路径落到站点根。
+/** @param {string} routePath */
 export function buildRouteUrl(routePath) {
   const normalizedPath = routePath === '/' ? '' : routePath.replace(/^\//, '').replace(/\/+$/, '')
 
@@ -44,6 +88,7 @@ export function buildRouteUrl(routePath) {
 }
 
 // Article JSON-LD 的 headline 使用纯文章标题(不带站点后缀)。
+/** @param {string} title */
 export function buildArticleHeadline(title) {
   const suffix = ` - ${siteTitle}`
 
@@ -52,6 +97,10 @@ export function buildArticleHeadline(title) {
 
 // 新闻文章 → Article JSON-LD(与运行时/构建期共用同一份结构)。
 // description 优先取 summary,兼容构建脚本传入的 route.description。
+/**
+ * @param {ArticleSchemaInput} article
+ * @returns {Record<string, unknown>}
+ */
 export function buildArticleSchema(article) {
   const description = article.summary || article.description || articleFallbackDescription(article.title)
 
@@ -73,6 +122,7 @@ export function buildArticleSchema(article) {
 }
 
 // 站点级 JSON-LD:Organization 与 WebSite,构建期注入每个静态页面。
+/** @returns {Array<Record<string, unknown>>} */
 export function buildSiteSchemas() {
   return [
     {

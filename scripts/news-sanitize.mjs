@@ -53,6 +53,7 @@ export const allowedClassNames = [
   'task-list-item-checkbox'
 ]
 
+/** @param {string} html */
 export function sanitizeRenderedHtml(html) {
   return sanitizeHtmlPackage(html, {
     allowedTags,
@@ -110,6 +111,10 @@ export function sanitizeRenderedHtml(html) {
   })
 }
 
+/**
+ * @param {import('sanitize-html').Attributes} attribs
+ * @param {string} attributeName
+ */
 function removeBlankUrlAttribute(attribs, attributeName) {
   if (!attribs[attributeName]?.trim()) {
     const sanitizedAttributes = { ...attribs }

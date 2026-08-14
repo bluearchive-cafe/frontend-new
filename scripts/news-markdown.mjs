@@ -1,6 +1,10 @@
 // Markdown 渲染器:alert 块、任务列表、外链加固与新闻资产解析。
 import MarkdownIt from 'markdown-it'
 
+/** @typedef {import('markdown-it/lib/token.mjs').default} MarkdownToken */
+/** @typedef {'caution' | 'important' | 'note' | 'tip' | 'warning'} AlertType */
+
+/** @type {Record<AlertType, { label: string, path: string }>} */
 const alertMeta = {
   caution: {
     label: 'Caution',
@@ -94,7 +98,7 @@ export function createMarkdownRenderer() {
         return
       }
 
-      const type = match[1].toLowerCase()
+      const type = /** @type {AlertType} */ (match[1].toLowerCase())
       const meta = alertMeta[type]
       const title = new state.Token('html_inline', '', 0)
       title.content = `<strong class="markdown-alert-title"><svg data-component="Octicon" class="markdown-alert-icon octicon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="${meta.path}"></path></svg>${meta.label}</strong>`
@@ -113,10 +117,15 @@ export function createMarkdownRenderer() {
   return markdown
 }
 
+/** @param {string} value */
 function isRemoteOrAbsoluteUrl(value) {
   return /^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#)/i.test(value)
 }
 
+/**
+ * @param {string} value
+ * @returns {{ pathname: string, suffix: string }}
+ */
 export function splitAssetReference(value) {
   const suffixIndex = value.search(/[?#]/)
 
@@ -130,6 +139,10 @@ export function splitAssetReference(value) {
   }
 }
 
+/**
+ * @param {MarkdownToken[]} tokens
+ * @param {number} inlineIndex
+ */
 function markTaskListItem(tokens, inlineIndex) {
   for (let index = inlineIndex - 1; index >= 0; index -= 1) {
     const token = tokens[index]
@@ -141,6 +154,10 @@ function markTaskListItem(tokens, inlineIndex) {
   }
 }
 
+/**
+ * @param {MarkdownToken[]} tokens
+ * @param {number} openIndex
+ */
 function findBlockquoteClose(tokens, openIndex) {
   let depth = 0
 
@@ -163,6 +180,7 @@ function findBlockquoteClose(tokens, openIndex) {
   return -1
 }
 
+/** @param {MarkdownToken[]} children */
 function removeAlertMarker(children) {
   for (const child of children) {
     if (child.type !== 'text' || !child.content.startsWith('[!')) {

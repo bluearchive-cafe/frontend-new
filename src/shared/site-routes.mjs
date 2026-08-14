@@ -5,7 +5,20 @@ export const defaultImage = `${siteUrl}favicon.jpg`
 export const defaultDescription = 'BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。'
 export const defaultKeywords = '蔚蓝档案,蔚蓝档案汉化,Blue Archive,BlueArchive.Cafe,蔚蓝咖啡厅,汉化教程,客户端下载'
 
+/**
+ * @typedef {object} StaticRouteDefinition
+ * @property {string} name
+ * @property {string} label
+ * @property {string} path
+ * @property {readonly string[]} alias
+ * @property {string} title
+ * @property {string} description
+ * @property {string} changefreq
+ * @property {string} priority
+ */
+
 // 动态路由名:router 与 SEO 层共用,避免跨文件字符串漂移。
+/** @type {{ readonly newsArticle: 'news-article', readonly notFound: 'not-found' }} */
 export const routeNames = {
   newsArticle: 'news-article',
   notFound: 'not-found'
@@ -13,6 +26,7 @@ export const routeNames = {
 
 // 静态路由是 path/SEO/导航标签的单一数据源:router、AppHeader、
 // SiteFooter 与构建脚本都从这里派生,新增路由只改这一处 + 页面组件。
+/** @type {readonly StaticRouteDefinition[]} */
 export const staticRoutes = [
   {
     name: 'home',
@@ -66,6 +80,7 @@ export const staticRoutes = [
   }
 ]
 
+/** @type {{ readonly name: 'not-found', readonly title: string, readonly description: string, readonly robots: 'noindex, follow' }} */
 export const notFoundSeo = {
   name: routeNames.notFound,
   title: `页面不存在 - ${siteTitle}`,

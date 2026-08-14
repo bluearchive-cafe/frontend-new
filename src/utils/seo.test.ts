@@ -59,6 +59,7 @@ describe('applyRouteSeo', () => {
   it('removes article published time when the next route is not an article', () => {
     applyRouteSeo(createRoute('news-article', '/news/known-article', { slug: 'known-article' }))
     expect(getMeta('property', 'article:published_time')?.content).toBe('2026-01-02')
+    expect(getMeta('name', 'robots')?.content).toBe('index, follow')
 
     applyRouteSeo(createRoute('download', '/download'))
     expect(getMeta('property', 'article:published_time')).toBeNull()

@@ -1,31 +1,63 @@
-import { readFileSync } from 'node:fs'
+// @vitest-environment jsdom
 
-import { describe, expect, it } from 'vitest'
+import { createApp, defineComponent, nextTick, type App } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const hintSource = readFileSync(new URL('../src/components/FloatingScrollHint.vue', import.meta.url), 'utf-8')
-  .replace(/\r\n/g, '\n')
-const homePageSource = readFileSync(new URL('../src/pages/HomePage.vue', import.meta.url), 'utf-8')
-const mainSource = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf-8')
+import FloatingScrollHint from '../src/components/FloatingScrollHint.vue'
 
-describe('FloatingScrollHint home scroll hint', () => {
-  it('renders the hint only on the home page', () => {
-    expect(homePageSource).toContain('<FloatingScrollHint />')
+let mountedApp: App<Element> | undefined
+
+afterEach(() => {
+  mountedApp?.unmount()
+  mountedApp = undefined
+  document.body.innerHTML = ''
+  setScrollY(0)
+  vi.restoreAllMocks()
+})
+
+describe('FloatingScrollHint behavior', () => {
+  it('is visible at the top and follows the viewport scroll position', async () => {
+    setScrollY(0)
+    const container = mountHint()
+
+    expect(container.querySelector('.scroll-hint')).not.toBeNull()
+
+    setScrollY(20)
+    window.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    await vi.waitFor(() => {
+      expect(container.querySelector('.scroll-hint')).toBeNull()
+    })
+
+    setScrollY(0)
+    window.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    expect(container.querySelector('.scroll-hint')).not.toBeNull()
   })
 
-  it('hides once the user scrolls away from the top of the page', () => {
-    expect(hintSource).toContain('visible.value = window.scrollY <= 8')
-    expect(hintSource).toContain("window.addEventListener('scroll', handleScroll, { passive: true })")
-    expect(hintSource).toContain("window.removeEventListener('scroll', handleScroll)")
-  })
+  it('removes its scroll listener when unmounted', () => {
+    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    mountHint()
 
-  it('stays mobile-only and floats above the news section', () => {
-    expect(hintSource).toContain('position: fixed')
-    expect(hintSource).toContain('@media (min-width: 721px)')
-    expect(hintSource).toContain('display: none;')
-  })
+    mountedApp?.unmount()
+    mountedApp = undefined
 
-  it('registers the arrow-down icon alias', () => {
-    expect(mainSource).toContain('mdiArrowDown')
-    expect(mainSource).toContain('arrowDown: mdiArrowDown')
+    expect(removeEventListener).toHaveBeenCalledWith('scroll', expect.any(Function))
   })
 })
+
+function mountHint() {
+  const container = document.createElement('div')
+  document.body.append(container)
+  mountedApp = createApp(FloatingScrollHint)
+  mountedApp.component('VIcon', defineComponent({ template: '<span aria-hidden="true" />' }))
+  mountedApp.mount(container)
+  return container
+}
+
+function setScrollY(value: number) {
+  Object.defineProperty(window, 'scrollY', {
+    configurable: true,
+    value
+  })
+}
