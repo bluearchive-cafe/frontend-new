@@ -39,7 +39,7 @@ describe('DownloadPage client status notice', () => {
     }))
     const { container } = mountDownloadPage()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     const notice = container.querySelector('.client-status-notice')
@@ -62,7 +62,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     expect(container.querySelector('.client-status-notice')).toBeNull()
@@ -87,7 +87,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     const notice = container.querySelector('.client-status-notice')
@@ -103,7 +103,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     expect(container.querySelector('.client-status-notice')?.textContent)
@@ -179,11 +179,13 @@ function findButton(container: HTMLElement, text: string) {
     .find((candidate) => candidate.textContent?.includes(text))
 }
 
-function clickButton(container: HTMLElement, text: string) {
-  const button = findButton(container, text)
+/** Picks a variant from the download options list (the menu activator is inert in tests). */
+function selectVariant(container: HTMLElement, variantName: string) {
+  const item = [...container.querySelectorAll<HTMLElement>('.variant-menu > div')]
+    .find((candidate) => candidate.getAttribute('title') === variantName)
 
-  expect(button).toBeDefined()
-  button?.click()
+  expect(item, `variant item not found: ${variantName}`).toBeDefined()
+  item?.click()
 }
 
 async function flushUpdates() {

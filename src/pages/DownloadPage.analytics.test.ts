@@ -41,7 +41,7 @@ describe('DownloadPage analytics wiring', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     expect(trackDownloadClickMock).not.toHaveBeenCalled()
@@ -61,7 +61,7 @@ describe('DownloadPage analytics wiring', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    clickButton(container, '下载应用包')
+    selectVariant(container, '应用包')
     await flushUpdates()
 
     expect(container.textContent).toContain('暂时无法确认该客户端状态')
@@ -98,6 +98,15 @@ function clickButton(container: HTMLElement, text: string) {
 
   expect(button).toBeDefined()
   button?.click()
+}
+
+/** Picks a variant from the download options list (the menu activator is inert in tests). */
+function selectVariant(container: HTMLElement, variantName: string) {
+  const item = [...container.querySelectorAll<HTMLElement>('.variant-menu > div')]
+    .find((candidate) => candidate.getAttribute('title') === variantName)
+
+  expect(item, `variant item not found: ${variantName}`).toBeDefined()
+  item?.click()
 }
 
 const passthroughComponent: Component = {
