@@ -68,25 +68,10 @@ export const platformLinks: PlatformLink[] = [
         notice: '测试版本可能存在不稳定或功能未完善的情况；请在 GitHub Releases 中选择适合你系统的安装包。'
       },
       {
-        name: '共存版（弃用）',
-        description: '可与官方客户端共存安装。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/file?platform=android&version=latest&file=cafe.YostarJP.BlueArchive.apk',
-        hidden: true,
-        notice: '该版本已弃用，仅在需要与官方客户端共存时使用；请按 Android 文档确认签名与安装方式。'
-      },
-      {
-        name: '独占版（弃用）',
-        description: '需要卸载官方客户端才可安装，但对模拟器的兼容性更好。',
-        downloadUrl: 'https://download.bluearchive.cafe/android/latest',
-        hidden: true,
-        notice: '该版本已弃用，安装前需要卸载官方客户端，请提前备份游戏数据与引继码。'
-      },
-      {
-        name: '替换文件（弃用）',
-        description: '在 GitHub 中查看完整内容',
-        downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases/latest',
-        hidden: true,
-        notice: '该版本已弃用，仅保留资源替换说明；请在 GitHub Releases 中查看完整内容后手动替换。'
+        name: '手动替换文件',
+        description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
+        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   },
@@ -101,18 +86,22 @@ export const platformLinks: PlatformLink[] = [
     tags: ['iPhone', 'iPad'],
     variants: [
       {
-        name: '应用包',
-        description: '建议使用 Impactor、AltStore 或 SideStore 等工具进行自签，或使用免签版客户端。',
-        downloadUrl: 'https://download.bluearchive.cafe/ios/latest',
-        recommended: true,
-        notice: '自签证书到期后需要重新签名安装，请留意证书有效期与设备上限；使用免签版时签名证书可能随时被吊销。'
+        name: '通过 AltStore 安装',
+        description: '使用 AltStore 工具进行自签。',
+        downloadUrl: 'https://bluearchive.cafe/altstore',
+        notice: '需要先在设备上安装好 AltStore，支持自动更新。'
       },
       {
-        name: '免签版（弃用）',
-        description: '免签版客户端签名所用的证书可能随时被吊销，且签名改变后无法覆盖安装，建议优先通过自签侧载。',
-        downloadUrl: 'https://api.bluearchive.cafe/download/itms?version=latest',
-        hidden: true,
-        notice: '免签版签名证书可能随时被吊销，且签名改变后无法覆盖安装，建议优先通过自签侧载。'
+        name: '通过 SideStore 安装',
+        description: '使用 SideStore 工具进行自签。',
+        downloadUrl: 'https://bluearchive.cafe/sidestore',
+        notice: '需要先在设备上安装好 SideStore，支持自动更新。'
+      },
+      {
+        name: '应用包',
+        description: '建议使用 Impactor、AltStore 或 SideStore 等工具进行自签。',
+        downloadUrl: 'https://download.bluearchive.cafe/ios/latest',
+        notice: '自签证书到期后需要重新签名安装，请留意证书有效期与设备上限。'
       }
     ]
   },
@@ -137,6 +126,12 @@ export const platformLinks: PlatformLink[] = [
         description: '我们开发的第三方 Blue Archive 启动器，相比原版启动器提供了更多功能。',
         downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia_Release/releases',
         notice: '测试版本可能存在不稳定或功能未完善的情况；请在 GitHub Releases 中选择适合你系统的安装包。'
+      },
+      {
+        name: '手动替换文件',
+        description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
+        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   },
@@ -152,7 +147,7 @@ export const platformLinks: PlatformLink[] = [
     variants: [
       {
         name: '通过 PlayCover 安装',
-        description: '适用于搭载 Apple Silicon 芯片的 Mac。',
+        description: '将应用源添加到 PlayCover，支持自动更新。',
         downloadUrl: 'https://download.bluearchive.cafe/playcover/latest',
         notice: '首次打开应用时，若提示「无法打开，因为无法验证开发者」，请前往系统设置 → 隐私与安全性中允许运行。'
       },
@@ -161,6 +156,12 @@ export const platformLinks: PlatformLink[] = [
         description: '适用于搭载 Apple Silicon 芯片的 Mac。',
         downloadUrl: 'https://download.bluearchive.cafe/macos/latest',
         notice: '若提示「无法打开，因为无法验证开发者」，请前往系统设置 → 隐私与安全性中允许运行。'
+      },
+      {
+        name: '手动替换文件',
+        description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
+        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   }
