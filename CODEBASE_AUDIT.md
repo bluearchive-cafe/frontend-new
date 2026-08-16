@@ -8,7 +8,7 @@
 
 ## 结论摘要
 
-本轮审计确认的 6 条高置信问题已完成代码层整改。A1、T1、T2、T3、P1 已关闭；TD1 按维护者要求保留全部 Hero 原图，并将当前版本的 11 张 master 迁移到 Git LFS。旧提交中的普通 Git 大对象未改写。
+本轮审计确认的 6 条高置信问题已完成代码层整改。A1、T1、T2、T3 已关闭；P1 曾关闭，2026-08-16 按维护者决定回退（恢复 Noto Sans SC 打包，中文字体渲染一致性优先）；TD1 按维护者要求保留全部 Hero 原图，并将当前版本的 11 张 master 迁移到 Git LFS。旧提交中的普通 Git 大对象未改写。
 
 整改后仓库可在干净锁文件安装环境中通过依赖审计、lint、类型检查、146 项测试与生产构建。没有发现 critical/high 应用安全问题，`npm audit` 为 0 漏洞。
 
@@ -18,7 +18,7 @@
 | T1 | GitHub Actions 未执行 lint | 已关闭 | PR CI 与 Pages build job 均加入 lint；部署工作流同时补齐依赖审计 |
 | T2 | 自定义 Markdown 规则缺少直接测试 | 已关闭 | 新增 alert、任务列表、链接、图片与 query/hash 的表驱动行为测试 |
 | T3 | 关键 UI 交互仅检查源码字符串 | 已关闭 | AppHeader、FloatingScrollHint、NewsPage 改为 jsdom 挂载交互测试，删除重复行为字符串断言 |
-| P1 | 中文字体放大入口 CSS 与部署资产 | 已关闭 | 移除完整 Noto Sans SC 分片，中文回退到系统 CJK 字体栈 |
+| P1 | 中文字体放大入口 CSS 与部署资产 | 已回退 | 曾移除完整 Noto Sans SC 分片；2026-08-16 维护者决定恢复打包，中文渲染一致性优先 |
 | TD1 | Hero 原图占用普通 Git 存储 | 当前版本已关闭 | 按维护者要求保留全部图片，11 张 master 改由 Git LFS 管理，CI checkout 同步启用 LFS |
 
 ## 整改明细
@@ -62,6 +62,8 @@
 
 该变化需要在部署后的真实浏览器中继续观察中文字体观感；功能正确性与构建输出已验证。
 
+> **2026-08-16 回退**：维护者决定恢复 `@fontsource-variable/noto-sans-sc` 打包（含 6 档 Latin 字重），三处字体栈恢复 "Noto Sans SC Variable" / 'Noto Sans SC'。回退后构建输出：入口 CSS 311.96 kB（gzip 77.15 kB）、字体 101 个文件 / 4.35 MB、`dist/` 182 个文件 / 9.35 MB，与上表「整改前」量级一致，P1 重新开放。该问题是否再整改由维护者权衡渲染一致性与产物体积后决定。
+
 ### TD1：将 Hero 原图迁移到 Git LFS
 
 按维护者要求保留全部 11 张 Hero 源图，共 46,014,488 bytes（约 43.88 MiB）。`.gitattributes` 分别匹配 Hero 目录下的 JPG、JPEG、PNG 与 WebP，当前版本中的 11 个文件已重新规范化为 LFS 指针。
@@ -93,9 +95,9 @@ npm run build          PASS（325 modules，9 route HTML + 404 + sitemap）
 生产构建摘要：
 
 - JS：入口 32.79 kB（gzip 14.04 kB），Vuetify 共享块 310.38 kB（gzip 107.05 kB）
-- CSS：13 个文件，共 333.86 kB；入口 203.98 kB（gzip 31.16 kB）
-- Fonts：3 个文件，共 40.08 KB
-- `dist/`：84 个文件，共 4,719,600 bytes
+- CSS：13 个文件，共 431.48 kB；入口 311.96 kB（gzip 77.15 kB）
+- Fonts：101 个文件，共 4.35 MB（字体回退后）
+- `dist/`：182 个文件，共 9,347,880 bytes（字体回退后）
 
 ## 保留建议
 

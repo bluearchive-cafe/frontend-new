@@ -1,12 +1,19 @@
 @use "../../node_modules/@fontsource-utils/scss/src/mixins" as fontsource;
 @use "../../node_modules/@fontsource/noto-sans/scss/metadata" as noto-sans;
+@use "../../node_modules/@fontsource-variable/noto-sans-sc/scss/metadata" as noto-sans-sc;
 
-// 拉丁文字由 noto-sans 提供(仅打包实际使用的 400/500/700 字重,
-// 700 用于粗体与跳转链接,500 用于操作类文字)。
 @include fontsource.faces(
   $metadata: noto-sans.$metadata,
   $directory: "../../node_modules/@fontsource/noto-sans/files",
-  $weights: (400, 500, 700),
+  $weights: (400, 500, 600, 700, 800, 900),
   $subsets: (latin),
+  $formats: woff2
+);
+
+@include fontsource.faces(
+  $metadata: noto-sans-sc.$metadata,
+  $directory: "../../node_modules/@fontsource-variable/noto-sans-sc/files",
+  $axes: wght,
+  $subsets: (chinese-simplified, latin),
   $formats: woff2
 );
