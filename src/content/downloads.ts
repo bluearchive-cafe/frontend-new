@@ -122,10 +122,10 @@ export const platformLinks: PlatformLink[] = [
         notice: '请先解压到本地再运行，避免在压缩包内直接执行；如被杀毒软件拦截，请按文档添加信任或白名单。'
       },
       {
-        name: 'Cafe Launcher（测试）',
+        name: 'Cafe Launcher',
         description: '我们开发的第三方 Blue Archive 启动器，相比原版启动器提供了更多功能。',
         downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia_Release/releases',
-        notice: '测试版本可能存在不稳定或功能未完善的情况；请在 GitHub Releases 中选择适合你系统的安装包。'
+        notice: '如有相关问题，请先阅读文档，再根据文档中的「反馈指南」提交反馈。'
       },
       {
         name: '手动替换文件',
