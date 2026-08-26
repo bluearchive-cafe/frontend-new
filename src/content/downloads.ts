@@ -55,8 +55,8 @@ export const platformLinks: PlatformLink[] = [
     tags: ['APK', '移动端', '模拟器'],
     variants: [
       {
-        name: 'APKS 安装包',
-        description: '需要通过支持 APKS 的安装器安装，使用系统自带安装器可能无法正常安装。',
+        name: 'APK 安装包',
+        description: '需要卸载官方客户端才能进行安装，但对模拟器的兼容性更好。',
         downloadUrl: 'https://download.bluearchive.cafe/android/latest',
         recommended: true,
         notice: '需要通过支持 APKS 的安装器安装（例如 MT 管理器 和 InstallerX Revived、SAI），使用系统自带安装器可能无法正常安装。'
