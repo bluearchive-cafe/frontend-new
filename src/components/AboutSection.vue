@@ -76,7 +76,7 @@
           </v-list-item>
 
           <v-list-item
-            href="https://afdian.com/a/MisakaCloud"
+            href="https://ifdian.net/a/bluearchive-cafe"
             target="_blank"
             rel="noopener noreferrer"
             title="爱发电"
