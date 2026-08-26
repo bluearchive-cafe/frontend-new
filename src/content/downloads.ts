@@ -55,18 +55,18 @@ export const platformLinks: PlatformLink[] = [
     tags: ['APK', '移动端', '模拟器'],
     variants: [
       {
-        name: 'APK 安装包',
-        description: '需要卸载官方客户端才能进行安装，但对模拟器的兼容性更好。',
-        downloadUrl: 'https://download.bluearchive.cafe/android/latest',
-        recommended: true,
-        notice: '需要通过支持 APKS 的安装器安装（例如 MT 管理器 和 InstallerX Revived、SAI），使用系统自带安装器可能无法正常安装。'
-      },
-      {
         name: 'Android 安装器（测试）',
-        description: '我们开发的 APKS 安装器，集成游戏下载 / 安装、汉化管理等功能。',
+        description: '我们开发的 APKS 安装器，集成游戏下载 / 安装、控制面板等功能。',
         downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Android/releases',
         notice: '测试版本可能存在不稳定或功能未完善的情况；请在 GitHub Releases 中选择适合你系统的安装包。',
         hidden: true
+      },
+      {
+        name: '手动安装',
+        description: '需要卸载官方原版客户端才能进行安装，建议参考文档提前备份游戏资源。',
+        downloadUrl: 'https://download.bluearchive.cafe/android/latest',
+        notice: '直接下载安装包即可进行安装，安装前请确认已经卸载官方原版客户端，避免出现无法安装等情况。',
+        recommended: true
       },
       {
         name: '手动替换文件',
@@ -88,21 +88,23 @@ export const platformLinks: PlatformLink[] = [
     variants: [
       {
         name: '通过 AltStore 安装',
-        description: '使用 AltStore 工具进行自签。',
+        description: '需要先在设备上安装好 AltStore，支持自动更新。',
         downloadUrl: 'https://bluearchive.cafe/altstore',
-        notice: '需要先在设备上安装好 AltStore，支持自动更新。'
+        notice: '需要参考官方文档在设备上安装并配置好 AltStore，再点击添加应用源，支持自动更新。',
+        recommended: true
       },
       {
         name: '通过 SideStore 安装',
-        description: '使用 SideStore 工具进行自签。',
+        description: '需要先在设备上安装好 SideStore，支持自动更新。',
         downloadUrl: 'https://bluearchive.cafe/sidestore',
-        notice: '需要先在设备上安装好 SideStore，支持自动更新。'
+        notice: '需要参考官方文档在设备上安装并配置好 SideStore，再点击添加应用源，支持自动更新。',
+        recommended: true
       },
       {
-        name: '应用包',
-        description: '建议使用 Impactor、AltStore 或 SideStore 等工具进行自签。',
+        name: '手动安装',
+        description: '建议使用 Impactor 等工具进行自签安装。',
         downloadUrl: 'https://download.bluearchive.cafe/ios/latest',
-        notice: '自签证书到期后需要重新签名安装，请留意证书有效期与设备上限。'
+        notice: '自签到期后需要进行续签，建议启用自动刷新功能以避免手动续签。'
       }
     ]
   },
@@ -124,10 +126,10 @@ export const platformLinks: PlatformLink[] = [
         recommended: true
       },
       {
-        name: '旧版启动器',
+        name: '原版启动器',
         description: '解压后直接运行，适合临时使用或放在自定义目录。',
         downloadUrl: 'https://download.bluearchive.cafe/launcher/latest',
-        notice: '请先解压到本地再运行，避免在压缩包内直接执行；如被杀毒软件拦截，请按文档添加信任或白名单。'
+        notice: '请先解压到本地再运行，避免在压缩包内直接运行，可覆盖原版启动器或独立存放。'
       },
       {
         name: '手动替换文件',
@@ -151,13 +153,14 @@ export const platformLinks: PlatformLink[] = [
         name: '通过 PlayCover 安装',
         description: '将应用源添加到 PlayCover，支持自动更新。',
         downloadUrl: 'https://download.bluearchive.cafe/playcover/latest',
-        notice: '首次打开应用时，若提示「无法打开，因为无法验证开发者」，请前往系统设置 → 隐私与安全性中允许运行。'
+        notice: 'PlayCover 方案不兼容 Nightly 版，请使用此处下载的修改版或官方正式版。',
+        recommended: true
       },
       {
-        name: '直接下载应用包',
-        description: '适用于搭载 Apple Silicon 芯片的 Mac。',
+        name: '手动安装',
+        description: '下载后需要通过 PlayCover 或自签进行安装。',
         downloadUrl: 'https://download.bluearchive.cafe/macos/latest',
-        notice: '若提示「无法打开，因为无法验证开发者」，请前往系统设置 → 隐私与安全性中允许运行。'
+        notice: '仅支持搭载 Apple Silicon 的 Mac 设备，且不兼容 PlayCover Nightly 版。'
       },
       {
         name: '手动替换文件',
