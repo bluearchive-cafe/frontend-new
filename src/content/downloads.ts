@@ -45,7 +45,7 @@ export const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 export const platformLinks: PlatformLink[] = [
   {
-    name: 'Android 客户端',
+    name: 'Android 平台',
     statusKey: 'android',
     icon: clientMeta('android').icon,
     colorTokens: clientMeta('android').colorTokens,
@@ -69,15 +69,15 @@ export const platformLinks: PlatformLink[] = [
         recommended: true
       },
       {
-        name: '手动替换文件',
+        name: '备用方案',
         description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
         downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
-        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
+        notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   },
   {
-    name: 'iOS 客户端',
+    name: 'iOS 平台',
     statusKey: 'ios',
     icon: clientMeta('ios').icon,
     colorTokens: clientMeta('ios').colorTokens,
@@ -109,7 +109,7 @@ export const platformLinks: PlatformLink[] = [
     ]
   },
   {
-    name: 'Windows 启动器',
+    name: 'Windows 平台',
     statusKey: 'windows',
     icon: clientMeta('windows').icon,
     colorTokens: clientMeta('windows').colorTokens,
@@ -132,15 +132,15 @@ export const platformLinks: PlatformLink[] = [
         notice: '请先解压到本地再运行，避免在压缩包内直接运行，可覆盖原版启动器或独立存放。'
       },
       {
-        name: '手动替换文件',
+        name: '备用方案',
         description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
         downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
-        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
+        notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   },
   {
-    name: 'macOS 客户端',
+    name: 'macOS 平台',
     statusKey: 'macos',
     icon: clientMeta('macos').icon,
     colorTokens: clientMeta('macos').colorTokens,
@@ -163,10 +163,10 @@ export const platformLinks: PlatformLink[] = [
         notice: '仅支持搭载 Apple Silicon 的 Mac 设备，且不兼容 PlayCover Nightly 版。'
       },
       {
-        name: '手动替换文件',
+        name: '备用方案',
         description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
         downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
-        notice: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
+        notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
   }

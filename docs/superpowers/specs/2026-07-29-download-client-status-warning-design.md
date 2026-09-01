@@ -33,10 +33,10 @@
 
 | 下载平台 | 状态资源 |
 | --- | --- |
-| Android 客户端 | `android` |
-| iOS 客户端 | `ios` |
-| Windows 启动器 | `windows` |
-| macOS 客户端 | `macos` |
+| Android 平台 | `android` |
+| iOS 平台 | `ios` |
+| Windows 平台 | `windows` |
+| macOS 平台 | `macos` |
 
 ### 状态来源
 
