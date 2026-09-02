@@ -3,7 +3,6 @@ import {
   staticRoutes
 } from '../src/shared/site-routes.mjs'
 import { buildArticleSeo } from '../src/shared/seo.mjs'
-import { readNewsEntries } from './news-entries.mjs'
 
 export { staticRoutes }
 
@@ -11,11 +10,10 @@ export { staticRoutes }
 export { buildRouteUrl as getRouteUrl } from '../src/shared/seo.mjs'
 
 /**
- * @param {import('./news-entries.mjs').NewsEntry[]} [newsEntries]
+ * @param {import('./news-entries.mjs').NewsEntry[]} newsEntries
  */
 export async function getSitemapRoutes(newsEntries) {
-  const resolvedEntries = newsEntries ?? await readNewsEntries()
-  const newsRoutes = resolvedEntries.map((article) => {
+  const newsRoutes = newsEntries.map((article) => {
     const seo = buildArticleSeo(article)
 
     return {

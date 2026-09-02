@@ -10,5 +10,19 @@ import path from 'node:path'
  * @returns {Promise<NewsEntry[]>}
  */
 export async function readNewsEntries(entriesFile = path.resolve('src/content/news-entries.generated.json')) {
-  return JSON.parse(await readFile(entriesFile, 'utf-8'))
+  let raw
+
+  try {
+    raw = await readFile(entriesFile, 'utf-8')
+  } catch (error) {
+    const errorCode = error instanceof Error && 'code' in error ? error.code : undefined
+
+    if (errorCode === 'ENOENT') {
+      throw new Error(`News entries artifact not found at ${entriesFile}. Run "npm run generate:news:prod" first.`, { cause: error })
+    }
+
+    throw error
+  }
+
+  return JSON.parse(raw)
 }

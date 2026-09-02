@@ -3,15 +3,6 @@
 import { createApp, type App, type Component, nextTick } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const { fetchStatusMock } = vi.hoisted(() => ({
-  fetchStatusMock: vi.fn()
-}))
-
-vi.mock('../utils/status', async (importOriginal) => ({
-  ...await importOriginal<typeof import('../utils/status')>(),
-  fetchStatus: fetchStatusMock
-}))
-
 import StatusPage from './StatusPage.vue'
 
 const mountedApps: { app: App; container: HTMLElement }[] = []
@@ -21,39 +12,30 @@ afterEach(() => {
     app.unmount()
     container.remove()
   })
-  fetchStatusMock.mockReset()
+  vi.unstubAllGlobals()
 })
 
+// 请求生命周期(状态流转、abort、卸载清理)由 useClientStatus 单测覆盖;
+// 这里只验证状态页自己的展示:重试按钮的可用性与成功后的横幅清除。
+// 状态请求通过替换全局 fetch 在网络边界打桩,不再 mock 模块内部。
 describe('StatusPage requests', () => {
-  it('aborts the active request when the page unmounts', async () => {
-    let requestSignal: AbortSignal | undefined
-    fetchStatusMock.mockImplementation((signal?: AbortSignal) => new Promise((_resolve, reject) => {
-      requestSignal = signal
-      signal?.addEventListener('abort', () => {
-        reject(new DOMException('Aborted', 'AbortError'))
-      }, { once: true })
-    }))
-
-    const { app } = mountStatusPage()
-    await flushUpdates()
-
-    app.unmount()
-    await flushUpdates()
-
-    expect(requestSignal?.aborted).toBe(true)
-  })
-
   it('disables manual retry while loading and clears the error after success', async () => {
-    fetchStatusMock.mockRejectedValueOnce(new Error('Network failed'))
+    const statusFetch = vi.fn()
+    statusFetch.mockRejectedValueOnce(new Error('Network failed'))
+    vi.stubGlobal('fetch', statusFetch)
+
     const { container } = mountStatusPage()
     await flushUpdates()
 
     const retryButton = container.querySelector<HTMLButtonElement>('button')
     expect(retryButton?.textContent).toContain('重新获取')
 
-    let resolveRetry: ((value: unknown) => void) | undefined
-    fetchStatusMock.mockImplementationOnce(() => new Promise((resolve) => {
-      resolveRetry = resolve
+    let resolveRetry: ((data: Record<string, unknown>) => void) | undefined
+    statusFetch.mockImplementationOnce(() => new Promise((resolve) => {
+      resolveRetry = (data) => resolve(new Response(JSON.stringify(data), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      }))
     }))
 
     retryButton?.click()
@@ -87,7 +69,7 @@ function mountStatusPage() {
   document.body.append(container)
   mountedApps.push({ app, container })
 
-  return { app, container }
+  return { container }
 }
 
 const passthroughComponent: Component = {
@@ -114,6 +96,9 @@ const emptyComponent: Component = {
 
 async function flushUpdates() {
   await nextTick()
-  await Promise.resolve()
+  // fetchStatus 内部还有 await response.json() 等多层微任务,逐层排空。
+  for (let i = 0; i < 5; i++) {
+    await Promise.resolve()
+  }
   await nextTick()
 }

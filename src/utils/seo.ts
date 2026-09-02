@@ -15,14 +15,14 @@ import {
 export function applyRouteSeo(route: RouteLocationNormalizedLoaded) {
   const seo = getRouteSeo(route)
   const url = buildRouteUrl(route.path)
-  const article = route.name === routeNames.newsArticle ? findRouteArticle(route) : undefined
+  const article = route.name === routeNames.newsArticle ? findNewsArticle(route.params.slug) : undefined
 
   applySeoToDocument(document, seo, { url, article })
 }
 
 function getRouteSeo(route: RouteLocationNormalizedLoaded) {
   if (route.name === routeNames.newsArticle) {
-    const article = findRouteArticle(route)
+    const article = findNewsArticle(route.params.slug)
 
     if (!article) {
       return resolveRouteSeo(notFoundSeo)
@@ -42,8 +42,4 @@ function getRouteSeo(route: RouteLocationNormalizedLoaded) {
   return route.name === routeNames.notFound
     ? resolveRouteSeo(notFoundSeo)
     : resolveRouteSeo({ title: siteTitle, description: defaultDescription })
-}
-
-function findRouteArticle(route: RouteLocationNormalizedLoaded) {
-  return findNewsArticle(route.params.slug)
 }

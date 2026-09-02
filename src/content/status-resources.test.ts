@@ -6,7 +6,6 @@ import {
   statusResourceKeys,
   statusResourcePanels
 } from './status-resources'
-import { platformLinks } from './downloads'
 
 describe('clientPlatformKeys', () => {
   it('keeps every client platform within the status resource keys', () => {
@@ -38,17 +37,6 @@ describe('clientPlatform', () => {
       expect(meta.colorTokens.border).toMatch(/^--/)
       expect(meta.colorTokens.background).toMatch(/^--/)
       expect(meta.colorTokens.foreground).toMatch(/^--/)
-    }
-  })
-})
-
-describe('platformLinks', () => {
-  it('joins every download entry onto a registered client platform', () => {
-    for (const link of platformLinks) {
-      const meta = clientPlatform(link.statusKey)
-
-      expect(link.icon).toBe(meta.icon)
-      expect(link.colorTokens).toEqual(meta.colorTokens)
     }
   })
 })

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { filterVisiblePlatformLinks, platformLinks, type PlatformLink } from './downloads'
+import { clientPlatform, clientPlatformKeys } from './status-resources'
 
 const testColorTokens = {
   border: '--color-primary-border',
@@ -55,12 +56,16 @@ describe('filterVisiblePlatformLinks', () => {
 })
 
 describe('platformLinks', () => {
-  it('exposes one entry per client platform', () => {
-    expect(platformLinks.map((link) => link.statusKey)).toEqual([
-      'android',
-      'ios',
-      'windows',
-      'macos'
-    ])
+  it('covers every registered client platform in registry order', () => {
+    expect(platformLinks.map((link) => link.statusKey)).toEqual([...clientPlatformKeys])
+  })
+
+  it('joins every download entry onto a registered client platform', () => {
+    for (const link of platformLinks) {
+      const meta = clientPlatform(link.statusKey)
+
+      expect(link.icon).toBe(meta.icon)
+      expect(link.colorTokens).toEqual(meta.colorTokens)
+    }
   })
 })

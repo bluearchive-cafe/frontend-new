@@ -114,18 +114,8 @@ const clientStatus = useClientStatus()
 
 const isStatusLoading = computed(() => clientStatus.state.value === 'loading')
 
-// 错误提示在重试加载期间保持可见(按钮转为禁用),仅在成功后清除。
+// 错误提示的清零与置位由下方统一的请求状态 watch 驱动。
 const hasStatusError = ref(false)
-
-watch(clientStatus.state, (state) => {
-  if (state === 'ready') {
-    hasStatusError.value = false
-  }
-
-  if (state === 'failed') {
-    hasStatusError.value = true
-  }
-}, { immediate: true })
 
 const statusAnnouncement = computed(() => {
   if (clientStatus.state.value === 'ready') {
@@ -160,7 +150,17 @@ const statusResources = computed<Record<StatusResourceKey, StatusResourceView>>(
 const toolbarLoadingDelayMs = 400
 let toolbarLoadingDelayId: number | undefined
 
+// 请求状态同时驱动错误横幅与工具栏加载指示:错误提示在重试加载期间保持
+// 可见(按钮转为禁用),仅在成功后清除;工具栏指示延迟出现,避免闪烁。
 watch(clientStatus.state, (state) => {
+  if (state === 'ready') {
+    hasStatusError.value = false
+  }
+
+  if (state === 'failed') {
+    hasStatusError.value = true
+  }
+
   if (state === 'loading') {
     scheduleToolbarLoading()
   } else {

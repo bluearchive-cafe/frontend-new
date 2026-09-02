@@ -19,9 +19,13 @@ import {
  * 下载页引导状态：平台可见性（show_hidden 查询参数）、下载确认对话框
  * 状态机、客户端状态提示与下载分析埋包。页面只保留模板接线。
  *
- * query 以 getter 传入而不是读取 vue-router，测试可直接用普通对象驱动。
+ * query 以 getter 传入而不是读取 vue-router，测试可直接用普通对象驱动；
+ * fetchImplementation 原样转发给 useClientStatus，与它的注入 seam 保持一致。
  */
-export function useDownloadGuide(query: MaybeRefOrGetter<Record<string, unknown>>) {
+export function useDownloadGuide(
+  query: MaybeRefOrGetter<Record<string, unknown>>,
+  { fetchImplementation }: { fetchImplementation?: typeof fetch } = {}
+) {
   const downloadDialog = ref(false)
   const downloadAttempted = ref(false)
   const selectedPlatform = ref<PlatformLink | null>(null)
@@ -30,7 +34,7 @@ export function useDownloadGuide(query: MaybeRefOrGetter<Record<string, unknown>
   const showHidden = computed(() => toValue(query).show_hidden === '1')
   const visiblePlatformLinks = computed(() => filterVisiblePlatformLinks(platformLinks, showHidden.value))
 
-  const clientStatus = useClientStatus()
+  const clientStatus = useClientStatus({ fetchImplementation })
 
   const selectedDownloadTitle = computed(() => {
     if (!selectedPlatform.value || !selectedVariant.value) {

@@ -3,19 +3,12 @@
 import { createApp, defineComponent, h, type App, nextTick } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-const { trackDownloadClickMock, fetchStatusMock } = vi.hoisted(() => ({
-  trackDownloadClickMock: vi.fn(),
-  fetchStatusMock: vi.fn()
+const { trackDownloadClickMock } = vi.hoisted(() => ({
+  trackDownloadClickMock: vi.fn()
 }))
 
 vi.mock('./analytics', () => ({
   trackDownloadClick: trackDownloadClickMock
-}))
-
-// 打桩状态接口:单元测试不得发起真实网络请求。
-vi.mock('./status', async (importOriginal) => ({
-  ...await importOriginal<typeof import('./status')>(),
-  fetchStatus: fetchStatusMock
 }))
 
 import { useDownloadGuide } from './download-guide'
@@ -29,13 +22,11 @@ afterEach(() => {
     container.remove()
   })
   trackDownloadClickMock.mockReset()
-  fetchStatusMock.mockReset()
 })
 
 describe('useDownloadGuide', () => {
   describe('platform visibility', () => {
     it('hides internal variants unless show_hidden=1 is requested', () => {
-      fetchStatusMock.mockResolvedValue({})
       const defaultGuide = mountGuide()
 
       const android = defaultGuide.visiblePlatformLinks.value.find((platform) => platform.name === 'Android 平台')
@@ -48,8 +39,6 @@ describe('useDownloadGuide', () => {
     })
 
     it('drops platforms whose variants are all hidden', () => {
-      fetchStatusMock.mockResolvedValue({})
-
       const guide = mountGuide()
 
       expect(guide.visiblePlatformLinks.value.map((platform) => platform.name)).toEqual(
@@ -60,7 +49,6 @@ describe('useDownloadGuide', () => {
 
   describe('dialog state machine', () => {
     it('exposes the selection and derives the dialog title', () => {
-      fetchStatusMock.mockResolvedValue({})
       const guide = mountGuide()
 
       const platform = findPlatform('iOS 平台')
@@ -75,7 +63,6 @@ describe('useDownloadGuide', () => {
     })
 
     it('resets the attempted flag each time the dialog opens', () => {
-      fetchStatusMock.mockResolvedValue({})
       const guide = mountGuide()
 
       const platform = findPlatform('iOS 平台')
@@ -92,8 +79,6 @@ describe('useDownloadGuide', () => {
     })
 
     it('stays silent until a platform is selected', () => {
-      fetchStatusMock.mockResolvedValue({})
-
       const guide = mountGuide()
 
       expect(guide.selectedStatusNotice.value).toBeNull()
@@ -103,7 +88,6 @@ describe('useDownloadGuide', () => {
 
   describe('analytics', () => {
     it('tracks the selected download only when the user continues', async () => {
-      fetchStatusMock.mockResolvedValue({})
       const guide = mountGuide()
       await flushUpdates()
 
@@ -126,8 +110,7 @@ describe('useDownloadGuide', () => {
 
   describe('client status wiring', () => {
     it('keeps the download flow available when the status request fails', async () => {
-      fetchStatusMock.mockRejectedValue(new Error('Network failed'))
-      const guide = mountGuide()
+      const guide = mountGuide({}, rejectingStatusFetch(new Error('Network failed')))
       await flushUpdates()
 
       guide.openDownloadGuide(findPlatform('iOS 平台'), findVariant(findPlatform('iOS 平台'), '手动安装'))
@@ -140,13 +123,12 @@ describe('useDownloadGuide', () => {
     })
 
     it('maps synchronized clients to no notice', async () => {
-      fetchStatusMock.mockResolvedValue({
+      const guide = mountGuide({}, resolvingStatusFetch({
         ios: {
           official: { version: '1.0', time: '2026-07-29 11:35:05' },
           localized: { version: '1.0', time: '2026-07-29 12:30:57' }
         }
-      })
-      const guide = mountGuide()
+      }))
       await flushUpdates()
 
       const platform = findPlatform('iOS 平台')
@@ -157,15 +139,15 @@ describe('useDownloadGuide', () => {
   })
 })
 
-function mountGuide(query: Record<string, unknown> = {}) {
-  return mountGuideApp(query).guide
+function mountGuide(query: Record<string, unknown> = {}, fetchImplementation: typeof fetch = resolvingStatusFetch()) {
+  return mountGuideApp(query, fetchImplementation).guide
 }
 
-function mountGuideApp(query: Record<string, unknown>) {
+function mountGuideApp(query: Record<string, unknown>, fetchImplementation: typeof fetch) {
   let guide!: ReturnType<typeof useDownloadGuide>
   const app = createApp(defineComponent({
     setup() {
-      guide = useDownloadGuide(() => query)
+      guide = useDownloadGuide(() => query, { fetchImplementation })
       return () => h('div')
     }
   }))
@@ -176,6 +158,17 @@ function mountGuideApp(query: Record<string, unknown>) {
   mountedApps.push({ app, container })
 
   return { app, guide }
+}
+
+function resolvingStatusFetch(data: Record<string, unknown> = {}) {
+  return vi.fn(() => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  })))
+}
+
+function rejectingStatusFetch(reason: Error) {
+  return vi.fn(() => Promise.reject(reason))
 }
 
 function findPlatform(name: string) {
@@ -194,6 +187,9 @@ function findVariant(platform: PlatformLink, name: string) {
 
 async function flushUpdates() {
   await nextTick()
-  await Promise.resolve()
+  // fetchStatus 内部还有 await response.json() 等多层微任务,逐层排空。
+  for (let i = 0; i < 5; i++) {
+    await Promise.resolve()
+  }
   await nextTick()
 }
