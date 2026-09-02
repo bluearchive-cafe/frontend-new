@@ -155,3 +155,130 @@ export function buildSiteSchemas() {
     }
   ]
 }
+
+// SEO head 写入序列的唯一实现:浏览器端与构建脚本各传自己的 Document
+// (真实 document / JSDOM document),保证两侧 meta、canonical 与 JSON-LD
+// 永不漂移。空值语义:meta 与 canonical 内容为空时移除该元素。
+/**
+ * @param {Document} doc
+ * @param {SeoInfo} seo
+ * @param {{ url?: string, article?: ArticleSchemaInput | null, siteSchemas?: boolean }} [options]
+ */
+export function applySeoToDocument(doc, seo, { url = '', article = null, siteSchemas = false } = {}) {
+  doc.title = seo.title
+  setMeta(doc, 'name', 'description', seo.description)
+  setMeta(doc, 'name', 'keywords', seo.keywords)
+  setMeta(doc, 'name', 'robots', seo.robots)
+  setMeta(doc, 'property', 'og:site_name', siteName)
+  setMeta(doc, 'property', 'og:locale', 'zh_CN')
+  setMeta(doc, 'property', 'og:type', seo.type)
+  setMeta(doc, 'property', 'og:title', seo.title)
+  setMeta(doc, 'property', 'og:description', seo.description)
+  setMeta(doc, 'property', 'og:url', url)
+  setMeta(doc, 'property', 'og:image', defaultImage)
+  setMeta(doc, 'name', 'twitter:card', 'summary')
+  setMeta(doc, 'name', 'twitter:title', seo.title)
+  setMeta(doc, 'name', 'twitter:description', seo.description)
+  setMeta(doc, 'name', 'twitter:image', defaultImage)
+  setMeta(doc, 'property', 'article:published_time', seo.publishedAt)
+  setCanonical(doc, url)
+  setArticleSchema(doc, article)
+  setSiteSchemas(doc, siteSchemas)
+}
+
+/**
+ * @param {Document} doc
+ * @param {'name' | 'property'} attribute
+ * @param {string} key
+ * @param {string} content
+ */
+function setMeta(doc, attribute, key, content) {
+  if (!content) {
+    doc.head.querySelector(`meta[${attribute}="${key}"]`)?.remove()
+    return
+  }
+
+  let meta = doc.head.querySelector(`meta[${attribute}="${key}"]`)
+
+  if (!meta) {
+    meta = doc.createElement('meta')
+    meta.setAttribute(attribute, key)
+    doc.head.append(meta)
+  }
+
+  meta.setAttribute('content', content)
+}
+
+/**
+ * @param {Document} doc
+ * @param {string} href
+ */
+function setCanonical(doc, href) {
+  let link = doc.head.querySelector('link[rel="canonical"]')
+
+  if (!href) {
+    link?.remove()
+    return
+  }
+
+  if (!link) {
+    link = doc.createElement('link')
+    link.setAttribute('rel', 'canonical')
+    doc.head.append(link)
+  }
+
+  link.setAttribute('href', href)
+}
+
+/**
+ * @param {Document} doc
+ * @param {ArticleSchemaInput | null} article
+ */
+function setArticleSchema(doc, article) {
+  doc.head.querySelector('script[id="jsonld-article"]')?.remove()
+
+  if (article) {
+    appendJsonLd(doc, 'jsonld-article', buildArticleSchema(article))
+  }
+}
+
+/**
+ * @param {Document} doc
+ * @param {boolean} enabled
+ */
+function setSiteSchemas(doc, enabled) {
+  if (!enabled) {
+    return
+  }
+
+  for (const schema of buildSiteSchemas()) {
+    appendJsonLd(doc, '', schema)
+  }
+}
+
+/**
+ * @param {Document} doc
+ * @param {string} id
+ * @param {Record<string, unknown>} data
+ */
+function appendJsonLd(doc, id, data) {
+  const script = doc.createElement('script')
+
+  if (id) {
+    script.id = id
+  }
+
+  script.type = 'application/ld+json'
+  script.textContent = serializeJsonLd(data)
+  doc.head.append(script)
+}
+
+// 转义 <>& 防止序列化后的 JSON-LD 提前闭合 script 标签。
+/** @param {Record<string, unknown>} data */
+function serializeJsonLd(data) {
+  return JSON.stringify(data).replace(/[<>&]/g, (character) => ({
+    '<': '\\u003c',
+    '>': '\\u003e',
+    '&': '\\u0026'
+  })[character] ?? character)
+}

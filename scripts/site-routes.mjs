@@ -10,8 +10,12 @@ export { staticRoutes }
 // 路径 → 绝对 URL:与浏览器端 src/utils/seo.ts 共用同一实现。
 export { buildRouteUrl as getRouteUrl } from '../src/shared/seo.mjs'
 
-export async function getSitemapRoutes() {
-  const newsRoutes = (await readNewsEntries()).map((article) => {
+/**
+ * @param {import('./news-entries.mjs').NewsEntry[]} [newsEntries]
+ */
+export async function getSitemapRoutes(newsEntries) {
+  const resolvedEntries = newsEntries ?? await readNewsEntries()
+  const newsRoutes = resolvedEntries.map((article) => {
     const seo = buildArticleSeo(article)
 
     return {

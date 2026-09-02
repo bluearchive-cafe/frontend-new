@@ -14,7 +14,16 @@ import { parseBoolean, parseFrontmatterRaw } from './frontmatter.mjs'
  * @typedef {object} NewsGenerationOptions
  * @property {string} [newsDirectory]
  * @property {string} [outputFile]
+ * @property {string} [entriesFile]
  * @property {boolean} [includeDrafts]
+ *
+ * @typedef {object} NewsEntry
+ * @property {string} slug
+ * @property {string} title
+ * @property {string} author
+ * @property {string} publishedAt
+ * @property {string} category
+ * @property {string} summary
  *
  * @typedef {object} NewsAsset
  * @property {string} filePath
@@ -24,7 +33,7 @@ import { parseBoolean, parseFrontmatterRaw } from './frontmatter.mjs'
  * @typedef {Omit<NewsArticle, 'html'> & { body: string }} ParsedNewsArticle
  * @typedef {NewsArticle & { body: string }} NewsArticleData
  * @typedef {{ articles: NewsArticleData[], assets: NewsAsset[] }} NewsContentResult
- * @typedef {{ articles: NewsArticleData[], assets: NewsAsset[], output: string }} GeneratedNewsResult
+ * @typedef {{ articles: NewsArticleData[], assets: NewsAsset[], output: string, entries: NewsEntry[] }} GeneratedNewsResult
  */
 
 export { sanitizeRenderedHtml } from './news-sanitize.mjs'
@@ -82,14 +91,31 @@ export async function readNewsArticles({
 export async function generateNewsModule({
   newsDirectory = path.resolve('src/content/news'),
   outputFile = path.resolve('src/content/news.generated.ts'),
+  entriesFile = path.resolve('src/content/news-entries.generated.json'),
   includeDrafts = false
 } = {}) {
   const { articles, assets } = await readNewsArticles({ newsDirectory, includeDrafts })
   const output = renderGeneratedModule(articles, assets, outputFile)
+  const entries = projectNewsEntries(articles)
 
   await writeFile(outputFile, output)
+  // 轻量条目清单与完整模块同批产出:构建脚本(sitemap、静态回退页)
+  // 直接读取它,不再重新渲染 Markdown。
+  await writeFile(entriesFile, `${JSON.stringify(entries, null, 2)}\n`)
 
-  return { articles, assets, output }
+  return { articles, assets, output, entries }
+}
+
+/** @param {NewsArticleData[]} articles @returns {NewsEntry[]} */
+export function projectNewsEntries(articles) {
+  return articles.map((article) => ({
+    slug: article.slug,
+    title: article.title,
+    author: article.author,
+    publishedAt: article.publishedAt,
+    category: article.category,
+    summary: article.summary
+  }))
 }
 
 /**

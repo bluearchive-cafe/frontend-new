@@ -1,33 +1,14 @@
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
-import { readNewsArticles } from './news-content.mjs'
+/** @typedef {import('./news-content.mjs').NewsEntry} NewsEntry */
 
+// 读取 generateNewsModule 产出的轻量条目清单:构建脚本(sitemap、静态
+// 回退页)不再重新读取并渲染 Markdown,新闻管线每次构建只跑一次。
 /**
- * @typedef {object} NewsEntry
- * @property {string} slug
- * @property {string} title
- * @property {string} author
- * @property {string} publishedAt
- * @property {string} category
- * @property {string} summary
- */
-
-/**
- * @param {string} [newsDirectory]
+ * @param {string} [entriesFile]
  * @returns {Promise<NewsEntry[]>}
  */
-export async function readNewsEntries(newsDirectory = path.resolve('src/content/news')) {
-  const { articles } = await readNewsArticles({
-    newsDirectory,
-    includeDrafts: false
-  })
-
-  return articles.map((article) => ({
-    slug: article.slug,
-    title: article.title,
-    author: article.author,
-    publishedAt: article.publishedAt,
-    category: article.category,
-    summary: article.summary
-  }))
+export async function readNewsEntries(entriesFile = path.resolve('src/content/news-entries.generated.json')) {
+  return JSON.parse(await readFile(entriesFile, 'utf-8'))
 }

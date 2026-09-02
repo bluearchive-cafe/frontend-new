@@ -57,6 +57,9 @@ public/assets/img/hero/optimized/
 # Generated news content module
 src/content/news.generated.ts
 
+# Generated news entry list for build scripts
+src/content/news-entries.generated.json
+
 # Optional eslint cache
 .eslintcache
 

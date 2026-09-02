@@ -60,7 +60,7 @@ const route = useRoute()
 const markdownBodyRef = ref<HTMLElement | null>(null)
 let imageZoom: Zoom | null = null
 
-const article = computed(() => findNewsArticle(String(route.params.slug)))
+const article = computed(() => findNewsArticle(route.params.slug))
 const articleSlug = computed(() => article.value?.slug)
 const articleHtml = computed(() => article.value?.html ?? '')
 

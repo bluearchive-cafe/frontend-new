@@ -39,7 +39,7 @@
         :aria-busy="isStatusLoading"
       >
         <details
-          v-for="(panel, index) in statusPanels"
+          v-for="(panel, index) in statusResourcePanels"
           :key="panel.key"
           class="status-panel"
           :open="index === 0"
@@ -96,148 +96,84 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import PageHeading from '../components/PageHeading.vue'
 import {
   clientPlatformColorStyle,
-  clientPlatforms,
-  type ClientPlatformColorTokens,
-  type ClientPlatformKey
-} from '../content/platforms'
-import {
-  createStatusResources,
-  fetchStatus,
-  mapStatusResources,
+  statusResourcePanels,
   type StatusResourceKey
-} from '../utils/status'
+} from '../content/status-resources'
+import { createStatusResources, type StatusResourceView } from '../utils/status'
+import { useClientStatus } from '../utils/client-status'
 import { setToolbarLoading } from '../utils/toolbar-loader'
 
-interface StatusPanel {
-  key: StatusResourceKey
-  title: string
-  description: string
-  icon: string
-  tone?: string
-  colorTokens?: ClientPlatformColorTokens
-}
+// 面板顺序、标题、icon 与颜色 token 全部由 content/status-resources.ts
+// 的 registry 派生;本页只负责请求状态到占位文案与公告文案的映射。
+const clientStatus = useClientStatus()
 
-const isStatusLoading = ref(true)
+const isStatusLoading = computed(() => clientStatus.state.value === 'loading')
+
+// 错误提示在重试加载期间保持可见(按钮转为禁用),仅在成功后清除。
 const hasStatusError = ref(false)
-const statusAnnouncement = ref('正在获取资源状态')
-const toolbarLoadingDelayMs = 400
-let toolbarLoadingDelayId: number | undefined
 
-// 客户端平台面板的 icon/颜色 token 从 platforms.ts 单一派生;
-// 状态页特有的标题与描述仍保留在本页。
-const clientPanelCopy: Record<ClientPlatformKey, { title: string; description: string }> = {
-  android: { title: '安装包', description: 'Android 专用客户端安装包' },
-  ios: { title: '应用包', description: 'iOS 专用客户端应用包' },
-  windows: { title: '资源包', description: 'Windows 专用启动器资源包' },
-  macos: { title: '资源包', description: 'macOS 专用客户端资源包' }
-}
-
-const statusPanels: StatusPanel[] = [
-  ...clientPlatforms.map((platform) => ({
-    key: platform.key,
-    ...clientPanelCopy[platform.key],
-    icon: platform.icon,
-    colorTokens: platform.colorTokens
-  })),
-  {
-    key: 'notice',
-    title: '公告包',
-    description: '游戏内公告资源同步状态',
-    icon: '$calendarClockOutline',
-    tone: 'notice'
-  },
-  {
-    key: 'text',
-    title: '文本包',
-    description: '游戏内文本资源同步状态',
-    icon: '$textBoxOutline',
-    tone: 'text'
-  },
-  {
-    key: 'voice',
-    title: '语音包',
-    description: '游戏内主线语音资源同步状态',
-    icon: '$volumeHighOutline',
-    tone: 'voice'
-  },
-  {
-    key: 'media',
-    title: '图像包',
-    description: '游戏内图像视频资源同步状态',
-    icon: '$imageOutline',
-    tone: 'media'
-  }
-]
-
-const statusResources = ref(createStatusResources('正在获取', {
-  label: '获取中',
-  state: 'loading'
-}))
-
-onMounted(async () => {
-  await nextTick()
-  await fillStatus()
-})
-
-onBeforeUnmount(() => {
-  abortStatusFetch()
-  stopToolbarLoading()
-})
-
-let abortController: AbortController | null = null
-
-function abortStatusFetch() {
-  if (abortController) {
-    abortController.abort()
-    abortController = null
-  }
-}
-
-async function fillStatus() {
-  abortStatusFetch()
-  isStatusLoading.value = true
-  statusResources.value = createStatusResources('正在获取', {
-    label: '获取中',
-    state: 'loading'
-  })
-  scheduleToolbarLoading()
-  statusAnnouncement.value = '正在获取资源状态'
-  const requestController = new AbortController()
-  abortController = requestController
-
-  try {
-    const statusData = await fetchStatus(requestController.signal)
-
-    statusResources.value = mapStatusResources(statusData)
+watch(clientStatus.state, (state) => {
+  if (state === 'ready') {
     hasStatusError.value = false
-    statusAnnouncement.value = '资源状态已更新'
-  } catch (error: unknown) {
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      return
-    }
+  }
 
-    statusResources.value = createStatusResources('获取失败', {
+  if (state === 'failed') {
+    hasStatusError.value = true
+  }
+}, { immediate: true })
+
+const statusAnnouncement = computed(() => {
+  if (clientStatus.state.value === 'ready') {
+    return '资源状态已更新'
+  }
+
+  if (clientStatus.state.value === 'failed') {
+    return '资源状态获取失败'
+  }
+
+  return '正在获取资源状态'
+})
+
+const statusResources = computed<Record<StatusResourceKey, StatusResourceView>>(() => {
+  if (clientStatus.state.value === 'ready' && clientStatus.resources.value) {
+    return clientStatus.resources.value
+  }
+
+  if (clientStatus.state.value === 'failed') {
+    return createStatusResources('获取失败', {
       label: '获取失败',
       state: 'error'
     })
-    hasStatusError.value = true
-    statusAnnouncement.value = '资源状态获取失败'
-  } finally {
-    if (abortController === requestController) {
-      abortController = null
-      isStatusLoading.value = false
-      stopToolbarLoading()
-    }
   }
-}
 
-async function retryStatus() {
-  await fillStatus()
+  return createStatusResources('正在获取', {
+    label: '获取中',
+    state: 'loading'
+  })
+})
+
+const toolbarLoadingDelayMs = 400
+let toolbarLoadingDelayId: number | undefined
+
+watch(clientStatus.state, (state) => {
+  if (state === 'loading') {
+    scheduleToolbarLoading()
+  } else {
+    stopToolbarLoading()
+  }
+}, { immediate: true })
+
+onBeforeUnmount(() => {
+  stopToolbarLoading()
+})
+
+function retryStatus() {
+  void clientStatus.load()
 }
 
 function scheduleToolbarLoading() {

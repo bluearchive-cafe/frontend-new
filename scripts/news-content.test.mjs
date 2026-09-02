@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, rm, readFile, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
@@ -97,6 +97,7 @@ describe('generateNewsModule', () => {
     const production = await generateNewsModule({
       newsDirectory: fixture.newsDirectory,
       outputFile: fixture.outputFile,
+      entriesFile: fixture.entriesFile,
       includeDrafts: false
     })
 
@@ -108,11 +109,41 @@ describe('generateNewsModule', () => {
     const development = await generateNewsModule({
       newsDirectory: fixture.newsDirectory,
       outputFile: fixture.outputFile,
+      entriesFile: fixture.entriesFile,
       includeDrafts: true
     })
 
     expect(development.output).toContain('Private draft body')
     expect(development.output).toContain('draft.png?url')
+  })
+
+  it('emits the lightweight entries list without html or assets', async () => {
+    const fixture = await createFixture()
+    await writeArticle(fixture.newsDirectory, 'published.md', 'Published body', false, 'published.png')
+    await writeArticle(fixture.newsDirectory, 'draft.md', 'Private draft body', true, 'draft.png')
+
+    const production = await generateNewsModule({
+      newsDirectory: fixture.newsDirectory,
+      outputFile: fixture.outputFile,
+      entriesFile: fixture.entriesFile,
+      includeDrafts: false
+    })
+
+    expect(production.entries).toEqual([
+      {
+        slug: 'published',
+        title: 'Test article',
+        author: 'Test author',
+        publishedAt: '2026-01-02 03:04',
+        category: 'Test',
+        summary: 'Test summary'
+      }
+    ])
+
+    const writtenEntries = JSON.parse(await readFile(fixture.entriesFile, 'utf-8'))
+    expect(writtenEntries).toEqual(production.entries)
+    expect(JSON.stringify(writtenEntries)).not.toContain('html')
+    expect(JSON.stringify(writtenEntries)).not.toContain('Published body')
   })
 
   it('rejects missing frontmatter and invalid dates', async () => {
@@ -167,9 +198,10 @@ async function createFixture() {
   const root = await mkdtemp(path.join(os.tmpdir(), 'bluearchive-news-'))
   const newsDirectory = path.join(root, 'news')
   const outputFile = path.join(root, 'news.generated.ts')
+  const entriesFile = path.join(root, 'news-entries.generated.json')
   temporaryDirectories.push(root)
   await mkdir(newsDirectory, { recursive: true })
-  return { root, newsDirectory, outputFile }
+  return { root, newsDirectory, outputFile, entriesFile }
 }
 
 async function writeArticle(newsDirectory, filename, body, draft, assetName) {

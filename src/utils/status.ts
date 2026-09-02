@@ -1,18 +1,8 @@
+import { statusResourceKeys, type StatusResourceKey } from '../content/status-resources'
+
 export const statusRequestTimeoutMs = 10_000
 export const statusEndpoint = 'https://api.bluearchive.cafe/status/list'
 
-export const statusResourceKeys = [
-  'android',
-  'ios',
-  'windows',
-  'macos',
-  'notice',
-  'text',
-  'voice',
-  'media'
-] as const
-
-export type StatusResourceKey = typeof statusResourceKeys[number]
 export type StatusState = 'success' | 'error' | 'loading'
 
 export interface StatusSourceData {

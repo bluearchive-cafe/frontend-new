@@ -1,24 +1,12 @@
 import {
-  clientPlatforms,
+  clientPlatform,
   type ClientPlatformColorTokens,
   type ClientPlatformKey
-} from './platforms'
-
-export type ClientStatusResourceKey = ClientPlatformKey
-
-function clientMeta(key: ClientPlatformKey) {
-  const meta = clientPlatforms.find((platform) => platform.key === key)
-
-  if (!meta) {
-    throw new Error(`Missing client platform metadata for key: ${key}`)
-  }
-
-  return meta
-}
+} from './status-resources'
 
 export interface PlatformLink {
   name: string
-  statusKey: ClientStatusResourceKey
+  statusKey: ClientPlatformKey
   icon: string
   colorTokens: ClientPlatformColorTokens
   docUrl: string
@@ -41,14 +29,26 @@ export interface DownloadVariant {
   hidden?: boolean
 }
 
+// icon 与颜色 token 由状态资源 registry 统一派生,入口只声明平台与文案。
+function clientLink(
+  key: ClientPlatformKey,
+  link: Omit<PlatformLink, 'statusKey' | 'icon' | 'colorTokens'>
+): PlatformLink {
+  const meta = clientPlatform(key)
+
+  return {
+    ...link,
+    statusKey: key,
+    icon: meta.icon,
+    colorTokens: meta.colorTokens
+  }
+}
+
 export const baseDocUrl = 'https://docs.bluearchive.cafe/'
 
 export const platformLinks: PlatformLink[] = [
-  {
+  clientLink('android', {
     name: 'Android 平台',
-    statusKey: 'android',
-    icon: clientMeta('android').icon,
-    colorTokens: clientMeta('android').colorTokens,
     docUrl: baseDocUrl + 'platform/android/',
     docExternal: true,
     description: '适用于手机、平板与安卓模拟器。下载后请根据安装文档确认存储权限和系统兼容性。',
@@ -75,12 +75,9 @@ export const platformLinks: PlatformLink[] = [
         notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
-  },
-  {
+  }),
+  clientLink('ios', {
     name: 'iOS 平台',
-    statusKey: 'ios',
-    icon: clientMeta('ios').icon,
-    colorTokens: clientMeta('ios').colorTokens,
     docUrl: baseDocUrl + 'platform/ios/',
     docExternal: true,
     description: '适用于 iPhone 与 iPad。安装前请阅读签名、测试渠道和系统版本相关说明。',
@@ -107,12 +104,9 @@ export const platformLinks: PlatformLink[] = [
         notice: '自签到期后需要进行续签，建议启用自动刷新功能以避免手动续签。'
       }
     ]
-  },
-  {
+  }),
+  clientLink('windows', {
     name: 'Windows 平台',
-    statusKey: 'windows',
-    icon: clientMeta('windows').icon,
-    colorTokens: clientMeta('windows').colorTokens,
     docUrl: baseDocUrl + 'platform/windows/',
     docExternal: true,
     description: '适用于 Windows 10 / 11。下载后请按文档检查运行库、解压路径与杀毒软件拦截情况。',
@@ -138,12 +132,9 @@ export const platformLinks: PlatformLink[] = [
         notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
-  },
-  {
+  }),
+  clientLink('macos', {
     name: 'macOS 平台',
-    statusKey: 'macos',
-    icon: clientMeta('macos').icon,
-    colorTokens: clientMeta('macos').colorTokens,
     docUrl: baseDocUrl + 'platform/macos/',
     docExternal: true,
     description: '适用于 Apple Silicon Mac。首次打开时可能需要在系统设置中确认安全权限。',
@@ -169,7 +160,7 @@ export const platformLinks: PlatformLink[] = [
         notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
       }
     ]
-  }
+  })
 ]
 
 export const documentLinks = [

@@ -236,83 +236,30 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import PageHeading from '../components/PageHeading.vue'
-import { trackDownloadClick } from '../utils/analytics'
-import {
-  fetchStatus,
-  mapStatusResources,
-  type StatusResourceView
-} from '../utils/status'
 import {
   documentLinks,
-  filterVisiblePlatformLinks,
-  platformLinks,
   type DownloadVariant,
   type PlatformLink
 } from '../content/downloads'
-import { clientPlatformColorStyle } from '../content/platforms'
-
-type ClientStatusLoadState = 'loading' | 'ready' | 'failed'
-
-interface ClientStatusNotice {
-  color: 'info' | 'warning'
-  icon: '$infoOutline' | '$alertCircleOutline'
-  message: string
-  role: 'status' | 'alert'
-}
+import { clientPlatformColorStyle } from '../content/status-resources'
+import { useDownloadGuide } from '../utils/download-guide'
 
 const route = useRoute()
 
-const downloadDialog = ref(false)
-const downloadAttempted = ref(false)
-const selectedPlatform = ref<PlatformLink | null>(null)
-const selectedVariant = ref<DownloadVariant | null>(null)
-const statusRequestController = new AbortController()
-const clientStatusLoadState = ref<ClientStatusLoadState>('loading')
-const clientStatuses = ref<Record<PlatformLink['statusKey'], StatusResourceView> | null>(null)
-
-const showHidden = computed(() => route.query.show_hidden === '1')
-
-const visiblePlatformLinks = computed(() => filterVisiblePlatformLinks(platformLinks, showHidden.value))
-
-const selectedDownloadTitle = computed(() => {
-  if (!selectedPlatform.value || !selectedVariant.value) {
-    return ''
-  }
-
-  return `${selectedPlatform.value.name} · ${selectedVariant.value.name}`
-})
-
-const selectedStatusNotice = computed<ClientStatusNotice | null>(() => {
-  const platform = selectedPlatform.value
-
-  if (!platform) {
-    return null
-  }
-
-  if (clientStatusLoadState.value === 'loading') {
-    return {
-      color: 'info',
-      icon: '$infoOutline',
-      message: '正在检查客户端状态……',
-      role: 'status'
-    }
-  }
-
-  if (clientStatusLoadState.value === 'failed') {
-    return {
-      color: 'warning',
-      icon: '$alertCircleOutline',
-      message: '暂时无法确认该客户端状态。你仍可继续下载，安装前请留意版本兼容性。',
-      role: 'alert'
-    }
-  }
-
-  return createStatusNotice(clientStatuses.value?.[platform.statusKey])
-})
+const {
+  visiblePlatformLinks,
+  downloadDialog,
+  downloadAttempted,
+  selectedPlatform,
+  selectedVariant,
+  selectedDownloadTitle,
+  selectedStatusNotice,
+  openDownloadGuide,
+  markDownloadAttempted
+} = useDownloadGuide(() => route.query)
 
 function platformTags(platform: PlatformLink) {
   return platform.tags ?? []
@@ -321,69 +268,6 @@ function platformTags(platform: PlatformLink) {
 function singleVariantButtonText(variant: DownloadVariant) {
   return `下载${variant.name}`
 }
-
-function createStatusNotice(statusResource?: StatusResourceView): ClientStatusNotice | null {
-  if (!statusResource || statusResource.status.state === 'loading') {
-    return {
-      color: 'warning',
-      icon: '$alertCircleOutline',
-      message: '暂时未取得该客户端状态。你仍可继续下载，安装前请留意版本兼容性。',
-      role: 'alert'
-    }
-  }
-
-  if (statusResource.status.state === 'error') {
-    return {
-      color: 'warning',
-      icon: '$alertCircleOutline',
-      message: '本地化客户端可能尚未同步到最新官方版本。你仍可继续下载。',
-      role: 'alert'
-    }
-  }
-
-  return null
-}
-
-function openDownloadGuide(platform: PlatformLink, variant: DownloadVariant) {
-  if (platform.disabled) {
-    return
-  }
-
-  selectedPlatform.value = platform
-  selectedVariant.value = variant
-  downloadAttempted.value = false
-  downloadDialog.value = true
-}
-
-function markDownloadAttempted() {
-  if (selectedPlatform.value && selectedVariant.value) {
-    trackDownloadClick({
-      platform: selectedPlatform.value.name,
-      variant: selectedVariant.value.name,
-      downloadUrl: selectedVariant.value.downloadUrl
-    })
-  }
-
-  downloadAttempted.value = true
-}
-
-onMounted(async () => {
-  try {
-    const statusData = await fetchStatus(statusRequestController.signal)
-    clientStatuses.value = mapStatusResources(statusData)
-    clientStatusLoadState.value = 'ready'
-  } catch (error) {
-    if (error instanceof Error && error.name === 'AbortError') {
-      return
-    }
-
-    clientStatusLoadState.value = 'failed'
-  }
-})
-
-onBeforeUnmount(() => {
-  statusRequestController.abort()
-})
 </script>
 
 <style scoped>

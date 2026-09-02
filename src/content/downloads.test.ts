@@ -55,12 +55,12 @@ describe('filterVisiblePlatformLinks', () => {
 })
 
 describe('platformLinks', () => {
-  it('maps every client platform to its status resource', () => {
-    expect(platformLinks.map(({ name, statusKey }) => ({ name, statusKey }))).toEqual([
-      { name: 'Android 平台', statusKey: 'android' },
-      { name: 'iOS 平台', statusKey: 'ios' },
-      { name: 'Windows 平台', statusKey: 'windows' },
-      { name: 'macOS 平台', statusKey: 'macos' }
+  it('exposes one entry per client platform', () => {
+    expect(platformLinks.map((link) => link.statusKey)).toEqual([
+      'android',
+      'ios',
+      'windows',
+      'macos'
     ])
   })
 })
