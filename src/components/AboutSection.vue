@@ -122,7 +122,7 @@ import { ref } from 'vue'
 import { aboutItems, socialLinks } from '../content/site-content'
 
 const publicAssetBase = import.meta.env.BASE_URL
-const sponsorQrSrc = `${publicAssetBase}assets/img/about/wechat-sponsor.png`
+const sponsorQrSrc = `${publicAssetBase}assets/img/about/wechat-sponsor.webp`
 const isSponsorQrOpen = ref(false)
 </script>
 

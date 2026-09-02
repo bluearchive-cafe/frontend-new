@@ -207,7 +207,7 @@ describe('easter-egg click sound', () => {
     const stickerStyle = sticker ? (sticker as HTMLImageElement).style : undefined
 
     expect(sticker).not.toBeNull()
-    expect(sticker?.getAttribute('src')).toContain('/assets/img/easter-egg/kuyashi.jpg')
+    expect(sticker?.getAttribute('src')).toContain('/assets/img/easter-egg/kuyashi.webp')
     expect(stickerStyle?.left).toBe('0px')
     expect(stickerStyle?.top).toBe('0px')
     expect(stickerStyle?.marginLeft).toBe('-80px')
@@ -301,7 +301,7 @@ describe('easter-egg click sound', () => {
     const played = play.mock.instances[0] as HTMLAudioElement
     expect(played.src).toContain('/assets/audio/yuzu.ogg')
     expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/yuzu.jpg'
+      '/assets/img/easter-egg/yuzu.webp'
     )
   })
 
@@ -317,7 +317,7 @@ describe('easter-egg click sound', () => {
     const played = play.mock.instances[0] as HTMLAudioElement
     expect(played.src).toContain('/assets/audio/nihahahaha.ogg')
     expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/nihahahaha.png'
+      '/assets/img/easter-egg/nihahahaha.webp'
     )
   })
 
@@ -333,7 +333,7 @@ describe('easter-egg click sound', () => {
     const played = play.mock.instances[0] as HTMLAudioElement
     expect(played.src).toContain('/assets/audio/reisa.ogg')
     expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/reisa.jpg'
+      '/assets/img/easter-egg/reisa.webp'
     )
   })
 
@@ -351,7 +351,7 @@ describe('easter-egg click sound', () => {
     expect(played.src).toContain('/assets/audio/nihahahaha.ogg')
     const sticker = document.querySelector('img.easter-egg-sticker')
     expect(sticker?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/nihahahaha.png'
+      '/assets/img/easter-egg/nihahahaha.webp'
     )
   })
 
@@ -366,7 +366,7 @@ describe('easter-egg click sound', () => {
     const played = play.mock.instances[0] as HTMLAudioElement
     expect(played.src).toContain('/assets/audio/kuyashi.ogg')
     expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/kuyashi.jpg'
+      '/assets/img/easter-egg/kuyashi.webp'
     )
   })
 
@@ -382,7 +382,7 @@ describe('easter-egg click sound', () => {
     const played = play.mock.instances[0] as HTMLAudioElement
     expect(played.src).toContain('/assets/audio/gousyuzinsama.ogg')
     expect(document.querySelector('img.easter-egg-sticker')?.getAttribute('src')).toContain(
-      '/assets/img/easter-egg/gousyuzinsama.png'
+      '/assets/img/easter-egg/gousyuzinsama.webp'
     )
   })
 })

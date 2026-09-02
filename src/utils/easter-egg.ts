@@ -24,27 +24,27 @@ const COOLDOWN_MS = 300
 const EASTER_EGG_ASSETS = [
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/kuyashi.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/kuyashi.jpg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/kuyashi.webp`,
   },
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/gousyuzinsama.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/gousyuzinsama.png`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/gousyuzinsama.webp`,
   },
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/panpakapann.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/panpakapann.jpg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/panpakapann.webp`,
   },
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/yuzu.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/yuzu.jpg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/yuzu.webp`,
   },
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/nihahahaha.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/nihahahaha.png`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/nihahahaha.webp`,
   },
   {
     audioUrl: `${import.meta.env.BASE_URL}assets/audio/reisa.ogg`,
-    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/reisa.jpg`,
+    stickerUrl: `${import.meta.env.BASE_URL}assets/img/easter-egg/reisa.webp`,
   },
 ]
 
