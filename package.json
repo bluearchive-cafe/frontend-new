@@ -45,7 +45,7 @@
     "eslint-plugin-vue": "^10.10.0",
     "globals": "^17.9.0",
     "jsdom": "^30.0.0",
-    "markdown-it": "^14.3.0",
+    "markdown-it": "^15.0.0",
     "sanitize-html": "^2.17.6",
     "sass-embedded": "^1.100.0",
     "sharp": "^0.35.3",
