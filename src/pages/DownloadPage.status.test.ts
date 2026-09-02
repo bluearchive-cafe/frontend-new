@@ -39,7 +39,7 @@ describe('DownloadPage client status notice', () => {
     }))
     const { container } = mountDownloadPage()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     const notice = container.querySelector('.client-status-notice')
@@ -62,7 +62,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     expect(container.querySelector('.client-status-notice')).toBeNull()
@@ -87,7 +87,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     const notice = container.querySelector('.client-status-notice')
@@ -103,7 +103,7 @@ describe('DownloadPage client status notice', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     expect(container.querySelector('.client-status-notice')?.textContent)
@@ -179,12 +179,17 @@ function findButton(container: HTMLElement, text: string) {
     .find((candidate) => candidate.textContent?.includes(text))
 }
 
-/** Picks a variant from the download options list (the menu activator is inert in tests). */
-function selectVariant(container: HTMLElement, variantName: string) {
-  const item = [...container.querySelectorAll<HTMLElement>('.variant-menu > div')]
+/** Picks a variant from a platform's download options list (the menu activator is inert in tests). */
+function selectVariant(container: HTMLElement, platformName: string, variantName: string) {
+  const platformCard = [...container.querySelectorAll<HTMLElement>('.platform-card')]
+    .find((card) => card.querySelector('h2')?.textContent === platformName)
+
+  expect(platformCard, `platform card not found: ${platformName}`).toBeDefined()
+
+  const item = [...platformCard?.querySelectorAll<HTMLElement>('.variant-menu > div') ?? []]
     .find((candidate) => candidate.getAttribute('title') === variantName)
 
-  expect(item, `variant item not found: ${variantName}`).toBeDefined()
+  expect(item, `variant item not found: ${platformName} / ${variantName}`).toBeDefined()
   item?.click()
 }
 

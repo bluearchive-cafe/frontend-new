@@ -41,7 +41,7 @@ describe('DownloadPage analytics wiring', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     expect(trackDownloadClickMock).not.toHaveBeenCalled()
@@ -50,8 +50,8 @@ describe('DownloadPage analytics wiring', () => {
 
     expect(trackDownloadClickMock).toHaveBeenCalledOnce()
     expect(trackDownloadClickMock).toHaveBeenCalledWith({
-      platform: 'iOS 客户端',
-      variant: '应用包',
+      platform: 'iOS 平台',
+      variant: '手动安装',
       downloadUrl: 'https://download.bluearchive.cafe/ios/latest'
     })
   })
@@ -61,7 +61,7 @@ describe('DownloadPage analytics wiring', () => {
     const { container } = mountDownloadPage()
     await flushUpdates()
 
-    selectVariant(container, '应用包')
+    selectVariant(container, 'iOS 平台', '手动安装')
     await flushUpdates()
 
     expect(container.textContent).toContain('暂时无法确认该客户端状态')
@@ -100,12 +100,17 @@ function clickButton(container: HTMLElement, text: string) {
   button?.click()
 }
 
-/** Picks a variant from the download options list (the menu activator is inert in tests). */
-function selectVariant(container: HTMLElement, variantName: string) {
-  const item = [...container.querySelectorAll<HTMLElement>('.variant-menu > div')]
+/** Picks a variant from a platform's download options list (the menu activator is inert in tests). */
+function selectVariant(container: HTMLElement, platformName: string, variantName: string) {
+  const platformCard = [...container.querySelectorAll<HTMLElement>('.platform-card')]
+    .find((card) => card.querySelector('h2')?.textContent === platformName)
+
+  expect(platformCard, `platform card not found: ${platformName}`).toBeDefined()
+
+  const item = [...platformCard?.querySelectorAll<HTMLElement>('.variant-menu > div') ?? []]
     .find((candidate) => candidate.getAttribute('title') === variantName)
 
-  expect(item, `variant item not found: ${variantName}`).toBeDefined()
+  expect(item, `variant item not found: ${platformName} / ${variantName}`).toBeDefined()
   item?.click()
 }
 

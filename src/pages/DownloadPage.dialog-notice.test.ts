@@ -31,40 +31,40 @@ describe('DownloadPage dialog source notice', () => {
   it('shows the selected variant notice in the dialog', async () => {
     const { container } = mountDownloadPage()
 
-    selectVariant(container, 'APKS 安装包')
+    selectVariant(container, 'Android 平台', '手动安装')
     await flushUpdates()
 
     const notice = container.querySelector('.variant-notice')
     expect(notice).not.toBeNull()
-    expect(notice?.textContent).toContain('需要通过支持 APKS 的安装器安装')
+    expect(notice?.textContent).toContain('卸载官方原版客户端')
   })
 
   it('shows the notice for a previously unnoted variant', async () => {
     const { container } = mountDownloadPage()
 
-    selectVariant(container, '直接下载应用包')
+    selectVariant(container, 'macOS 平台', '手动安装')
     await flushUpdates()
 
     const notice = container.querySelector('.variant-notice')
     expect(notice).not.toBeNull()
-    expect(notice?.textContent).toContain('无法验证开发者')
+    expect(notice?.textContent).toContain('Apple Silicon')
   })
 
   it('updates the notice when the selected variant changes', async () => {
     const { container } = mountDownloadPage()
 
-    selectVariant(container, 'APKS 安装包')
+    selectVariant(container, 'Android 平台', '手动安装')
     await flushUpdates()
-    expect(container.querySelector('.variant-notice')?.textContent).toContain('APKS')
+    expect(container.querySelector('.variant-notice')?.textContent).toContain('直接下载安装包')
 
     clickButton(container, '稍后再说')
     await flushUpdates()
 
-    selectVariant(container, '通过 PlayCover 安装')
+    selectVariant(container, 'macOS 平台', '通过 PlayCover 安装')
     await flushUpdates()
 
     expect(container.querySelector('.variant-notice')?.textContent)
-      .toContain('首次打开应用时')
+      .toContain('不兼容 Nightly 版')
   })
 })
 
@@ -117,12 +117,17 @@ function clickButton(container: HTMLElement, text: string) {
   button?.click()
 }
 
-/** Picks a variant from the download options list (the menu activator is inert in tests). */
-function selectVariant(container: HTMLElement, variantName: string) {
-  const item = [...container.querySelectorAll<HTMLElement>('.variant-menu > div')]
+/** Picks a variant from a platform's download options list (the menu activator is inert in tests). */
+function selectVariant(container: HTMLElement, platformName: string, variantName: string) {
+  const platformCard = [...container.querySelectorAll<HTMLElement>('.platform-card')]
+    .find((card) => card.querySelector('h2')?.textContent === platformName)
+
+  expect(platformCard, `platform card not found: ${platformName}`).toBeDefined()
+
+  const item = [...platformCard?.querySelectorAll<HTMLElement>('.variant-menu > div') ?? []]
     .find((candidate) => candidate.getAttribute('title') === variantName)
 
-  expect(item, `variant item not found: ${variantName}`).toBeDefined()
+  expect(item, `variant item not found: ${platformName} / ${variantName}`).toBeDefined()
   item?.click()
 }
 
