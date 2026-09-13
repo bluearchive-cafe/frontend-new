@@ -1,112 +1,127 @@
-# 仓库审计报告（整改后）
+# 仓库审计报告（当前状态）
 
-> 审计与整改日期：2026-08-14
+> 审计日期：2026-09-13　|　审计基线：`main@ce59c46`　|　模式：full
 >
-> 审计基线：`main@fe942d2`
->
-> 范围：架构、可维护性、安全、依赖、测试、CI、性能与技术债
+> 按维护者要求，本次为忽略既有报告的全新全量审计：未与 2026-08-14 旧报告对账（旧报告已归档至 `.repository-audit/history/CODEBASE_AUDIT_2026-08-14.md`，仅作背景）。领域覆盖：架构、可维护性、安全、依赖/供应链、测试、性能、CI、Git 历史。仓库地图与风险画像见 `.repository-audit/repository-map.md`，发现台账见 `.repository-audit/findings.json`。
 
 ## 结论摘要
 
-本轮审计确认的 6 条高置信问题已完成代码层整改。A1、T1、T2、T3 已关闭；P1 曾关闭，2026-08-16 按维护者决定回退（恢复 Noto Sans SC 打包，中文字体渲染一致性优先）；TD1 按维护者要求保留全部 Hero 原图，并将当前版本的 11 张 master 迁移到 Git LFS。旧提交中的普通 Git 大对象未改写。
+仓库健康度：**良好，但发布通道当前被依赖审计门槛阻断**。代码层质量高：内容清洗、SEO 单一来源、请求生命周期、测试形态均有明确契约与守卫，本机验证（test 170/170、lint、typecheck、build）全绿。风险集中在发布链路：一个高危构建依赖公告使 CI 与部署工作流连续失败，main 领先生产产物 4 个提交。
 
-整改后仓库可在干净锁文件安装环境中通过依赖审计、lint、类型检查、146 项测试与生产构建。没有发现 critical/high 应用安全问题，`npm audit` 为 0 漏洞。
+Open findings：**Critical 0 / High 1 / Medium 1 / Low 2**（另含若干咨询级观察）。
 
-| 编号 | 原问题 | 状态 | 整改结果 |
-| --- | --- | --- | --- |
-| A1 | `.mjs` 实现未进入严格类型检查 | 已关闭 | 对共享与构建脚本启用 `allowJs`/`checkJs`，用 JSDoc 直接约束实现并删除重复声明文件 |
-| T1 | GitHub Actions 未执行 lint | 已关闭 | PR CI 与 Pages build job 均加入 lint；部署工作流同时补齐依赖审计 |
-| T2 | 自定义 Markdown 规则缺少直接测试 | 已关闭 | 新增 alert、任务列表、链接、图片与 query/hash 的表驱动行为测试 |
-| T3 | 关键 UI 交互仅检查源码字符串 | 已关闭 | AppHeader、FloatingScrollHint、NewsPage 改为 jsdom 挂载交互测试，删除重复行为字符串断言 |
-| P1 | 中文字体放大入口 CSS 与部署资产 | 已回退 | 曾移除完整 Noto Sans SC 分片；2026-08-16 维护者决定恢复打包，中文渲染一致性优先 |
-| TD1 | Hero 原图占用普通 Git 存储 | 当前版本已关闭 | 按维护者要求保留全部图片，11 张 master 改由 Git LFS 管理，CI checkout 同步启用 LFS |
+需要的决策：无架构级决策；AUD-SEO-001 的长期方案（是否制作专门 og 分享图）与部署恢复后是否补充 Lighthouse 类检查属产品/流程选择。
 
-## 整改明细
+最重要的风险与行动：
+1. **AUD-DEP-001（High）**：`npm audit` 门槛使 deploy-pages 与 PR CI 全红，4 个提交未能部署。`npm audit fix`（sharp 0.35.4、vitest 4.1.11，均在现有 caret 范围内）即可恢复；并启用 Dependabot security updates 防复发。
+2. **AUD-SEO-001（Medium）**：`og:image`/`twitter:image`/JSON-LD logo 指向已被 `62a69d4` 删除的 `favicon.jpg`，下次成功部署后所有分享卡片将 404。改指现存资产即可，中期建议专门的分享图。
+3. **AUD-DEP-002 / AUD-MAINT-001（Low）**：`vite-plugin-vuetify` 应移入 devDependencies；字体版本存在 package.json 与 CDN URL 双源，建议加一致性守卫。
 
-### A1：直接类型检查 JavaScript ESM 实现
+## High Priority Findings
 
-- `tsconfig.json` 与 `tsconfig.node.json` 已启用 `allowJs`、`checkJs`。
-- `src/shared/**/*.mjs` 与 `scripts/**/*.mjs` 已进入 `vue-tsc -b`；测试脚本单独排除，避免 Node 测试环境与生产模块类型边界混杂。
-- 为新闻解析、静态 HTML、sitemap、路由和 SEO 等实现补齐 JSDoc 类型。
-- 删除 `scripts/news-content.d.mts`、`scripts/news-entries.d.mts`、`src/shared/seo.d.mts`、`src/shared/site-routes.d.mts`，不再人工维护实现之外的重复契约。
-- 启用检查时发现 `buildArticleSeo()` 的实现确实漏掉声明要求的 `robots` 字段；已补为 `index, follow`，并新增回归断言。这验证了原风险不是理论问题。
+### AUD-DEP-001 — 依赖审计门槛阻断发布流水线（部署冻结）
 
-### T1：统一 CI 质量门禁
+- Category: dependencies / CI
+- Severity: **High**（发布链单点完全失效；不评级 Critical 是因为站点仍在正常服务、门禁属保守失败而非产物完整性破坏）
+- Confidence: 98
+- Status: open
+- Disposition: Fix
 
-- `.github/workflows/ci.yml`：`npm run audit` 后执行 `npm run lint`。
-- `.github/workflows/deploy-pages.yml`：安装后依次执行依赖审计与 lint，再运行测试和构建。
-- CI 与直接发布分支不再允许 ESLint/类型感知规则回归绕过门禁。
+**Evidence**
+- 本机复现：`npm audit --audit-level=moderate` 退出码 1，共 3 项：`sharp 0.35.3` **high**（libheif，GHSA-rgj7-g3m4-5g8c / GHSA-g89c-p67h-r497 / GHSA-2jg2-4ch7-h545，修复版 0.35.4）；`vitest 4.1.10 → @vitest/mocker` moderate（修复版 4.1.11）。两者均在 `package.json` 现有 caret 范围内。
+- CI 实况（`gh run view 34751970489`）：`Deploy to GitHub Pages` 的 build job 在 **"Audit dependencies"** 步骤（deploy-pages.yml `run: npm run audit`）失败；2026-09-13 三次推送（08:13/10:14/10:29 UTC）全部同样失败。最后一次成功部署为 2026-09-02 16:58 UTC（`24bd3f9`）。`ci.yml` 含同一步骤，PR CI 同样全红。
+- main 当前领先生产产物 4 个提交（`21a5d71`、`2716a6c`、`f5063d9`、`ce59c46`，均为用户可见的 MD2 文案/下载页修复）。
 
-### T2、T3：补真实行为测试
+**Impact**
+- 发布通道中断：任何新提交都无法到达 GitHub Pages；下载页修复滞留。`sharp` 为 devDependency 且仅处理仓库内受信 LFS hero 图，libheif 漏洞实际暴露面小——真正的代价是流程性的。
+- 复发模式：9 月 2 日刚以同样方式处理过一次（`e55caf1` 升级 sanitize-html 至 2.17.7 修复审计）。公告发布时间与 Dependabot weekly 周期错位时，门槛必然红且无自动修复路径。
 
-新增或替换的重点覆盖：
+**Recommendation**
+1. 立即：`npm audit fix` 更新 lock（sharp→0.35.4、vitest→4.1.11），本机复跑 `npm run audit` 确认退出码 0 后提交推送。
+2. 防复发：启用 GitHub 仓库设置中的 **Dependabot security updates**（与现有 dependabot.yml 的 weekly 版本更新互补，公告发布即开升级 PR）；可选：在 audit 步骤失败信息中提示 `npm audit fix` 路径。
 
-- 五类 Markdown alert、畸形 alert 回退、勾选/未勾选任务列表。
-- 外链安全属性、站内链接保持、相对图片解析、资源 query/hash 拆分。
-- AppHeader 抽屉打开后的焦点、Escape 关闭与焦点恢复、跨路由关闭、不回焦菜单按钮、全局监听清理。
-- FloatingScrollHint 随滚动隐藏/恢复以及监听清理。
-- NewsPage 分类点击后真实过滤文章、无分类时隐藏控件。
+**Recommendation validation**: Verified（本地复现失败；`npm audit` 明确给出 in-range 修复版本；该团队 9 月 2 日已用同法成功处置同类问题）。
 
-当前仍保留少量读取源码的测试，用于 CSS token、Material 布局和禁止样式等设计契约；关键交互不再依赖源码字符串证明。
+**Suggested guard**: Dependabot security updates（见上）。这是"公告→lock 更新→门禁恢复"自动化的最小闭环。
 
-### P1：缩减字体与构建产物
+## Medium Priority Findings
 
-移除 `@fontsource-variable/noto-sans-sc`，保留 Noto Sans Latin 400/500/700，中文使用已有系统 CJK 回退栈。
+### AUD-SEO-001 — og:image / twitter:image / JSON-LD logo 指向已删除的 favicon.jpg
 
-| 指标 | 整改前 | 整改后 | 变化 |
-| --- | ---: | ---: | ---: |
-| `@font-face` | 100 | 3 | -97% |
-| 字体文件 | 97 / 4.29 MB | 3 / 40.08 KB | 约 -99% 体积 |
-| 入口 CSS | 310.70 kB / gzip 77.02 kB | 203.98 kB / gzip 31.16 kB | gzip -59.5% |
-| `dist/` | 178 文件 / 8.85 MB | 84 文件 / 4.72 MB | 体积 -46.7% |
+- Category: SEO / content
+- Severity: Medium
+- Confidence: 97
+- Status: open
+- Disposition: Fix
 
-该变化需要在部署后的真实浏览器中继续观察中文字体观感；功能正确性与构建输出已验证。
+**Evidence**
+- `src/shared/site-routes.mjs:4` `defaultImage = ${siteUrl}favicon.jpg`；`src/shared/seo.mjs:178/182` 将其写入 `og:image` 与 `twitter:image`，`:119`（Article publisher logo）与 `:134`（Organization logo，另有一处硬编码副本）引用同一值。
+- 当前构建产物 `dist/index.html` 实际发出 `og:image content="https://bluearchive.cafe/favicon.jpg"`，但 `public/` 与 `dist/` 均无 `favicon.jpg`（仅有 favicon.ico / favicon.png）。
+- 根因：`62a69d4`（fix: 修改 favicon.ico，2026-09-02）删除了 `public/favicon.jpg`（及 favicon.svg），未同步更新 SEO 引用。
+- 时序说明：该提交尚未部署成功（被 AUD-DEP-001 掩盖），线上当前仍 302/200 到旧产物；下一次成功部署后此 404 立即生效。
 
-> **2026-08-16 回退**：维护者决定恢复 `@fontsource-variable/noto-sans-sc` 打包（含 6 档 Latin 字重），三处字体栈恢复 "Noto Sans SC Variable" / 'Noto Sans SC'。回退后构建输出：入口 CSS 311.96 kB（gzip 77.15 kB）、字体 101 个文件 / 4.35 MB、`dist/` 182 个文件 / 9.35 MB，与上表「整改前」量级一致，P1 重新开放。该问题是否再整改由维护者权衡渲染一致性与产物体积后决定。
+**Impact**
+- 所有页面的社交/IM 分享卡片无图，JSON-LD Organization/Article publisher logo 404。该站主要传播渠道是社区分享，直接影响触达。
 
-### TD1：将 Hero 原图迁移到 Git LFS
+**Recommendation**
+1. 短期：`defaultImage` 改指现存资产（如 `${siteUrl}favicon.png`），并把 `seo.mjs:134` 的硬编码 logo 收敛到 `defaultImage` 单一来源。
+2. 中期（产品决策）：提供专门的 1200×630 og 分享图；favicon 级尺寸（192px PNG）仅是及线方案。
 
-按维护者要求保留全部 11 张 Hero 源图，共 46,014,488 bytes（约 43.88 MiB）。`.gitattributes` 分别匹配 Hero 目录下的 JPG、JPEG、PNG 与 WebP，当前版本中的 11 个文件已重新规范化为 LFS 指针。
+**Recommendation validation**: Strongly Supported（404 事实已用产物 + 文件系统双重验证；替代图选型需产品确认）。
 
-`src/content/hero-images.json` 仍只选择其中 8 张参与响应式 WebP 生成；其余 3 张作为保留素材存在。生产构建会统一清除 `dist` 中的所有 Hero master，因此这些保留素材不会增加部署产物体积。
+**Suggested guard**: 契约测试断言 `defaultImage` 对应文件真实存在于 `public/`（构建期或 Vitest 读文件系统即可）。
 
-PR CI 与 Pages 部署的 `actions/checkout` 已设置 `lfs: true`，保证构建前下载真实图片内容。此次只迁移当前版本，没有执行 `git lfs migrate import` 或重写旧提交；历史中的普通 Git 大对象仍保留，避免影响现有贡献者。
+## Low Priority Findings
 
-## 安全与依赖复核
+### AUD-DEP-002 — vite-plugin-vuetify 依赖分类错误
 
-- 当前树与 Git 历史的高特征凭据扫描无命中。
-- 新闻 `v-html` 输出仍经过 `sanitize-html` 标签、属性、class 与协议白名单。
-- 静态 JSON-LD 会转义 `<`、`>`、`&`，避免结束 `script` 标签。
-- GitHub Pages 写权限与 OIDC 权限只授予 deploy job。
-- `npm ci` 安装 301 个 package；`npm audit --audit-level=moderate` 为 0 漏洞。
-- 本机 npm 仍提示 `@parcel/watcher` 可选安装脚本未在 `allowScripts` 中批准，但精确安装后的类型检查、测试和生产构建均通过。
+- Category: dependencies
+- Severity: Low / Confidence: 90 / Status: open / Disposition: Fix
 
-## 验证记录
+**Evidence**：`package.json:31` 将其列于 dependencies；唯一消费点是 `vite.config.ts`（grep 证实 `src/`、`scripts/`、`tests/` 无运行时引用）；同类构建插件 `vite`、`@vitejs/plugin-vue`、`vue-tsc` 均在 devDependencies。
 
-```text
-npm ci                 PASS（301 packages，0 vulnerabilities）
-npm run audit          PASS（0 vulnerabilities）
-npm run lint           PASS
-npm run typecheck      PASS
-npm test               PASS（33 files，146 tests）
-npm run build          PASS（325 modules，9 route HTML + 404 + sitemap）
-```
+**Impact**：`npm ci --omit=dev` 语义失真、依赖审计面虚增；对纯静态站点无产物级影响。
 
-生产构建摘要：
+**Recommendation**：移入 devDependencies 并重新锁定。**Validation**: Verified。
 
-- JS：入口 32.79 kB（gzip 14.04 kB），Vuetify 共享块 310.38 kB（gzip 107.05 kB）
-- CSS：13 个文件，共 431.48 kB；入口 311.96 kB（gzip 77.15 kB）
-- Fonts：101 个文件，共 4.35 MB（字体回退后）
-- `dist/`：182 个文件，共 9,347,880 bytes（字体回退后）
+### AUD-MAINT-001 — 字体版本双源可静默漂移
 
-## 保留建议
+- Category: maintainability
+- Severity: Low / Confidence: 85 / Status: open / Disposition: Add Guard
 
-以下没有阻断本轮整改：
+**Evidence**：`src/styles/fonts.scss:7,16` 从 jsdelivr 按 **精确版本** `@fontsource/noto-sans@5.3.0` / `@fontsource-variable/noto-sans-sc@5.3.0` 加载字体文件，npm 包仅提供 SCSS metadata；`package.json` 声明 `^5.3.0`。Dependabot 升级 package.json 不会改 CDN URL，构建不会报错。
 
-- 如供应链基线要求更高，可将 `actions/*@v5/v6` 固定到完整 commit SHA，并由 Dependabot 更新。
-- `parsePublishedAt` 仍使用 `Date.parse`；若未来内容由非开发者编辑，可补严格日历日期校验。
-- `markdown-it 15` 与 TypeScript 7 属于主版本升级，应单独验证，不与日常补丁合并。
-- 如需进一步缩减旧 clone 历史，可另行评估 `git lfs migrate import`；该操作会改写提交并需要所有贡献者协调。
-- 本轮未运行部署环境中的 Lighthouse、Core Web Vitals、读屏器或多设备视觉回归。
+**Impact**：metadata 与实际加载字形版本可能静默不一致。（jsdelivr 精确版本 URL 为不可变缓存，供应链风险本身低；`@font-face` 不支持 SRI，故不以此为由报缺陷。字体托管方式近两个月反复过两次——`7912cb2` 回退打包、`24bd3f9` 迁 CDN——属维护者已两次决策的既定方向。）
 
-仓库结构与数据流见 `.repository-audit/repository-map.md`。
+**Recommendation**：在 fonts.scss 头部注释声明"两处版本必须同步"；加一个小契约测试断言 package.json 的 `@fontsource*` 版本与 CDN URL 版本一致。**Validation**: Strongly Supported。
+
+## 各领域观察（咨询级，不单列台账）
+
+- **供应链**：GitHub Actions 全部按主版本浮动 tag 引用（`actions/checkout@v6` 等），未 pin SHA。工作流权限已最小化（顶层 `contents: read`，仅 deploy job 提升），攻击面可控；如需收紧可 pin 到 commit SHA。npm 安装一律 `npm ci`，lock 一致性由 CI 强制。
+- **可维护性**：单一主要维护者（205/224 提交，其余为 dependabot 与协作者），bus factor 1——社区项目属性，记录备查。`tsconfig.node.json` 有意排除 `scripts/**/*.test.mjs`（脚本测试仅 eslint 语法级 + vitest 运行时兜底），可接受。churn 热点（DownloadPage 27 次、StatusPage 20 次、global.css 18 次）与近两周 MD2 收敛迭代吻合，未见 revert 循环异常（字体迁移的两次反转已有决策记录）。
+- **性能**：构建 3.32s；`vuetify` 共享 chunk 310KB（gzip 107KB），页面级懒加载，index chunk 32.7KB；hero 图三档 WebP srcset + `display=swap`；状态请求有 10s 超时与 abort 级联。未发现用户可见热路径问题。可选增强：恢复部署后做一次 Lighthouse 基线。
+- **测试**：无 flaky 信号（无 sleep/轮询/真实外网/共享可变状态）；fetch 注入 seam、jsdom 按需声明、契约型测试（home-surface 等）服务近期的样式收敛目标。覆盖率无阈值——符合项目规则，未见未防护的关键路径。
+
+## 已验证的优势（Positive Verification）
+
+1. **内容清洗管线**（`scripts/news-sanitize.mjs`）：标签/属性/class/scheme 全白名单、禁 protocol-relative、`target=_blank` 强制 `noopener noreferrer`、非 checkbox 的 input 过滤；全站唯一 `v-html` 消费点（NewsArticlePage）有行内注释说明来源已清洗。
+2. **生成管线健壮性**（`scripts/news-content.mjs`）：资产越界双重检查（词法 + realpath）、重复 slug 检测、生成代码经 `JSON.stringify` 转义、占位符替换带未知占位符校验。
+3. **SEO 单一实现**：`shared/seo.mjs` 的 `applySeoToDocument` 同时服务浏览器与 JSDOM 构建回退页，meta/canonical/JSON-LD 永不漂移；JSON-LD 序列化转义 `<>&` 防提前闭合 script。
+4. **请求生命周期**（`utils/status.ts` + `utils/client-status.ts`）：超时、AbortSignal 级联、过期响应防护、卸载清理、fetch 注入 seam，语义只定义一次。
+5. **CI 门禁设计**：最小权限、concurrency 取消、PR 与部署同一组门禁（audit/lint/test/typecheck/build）——正是这道门禁按设计拦下了带漏洞依赖的发布。
+6. **路由/SEO 共享契约**：新增静态路由只需两处改动且有测试守卫（router.test / md2-routes）。
+
+## 建议优先级
+
+1. `npm audit fix` → 验证 `npm run audit` → 推送恢复部署（当天可完成）。
+2. 启用 Dependabot security updates（仓库设置，一次性）。
+3. 修复 `defaultImage` 指向并收敛 `seo.mjs:134` 硬编码（可与 1 同批提交）。
+4. `vite-plugin-vuetify` 移入 devDependencies；补字体版本一致性守卫（随手清理）。
+5. 部署恢复后抽查分享卡片实际效果，评估是否制作专门 og 图。
+
+## 审计方法与局限
+
+- 验证命令在本机（Windows 10 / Git Bash / Node 24）实际执行：`npm test`（170/170 通过）、`npm run lint`、`npm run typecheck`、`npm run build` 全部退出码 0；`npm audit` 退出码 1（即 AUD-DEP-001）。
+- CI 状态经 `gh run list/view` 读取 GitHub Actions 实况（run 34751970489 等）。
+- 逐行审阅了入口/路由/SEO/清洗/生成/回退页/状态请求等关键路径与全部构建脚本；组件层为代表性抽阅。未做浏览器端 Lighthouse/可访问性实测，未评估 ESA 通道的线上状态（`esa.jsonc` 仅作配置审阅）。
+- 漏洞结论以 `npm audit`（advisory DB）为准；`sharp` 的 libheif 公告影响未单独复现（其输入为仓库受信 LFS 图像）。

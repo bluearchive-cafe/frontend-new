@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "findings": {
+    "AUD-DEP-001": {
+      "title": "依赖审计门槛阻断发布流水线：GitHub Pages 部署自 2026-09-13 起连续失败",
+      "category": "dependencies/ci",
+      "severity": "high",
+      "confidence": 98,
+      "status": "open",
+      "disposition": "Fix",
+      "recommendation_validation": "Verified",
+      "first_seen_commit": "ce59c46",
+      "last_verified_commit": "ce59c46",
+      "resolved_commit": null,
+      "guard": "启用 GitHub Dependabot security updates（仓库设置），使公告触发范围内升级 PR，缩短公告与 lock 更新之间的窗口"
+    },
+    "AUD-SEO-001": {
+      "title": "og:image / twitter:image / JSON-LD logo 指向已删除的 public/favicon.jpg（产物 404）",
+      "category": "seo/content",
+      "severity": "medium",
+      "confidence": 97,
+      "status": "open",
+      "disposition": "Fix",
+      "recommendation_validation": "Strongly Supported",
+      "first_seen_commit": "ce59c46",
+      "last_verified_commit": "ce59c46",
+      "resolved_commit": null,
+      "guard": "可加一个契约测试：断言 defaultImage 指向 public/ 内实际存在的文件"
+    },
+    "AUD-DEP-002": {
+      "title": "vite-plugin-vuetify 位于 dependencies，实际仅为构建期插件",
+      "category": "dependencies",
+      "severity": "low",
+      "confidence": 90,
+      "status": "open",
+      "disposition": "Fix",
+      "recommendation_validation": "Verified",
+      "first_seen_commit": "ce59c46",
+      "last_verified_commit": "ce59c46",
+      "resolved_commit": null,
+      "guard": null
+    },
+    "AUD-MAINT-001": {
+      "title": "字体版本双源：package.json ^5.3.0 与 fonts.scss CDN URL @5.3.0 可静默漂移",
+      "category": "maintainability",
+      "severity": "low",
+      "confidence": 85,
+      "status": "open",
+      "disposition": "Add Guard",
+      "recommendation_validation": "Strongly Supported",
+      "first_seen_commit": "ce59c46",
+      "last_verified_commit": "ce59c46",
+      "resolved_commit": null,
+      "guard": "契约测试断言 package.json 中 @fontsource* 版本与 src/styles/fonts.scss 的 CDN URL 版本一致；并在 fonts.scss 头部加同步说明注释"
+    }
+  }
+}
