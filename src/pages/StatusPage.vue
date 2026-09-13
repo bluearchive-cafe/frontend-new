@@ -62,7 +62,7 @@
               <span class="status-chip" :data-status-state="statusResources[panel.key].status.state">
                 {{ statusResources[panel.key].status.label }}
               </span>
-              <v-icon class="status-panel-expand" icon="$chevronDown" size="22" aria-hidden="true" />
+              <v-icon class="status-panel-expand" icon="$chevronDown" size="24" aria-hidden="true" />
             </div>
           </summary>
 

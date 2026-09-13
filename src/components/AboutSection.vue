@@ -41,12 +41,12 @@
           >
             <template #prepend>
               <v-avatar :class="['social-icon', `social-icon--${link.tone}`]" rounded="lg">
-                <v-icon :icon="link.icon" size="22" aria-hidden="true" />
+                <v-icon :icon="link.icon" size="24" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$openInNew" color="primary" size="18" aria-hidden="true" />
+              <v-icon icon="$openInNew" color="primary" size="20" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>
@@ -66,12 +66,12 @@
           >
             <template #prepend>
               <v-avatar class="social-icon sponsor-icon--wechat" rounded="lg">
-                <v-icon icon="$imageOutline" size="22" aria-hidden="true" />
+                <v-icon icon="$imageOutline" size="24" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$imageOutline" color="primary" size="18" aria-hidden="true" />
+              <v-icon icon="$imageOutline" color="primary" size="20" aria-hidden="true" />
             </template>
           </v-list-item>
 
@@ -84,12 +84,12 @@
           >
             <template #prepend>
               <v-avatar class="social-icon sponsor-icon--afdian" rounded="lg">
-                <v-icon icon="$linkVariant" size="22" aria-hidden="true" />
+                <v-icon icon="$linkVariant" size="24" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon icon="$openInNew" color="primary" size="18" aria-hidden="true" />
+              <v-icon icon="$openInNew" color="primary" size="20" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>

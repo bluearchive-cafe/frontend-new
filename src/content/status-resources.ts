@@ -127,7 +127,7 @@ const statusResourcePanelMeta: Record<StatusResourceKey, Omit<StatusResourcePane
   voice: {
     title: '语音包',
     description: '游戏内主线语音资源同步状态',
-    icon: '$volumeHighOutline',
+    icon: '$volumeHigh',
     tone: 'voice'
   },
   media: {

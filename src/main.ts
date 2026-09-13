@@ -87,7 +87,8 @@ const vuetify = createVuetify({
       refresh: mdiRefresh,
       tagOutline: mdiTagOutline,
       textBoxOutline: mdiTextBoxOutline,
-      volumeHighOutline: mdiVolumeHigh,
+      // MDI 无 volume-high 描边变体,语音包面板使用填充版。
+      volumeHigh: mdiVolumeHigh,
       imageOutline: mdiImageOutline,
       videoOutline: mdiVideoOutline,
       infoOutline: mdiInformationOutline,

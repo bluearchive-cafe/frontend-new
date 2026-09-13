@@ -1,7 +1,7 @@
 <template>
   <Transition name="scroll-hint">
     <a v-if="visible" class="scroll-hint" href="#news" data-easter-egg="off">
-      <v-icon icon="$arrowDown" size="18" aria-hidden="true" />
+      <v-icon icon="$arrowDown" size="20" aria-hidden="true" />
       <span>查看更新动态</span>
     </a>
   </Transition>

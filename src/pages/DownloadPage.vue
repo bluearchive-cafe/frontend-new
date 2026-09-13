@@ -9,7 +9,7 @@
       />
 
       <div class="guide-strip" role="note">
-        <v-icon icon="$infoOutline" color="info" size="22" aria-hidden="true" />
+        <v-icon icon="$infoOutline" color="info" size="24" aria-hidden="true" />
         <p>不同平台的安装方式和系统权限要求可能不同。遇到签名、权限或网络问题时，请优先查看对应文档。</p>
       </div>
 
@@ -27,7 +27,7 @@
                 :style="clientPlatformColorStyle(platform.colorTokens)"
                 rounded="lg"
               >
-                <v-icon :icon="platform.icon" size="26" aria-hidden="true" />
+                <v-icon :icon="platform.icon" size="24" aria-hidden="true" />
               </v-avatar>
               <div>
                 <h2>{{ platform.name }}</h2>
@@ -84,6 +84,7 @@
                       <template #append>
                         <v-chip
                           v-if="variant.recommended"
+                          class="recommended-chip"
                           color="primary"
                           size="x-small"
                           variant="outlined"
@@ -140,12 +141,12 @@
           >
             <template #prepend>
               <v-avatar class="doc-icon" rounded="lg">
-                <v-icon :icon="doc.icon" size="22" aria-hidden="true" />
+                <v-icon :icon="doc.icon" size="24" aria-hidden="true" />
               </v-avatar>
             </template>
 
             <template #append>
-              <v-icon :icon="doc.external ? '$openInNew' : '$arrowRight'" color="primary" size="18" aria-hidden="true" />
+              <v-icon :icon="doc.external ? '$openInNew' : '$arrowRight'" color="primary" size="20" aria-hidden="true" />
             </template>
           </v-list-item>
         </v-list>
@@ -411,6 +412,11 @@ function singleVariantButtonText(variant: DownloadVariant) {
   color: var(--color-text-muted);
   line-height: 1.55;
   opacity: 1;
+}
+
+/* 推荐标记刻意用胶囊形,与平台元数据标签(M2 4dp)区分强调层级。 */
+.recommended-chip {
+  border-radius: 999px;
 }
 
 .platform-actions {
