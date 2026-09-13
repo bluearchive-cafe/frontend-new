@@ -157,16 +157,11 @@
       <v-card class="download-dialog">
         <v-card-text>
           <div class="dialog-head">
-            <v-avatar class="doc-icon" rounded="lg">
-              <v-icon icon="$bookOpenOutline" size="24" aria-hidden="true" />
-            </v-avatar>
-            <div>
-              <p>安装前确认</p>
-              <h2 id="download-dialog-title">{{ selectedDownloadTitle }}</h2>
-            </div>
+            <p>安装前确认</p>
+            <h2 id="download-dialog-title">{{ selectedDownloadTitle }}</h2>
           </div>
 
-          <p class="dialog-copy">
+          <p v-if="!selectedVariant?.notice" class="dialog-copy">
             下载前建议先查看安装文档，确认系统版本、权限设置和常见问题处理方式。
           </p>
 
@@ -175,7 +170,7 @@
             class="variant-notice"
             role="note"
           >
-            <v-icon icon="$bookOpenOutline" size="20" aria-hidden="true" />
+            <v-icon icon="$infoOutline" size="20" aria-hidden="true" />
             <p>{{ selectedVariant.notice }}</p>
           </div>
 
@@ -209,7 +204,7 @@
             <v-btn
               v-if="selectedPlatform"
               color="primary"
-              variant="outlined"
+              variant="text"
               :href="selectedPlatform.docUrl"
               :target="selectedPlatform.docExternal ? '_blank' : undefined"
               :rel="selectedPlatform.docExternal ? 'noopener noreferrer' : undefined"
@@ -414,7 +409,9 @@ function singleVariantButtonText(variant: DownloadVariant) {
   opacity: 1;
 }
 
-/* 推荐标记刻意用胶囊形,与平台元数据标签(M2 4dp)区分强调层级。 */
+/* 下载页 chip(平台标签与推荐标记)刻意用胶囊形,偏离 M2 chip 4dp,
+   与状态章等强调性标记保持同一语言。 */
+.platform-meta :deep(.v-chip),
 .recommended-chip {
   border-radius: 999px;
 }
@@ -456,12 +453,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 
 .download-dialog :deep(.v-card-text) {
   padding: var(--card-padding-large) !important;
-}
-
-.dialog-head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
 }
 
 .dialog-head p {
