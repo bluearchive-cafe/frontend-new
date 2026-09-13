@@ -14,7 +14,7 @@ import NewsSection from '../components/NewsSection.vue'
 
 <style scoped>
 .home-page {
-  --home-module-fill: color-mix(in srgb, var(--md2-background) 88%, #52698f);
+  --home-module-fill: color-mix(in srgb, var(--md2-background) 88%, var(--color-home-tint));
   background: var(--home-module-fill);
 }
 </style>

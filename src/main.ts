@@ -105,16 +105,11 @@ const vuetify = createVuetify({
     }
   },
   defaults: {
-    // Shared component defaults keep common Vuetify controls visually consistent.
-    VBtn: {
-      rounded: 'sm',
-      height: 48
-    },
+    // 按钮高度/圆角、卡片圆角等视觉参数的单一来源在 styles/settings.scss
+    // 与 styles/global.css(VBtn/VCard 的 !important 覆盖与组件 Sass 变量),
+    // 此处不再重复设置,避免双源漂移。
     VAppBarNavIcon: {
       rounded: 'circle'
-    },
-    VCard: {
-      rounded: 'lg'
     }
   }
 })

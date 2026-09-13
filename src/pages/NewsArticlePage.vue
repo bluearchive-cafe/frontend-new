@@ -155,11 +155,13 @@ h1 {
   --markdown-code-bg: var(--color-neutral-soft);
   --markdown-pre-bg: var(--color-bg);
   --markdown-table-alt: var(--color-neutral-softer);
-  --markdown-alert-note: #2f81f7;
-  --markdown-alert-tip: #3fb950;
-  --markdown-alert-important: #a371f7;
-  --markdown-alert-warning: #d29922;
-  --markdown-alert-caution: #f85149;
+  /* 提示块颜色映射主题语义色:note→info、tip→success、warning→warning、caution→error;
+     important 无主题对应角色,使用 --color-markdown-important。 */
+  --markdown-alert-note: var(--color-info);
+  --markdown-alert-tip: var(--color-success);
+  --markdown-alert-important: var(--color-markdown-important);
+  --markdown-alert-warning: var(--color-warning);
+  --markdown-alert-caution: var(--color-error);
   max-width: 740px;
   margin: 0 auto;
   color: var(--color-text-soft);

@@ -35,10 +35,12 @@
   $list-item-subtitle-letter-spacing: map.get($typography, 'body-2', 'letter-spacing')
 );
 
-// MD2 chip 标签:body-2。
+// MD2 chip 标签:body-2。圆角钉回 4dp——Vuetify 4 默认 $chip-border-radius
+// 取 pill(9999px),偏离 M2 小组件 4dp 规格。
 @use '../../node_modules/vuetify/lib/components/VChip/variables' as vchip with (
   $chip-font-size: map.get($typography, 'body-2', 'size'),
-  $chip-font-weight: map.get($typography, 'body-2', 'weight')
+  $chip-font-weight: map.get($typography, 'body-2', 'weight'),
+  $chip-border-radius: 4px
 );
 
 // MD2 banner 标题:subtitle-2。当前 alert 均为纯文本,标题变量尚未被消费。

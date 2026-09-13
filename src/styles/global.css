@@ -3,16 +3,24 @@
   font-family: "Noto Sans", "Noto Sans SC Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "HarmonyOS Sans SC", sans-serif;
   --md2-background: rgb(var(--v-theme-background));
   --md2-surface: rgb(var(--v-theme-surface));
+  /* M2 暗色主题 elevation 白色叠加表:dp → 不透明度
+     (1dp 5%、2dp 7%、4dp 9%、8dp 12%、16dp 15%、24dp 16%)。 */
   --md2-surface-overlay-01: rgba(255, 255, 255, 0.05);
   --md2-surface-overlay-02: rgba(255, 255, 255, 0.07);
   --md2-surface-overlay-04: rgba(255, 255, 255, 0.09);
-  --md2-surface-overlay-16: rgba(255, 255, 255, 0.12);
+  --md2-surface-overlay-08: rgba(255, 255, 255, 0.12);
+  --md2-surface-overlay-16: rgba(255, 255, 255, 0.15);
+  --md2-surface-overlay-24: rgba(255, 255, 255, 0.16);
+  /* M2 elevation 阴影阶梯(暗色下加深):卡片 1dp、按钮 2dp、应用栏 4dp、
+     菜单 8dp、抽屉 16dp、对话框 24dp。 */
   --md2-elevation-card: 0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.24);
   --md2-elevation-button: 0 2px 4px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.24);
   --md2-elevation-app-bar: 0 2px 4px rgba(0, 0, 0, 0.32), 0 3px 5px rgba(0, 0, 0, 0.24);
   --md2-elevation-menu: 0 5px 5px rgba(0, 0, 0, 0.32), 0 8px 10px rgba(0, 0, 0, 0.24);
-  --md2-elevation-dialog: 0 8px 10px rgba(0, 0, 0, 0.36), 0 16px 24px rgba(0, 0, 0, 0.28);
-  --md2-elevation-drawer: 0 12px 17px rgba(0, 0, 0, 0.36), 0 24px 38px rgba(0, 0, 0, 0.28);
+  --md2-elevation-drawer: 0 8px 10px rgba(0, 0, 0, 0.36), 0 16px 24px rgba(0, 0, 0, 0.28);
+  --md2-elevation-dialog: 0 12px 17px rgba(0, 0, 0, 0.36), 0 24px 38px rgba(0, 0, 0, 0.28);
+  /* M2 暗色主题 scrim,模态抽屉与对话框共用。 */
+  --md2-scrim: rgba(0, 0, 0, 0.46);
   --md2-type-h1: 96px;
   --md2-type-h2: 60px;
   --md2-type-h3: 48px;
@@ -62,6 +70,13 @@
   --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, white);
   --color-neutral-border: rgba(255, 255, 255, 0.22);
   --color-mark: #4a4125;
+  /* Hero 品牌底色:index.html 的 theme-color 与 --color-hero 同值,修改需两处同步。 */
+  --color-hero: #191d24;
+  --color-hero-deep: #15181f;
+  /* 首页模块区相对背景的蓝色罩染色。 */
+  --color-home-tint: #52698f;
+  /* GitHub 提示块五色中主题无对应角色的唯一保留色(important);其余四色映射主题 info/success/warning/error。 */
+  --color-markdown-important: #a371f7;
   --color-text: #fff;
   --color-text-soft: rgba(229, 241, 255, 0.82);
   --color-text-muted: rgba(229, 241, 255, 0.72);
@@ -118,7 +133,7 @@
   --font-weight-subheading: 500;
   --font-weight-meta: 500;
   --font-weight-action: 500;
-  --font-weight-overline: 400;
+  --font-weight-overline: 500;
   --type-body: var(--md2-type-body1);
   --type-meta: var(--md2-type-body2);
   --type-action: var(--md2-type-button);
@@ -230,7 +245,10 @@ a {
 }
 
 .v-overlay__content > .v-card,
-.v-dialog .v-card,
+.v-dialog .v-card {
+  background-image: linear-gradient(var(--md2-surface-overlay-24), var(--md2-surface-overlay-24));
+}
+
 .v-navigation-drawer {
   background-image: linear-gradient(var(--md2-surface-overlay-16), var(--md2-surface-overlay-16));
 }
@@ -245,7 +263,7 @@ a {
 }
 
 .v-menu > .v-overlay__content > .v-list {
-  background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;
+  background-image: linear-gradient(var(--md2-surface-overlay-08), var(--md2-surface-overlay-08)) !important;
   box-shadow: var(--md2-elevation-menu);
 }
 

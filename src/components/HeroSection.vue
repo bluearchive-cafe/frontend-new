@@ -62,14 +62,14 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 <style scoped>
 .hero {
-  --hero-background: #191d24;
-  --hero-background-deep: #15181f;
+  --hero-background: var(--color-hero);
+  --hero-background-deep: var(--color-hero-deep);
   position: relative;
   min-height: 460px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(25, 29, 36, 0.98), rgba(25, 29, 36, 0.92)),
+    linear-gradient(180deg, color-mix(in srgb, var(--hero-background) 98%, transparent), color-mix(in srgb, var(--hero-background) 92%, transparent)),
     var(--hero-background);
 }
 
@@ -79,7 +79,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   right: -2vw;
   width: 76vw;
   height: 100%;
-  animation: fade-slide-left 700ms ease both;
+  animation: fade-slide-left var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   object-fit: cover;
   object-position: center 26%;
   /* opacity: 0.64; */
@@ -90,7 +90,7 @@ const currentHeroImage = ref(getRandomHeroImage())
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, var(--hero-background) 0%, var(--hero-background) 32%, rgba(25, 29, 36, 0.98) 42%, rgba(25, 29, 36, 0.62) 58%, rgba(25, 29, 36, 0.24) 100%),
+    linear-gradient(90deg, var(--hero-background) 0%, var(--hero-background) 32%, color-mix(in srgb, var(--hero-background) 98%, transparent) 42%, color-mix(in srgb, var(--hero-background) 62%, transparent) 58%, color-mix(in srgb, var(--hero-background) 24%, transparent) 100%),
     linear-gradient(180deg, transparent 74%, var(--hero-background-deep) 100%);
 }
 
@@ -107,7 +107,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 }
 
 .hero-copy > * {
-  animation: fade-slide-in-from-left 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: fade-slide-in-from-left var(--md2-duration-complex) var(--md2-easing-deceleration) both;
 }
 
 .hero-copy > :nth-child(2) {
@@ -173,8 +173,8 @@ const currentHeroImage = ref(getRandomHeroImage())
 
   .hero-shade {
     background:
-      linear-gradient(180deg, rgba(25, 29, 36, 0.08) 0%, rgba(25, 29, 36, 0.18) 30%, rgba(25, 29, 36, 0.78) 62%, var(--hero-background) 100%),
-      linear-gradient(90deg, rgba(25, 29, 36, 0.4) 0%, rgba(25, 29, 36, 0.1) 58%, rgba(25, 29, 36, 0.22) 100%);
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-background) 8%, transparent) 0%, color-mix(in srgb, var(--hero-background) 18%, transparent) 30%, color-mix(in srgb, var(--hero-background) 78%, transparent) 62%, var(--hero-background) 100%),
+      linear-gradient(90deg, color-mix(in srgb, var(--hero-background) 40%, transparent) 0%, color-mix(in srgb, var(--hero-background) 10%, transparent) 58%, color-mix(in srgb, var(--hero-background) 22%, transparent) 100%);
   }
 
   .hero-content {

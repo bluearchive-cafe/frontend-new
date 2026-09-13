@@ -59,7 +59,7 @@
     temporary
     location="left"
     color="surface"
-    scrim="rgba(0, 0, 0, 0.46)"
+    scrim="var(--md2-scrim)"
     retain-focus
     @keydown.esc="closeDrawer"
   >

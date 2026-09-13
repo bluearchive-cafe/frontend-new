@@ -15,9 +15,11 @@ describe('home surface hierarchy', () => {
   })
 
   it('keeps the hero anchored to the base dark surface while news uses the module fill', () => {
+    expect(globalStyles).toContain('--color-hero: #191d24')
+    expect(globalStyles).toContain('--color-hero-deep: #15181f')
     expect(homePageSource).toContain('--home-module-fill:')
-    expect(heroSource).toContain('--hero-background: #191d24')
-    expect(heroSource).toContain('--hero-background-deep: #15181f')
+    expect(heroSource).toContain('--hero-background: var(--color-hero)')
+    expect(heroSource).toContain('--hero-background-deep: var(--color-hero-deep)')
     expect(heroSource).toContain('var(--hero-background);')
     expect(heroSource).toContain('var(--hero-background-deep) 100%')
     expect(heroSource).toContain('border-bottom: 1px solid rgba(255, 255, 255, 0.12)')

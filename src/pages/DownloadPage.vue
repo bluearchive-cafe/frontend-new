@@ -152,7 +152,7 @@
       </section>
     </v-container>
 
-    <v-dialog v-model="downloadDialog" max-width="520" scrim="rgba(0, 0, 0, 0.62)" aria-labelledby="download-dialog-title">
+    <v-dialog v-model="downloadDialog" max-width="520" scrim="var(--md2-scrim)" aria-labelledby="download-dialog-title">
       <v-card class="download-dialog">
         <v-card-text>
           <div class="dialog-head">
