@@ -10,12 +10,12 @@
     />
 
     <v-toolbar-title class="mobile-brand">
-      <RouterLink to="/" aria-label="BlueArchive.Cafe 首页">蔚蓝咖啡厅</RouterLink>
+      <RouterLink to="/" :aria-label="`${siteName} 首页`">{{ siteTitle }}</RouterLink>
     </v-toolbar-title>
 
     <v-container class="header-inner" max-width="1120">
       <v-toolbar-title class="brand">
-        <RouterLink to="/" aria-label="BlueArchive.Cafe 首页">蔚蓝咖啡厅</RouterLink>
+        <RouterLink to="/" :aria-label="`${siteName} 首页`">{{ siteTitle }}</RouterLink>
       </v-toolbar-title>
 
       <v-tabs
@@ -81,7 +81,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
-import { staticRoutes } from '../shared/site-routes.mjs'
+import { siteName, siteTitle, staticRoutes } from '../shared/site-routes.mjs'
 import { readCssPixelToken } from '../utils/css-tokens'
 import { useToolbarLoader } from '../utils/toolbar-loader'
 

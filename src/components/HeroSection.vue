@@ -14,8 +14,8 @@
     <v-container class="hero-content" max-width="1120">
       <div class="hero-copy">
         <h1>
-          <span class="hero-line">提供 <span class="text-gradient">全面的</span></span>
-          <span class="hero-line">蔚蓝档案汉化服务</span>
+          <span class="hero-line">{{ siteTagline.lead }} <span class="text-gradient">{{ siteTagline.emphasis }}</span></span>
+          <span class="hero-line">{{ siteTagline.subject }}</span>
         </h1>
         <p>
           整理公告、教程和资源入口，让玩家更快找到需要的汉化内容与使用指引。
@@ -39,6 +39,7 @@ import { ref } from 'vue'
 
 import heroImageNames from '../content/hero-images.json'
 import { baseDocUrl } from '../content/downloads'
+import { siteTagline } from '../shared/site-routes.mjs'
 
 const publicAssetBase = import.meta.env.BASE_URL
 const tutorialUrl = `${baseDocUrl}platform/`

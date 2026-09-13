@@ -19,7 +19,6 @@
             :published-at="article.publishedAt"
             :published-at-date-time="article.publishedAtDateTime"
             :word-count="article.wordCount"
-            label="当前新闻元信息"
           />
         </header>
 

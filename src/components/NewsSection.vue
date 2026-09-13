@@ -26,7 +26,7 @@
               <div class="news-card-footer">
                 <div class="news-date">{{ item.publishedAt }}</div>
                 <span class="read-more">
-                  查看详情
+                  {{ articleCardCtaLabel }}
                   <v-icon icon="$arrowRight" size="16" aria-hidden="true" />
                 </span>
               </div>
@@ -36,9 +36,9 @@
 
         <v-card v-else class="news-empty-card" elevation="1">
           <v-card-text>
-            <p class="empty-label">No news</p>
-            <h3>暂无新闻</h3>
-            <p>当前还没有已发布的新闻内容，后续公告会在这里展示。</p>
+            <p class="empty-label">{{ newsEmptyState.label }}</p>
+            <h3>{{ newsEmptyState.title }}</h3>
+            <p>{{ newsEmptyState.description }}</p>
           </v-card-text>
         </v-card>
       </div>
@@ -52,6 +52,7 @@ import { computed } from 'vue'
 import CategoryBadge from './CategoryBadge.vue'
 import DraftBadge from './DraftBadge.vue'
 import PinnedBadge from './PinnedBadge.vue'
+import { articleCardCtaLabel, newsEmptyState } from '../content/news-copy'
 import { newsArticles } from '../content/news'
 
 const latestNews = computed(() => newsArticles.slice(0, 3))

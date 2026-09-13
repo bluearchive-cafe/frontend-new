@@ -70,21 +70,19 @@
             <table class="status-table">
               <thead>
                 <tr>
-                  <th scope="col">来源</th>
-                  <th scope="col">版本</th>
-                  <th scope="col">更新时间</th>
+                  <th v-for="(label, column) in statusTableColumns" :key="column" scope="col">{{ label }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="official">
-                  <td class="label" data-label="来源">官方</td>
-                  <td class="value" data-label="版本">{{ statusResources[panel.key].official.version }}</td>
-                  <td class="value" data-label="更新时间">{{ statusResources[panel.key].official.time }}</td>
+                  <td class="label" :data-label="statusTableColumns.source">官方</td>
+                  <td class="value" :data-label="statusTableColumns.version">{{ statusResources[panel.key].official.version }}</td>
+                  <td class="value" :data-label="statusTableColumns.updatedAt">{{ statusResources[panel.key].official.time }}</td>
                 </tr>
                 <tr class="localized">
-                  <td class="label" data-label="来源">汉化</td>
-                  <td class="value" data-label="版本">{{ statusResources[panel.key].localized.version }}</td>
-                  <td class="value" data-label="更新时间">{{ statusResources[panel.key].localized.time }}</td>
+                  <td class="label" :data-label="statusTableColumns.source">汉化</td>
+                  <td class="value" :data-label="statusTableColumns.version">{{ statusResources[panel.key].localized.version }}</td>
+                  <td class="value" :data-label="statusTableColumns.updatedAt">{{ statusResources[panel.key].localized.time }}</td>
                 </tr>
               </tbody>
             </table>
@@ -111,6 +109,14 @@ import { setToolbarLoading } from '../utils/toolbar-loader'
 // 面板顺序、标题、icon 与颜色 token 全部由 content/status-resources.ts
 // 的 registry 派生;本页只负责请求状态到占位文案与公告文案的映射。
 const clientStatus = useClientStatus()
+
+// 表头与移动端 td 的 data-label 共用同一组列名:data-label 会被
+// 响应式 CSS 的 attr() 读取,必须与表头逐字一致。
+const statusTableColumns = {
+  source: '来源',
+  version: '版本',
+  updatedAt: '更新时间'
+} as const
 
 const isStatusLoading = computed(() => clientStatus.state.value === 'loading')
 

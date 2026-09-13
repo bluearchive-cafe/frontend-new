@@ -27,13 +27,19 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  author: string
-  publishedAt: string
-  publishedAtDateTime: string
-  wordCount: number
-  label?: string
-}>()
+withDefaults(
+  defineProps<{
+    author: string
+    publishedAt: string
+    publishedAtDateTime: string
+    wordCount: number
+    /** dl 的可访问名称;调用方不传时使用默认值,避免各页面措辞漂移。 */
+    label?: string
+  }>(),
+  {
+    label: '新闻元信息'
+  }
+)
 </script>
 
 <style scoped>

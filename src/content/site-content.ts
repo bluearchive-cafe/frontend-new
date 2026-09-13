@@ -19,11 +19,15 @@ export interface FriendLink {
   href: string
 }
 
+// 非官方声明的单一来源:关于页列表与页脚必须展示逐字一致的同一份文本。
+export const nonAffiliationNotice =
+  '“蔚蓝咖啡厅”是由爱好者创立并维护的民间项目，与游戏“ブルーアーカイブ（中文名‘蔚蓝档案’）”及相关公司并无官方关联。'
+
 export const aboutItems: SiteContentItem[] = [
   {
     icon: '$infoOutline',
     title: '非官方项目',
-    description: '“蔚蓝咖啡厅”是由爱好者创立并维护的民间项目，与游戏“ブルーアーカイブ（中文名‘蔚蓝档案’）”及相关公司并无官方关联。'
+    description: nonAffiliationNotice
   },
   {
     icon: '$fileDocumentEditOutline',
@@ -73,5 +77,25 @@ export const friendLinks: FriendLink[] = [
   {
     label: 'Shittim Canvas',
     href: 'https://sc.japerz.com/'
+  }
+]
+
+export interface BeianLink {
+  label: string
+  href: string
+  title: string
+}
+
+// 页脚备案信息:label 为备案号原文,title 为指向平台的官方名称。
+export const beianLinks: BeianLink[] = [
+  {
+    label: '皖 ICP 备 2026002949 号-1',
+    href: 'https://beian.miit.gov.cn/',
+    title: '工业和信息化部备案管理系统'
+  },
+  {
+    label: '皖公网安备 34010402704707 号',
+    href: 'https://beian.mps.gov.cn/#/query/webSearch?code=34010402704707',
+    title: '全国互联网安全管理服务平台'
   }
 ]

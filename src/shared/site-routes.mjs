@@ -5,6 +5,16 @@ export const defaultImage = `${siteUrl}favicon.jpg`
 export const defaultDescription = 'BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。'
 export const defaultKeywords = '蔚蓝档案,蔚蓝档案汉化,Blue Archive,BlueArchive.Cafe,蔚蓝咖啡厅,汉化教程,客户端下载'
 
+// 站点标语的结构化单一来源:HeroSection 按行渲染(emphasis 为渐变强调词),
+// console-brand 把三段拼成单行。defaultDescription 是带关键词的完整描述,
+// 属于 SEO 专属文案,不从这里拼接。
+/** @type {{ readonly lead: string, readonly emphasis: string, readonly subject: string }} */
+export const siteTagline = {
+  lead: '提供',
+  emphasis: '全面的',
+  subject: '蔚蓝档案汉化服务'
+}
+
 /**
  * @typedef {object} StaticRouteDefinition
  * @property {string} name

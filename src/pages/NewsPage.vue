@@ -49,10 +49,9 @@
                 :published-at="article.publishedAt"
                 :published-at-date-time="article.publishedAtDateTime"
                 :word-count="article.wordCount"
-                label="新闻元信息"
               />
               <span class="read-more">
-                阅读全文
+                {{ articleCardCtaLabel }}
                 <v-icon icon="$arrowRight" size="16" aria-hidden="true" />
               </span>
             </div>
@@ -82,6 +81,7 @@ import CategoryBadge from '../components/CategoryBadge.vue'
 import DraftBadge from '../components/DraftBadge.vue'
 import PageHeading from '../components/PageHeading.vue'
 import PinnedBadge from '../components/PinnedBadge.vue'
+import { articleCardCtaLabel, newsEmptyState } from '../content/news-copy'
 import { newsArticles, newsCategories } from '../content/news'
 
 const allCategoryLabel = '全部'
@@ -105,12 +105,14 @@ const filteredArticles = computed(() => {
   return newsArticles.filter((article) => article.category === selectedCategory.value)
 })
 
-const emptyLabel = computed(() => newsArticles.length ? 'No articles' : 'No news')
-const emptyTitle = computed(() => newsArticles.length ? '这个分类暂时没有文章' : '暂无新闻')
+// 分类为空与站点无新闻是两种空状态:前者文案仅本页使用,后者与首页
+// 新闻区块共用 news-copy 的单一来源。
+const emptyLabel = computed(() => newsArticles.length ? 'No articles' : newsEmptyState.label)
+const emptyTitle = computed(() => newsArticles.length ? '这个分类暂时没有文章' : newsEmptyState.title)
 const emptyDescription = computed(() =>
   newsArticles.length
     ? '换一个分类看看，或者返回全部新闻浏览当前已发布的内容。'
-    : '当前还没有已发布的新闻内容，后续公告会在这里展示。'
+    : newsEmptyState.description
 )
 </script>
 

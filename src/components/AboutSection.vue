@@ -5,7 +5,7 @@
         <div class="about-copy">
           <h1>关于本站</h1>
           <p>
-            蔚蓝咖啡厅 是游戏《ブルーアーカイブ》的民间汉化组织，旨在为各位玩家提供优质、准确的汉化服务。
+            {{ siteTitle }} 是游戏《ブルーアーカイブ》的民间汉化项目，旨在为各位玩家提供优质、准确的汉化服务。
           </p>
           <p>
             如发现问题，请反馈到 feedback@bluearchive.cafe。
@@ -120,6 +120,7 @@
 import { ref } from 'vue'
 
 import { aboutItems, socialLinks } from '../content/site-content'
+import { siteTitle } from '../shared/site-routes.mjs'
 
 const publicAssetBase = import.meta.env.BASE_URL
 const sponsorQrSrc = `${publicAssetBase}assets/img/about/wechat-sponsor.webp`

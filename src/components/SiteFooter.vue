@@ -3,9 +3,9 @@
     <v-container max-width="1120">
       <div class="footer-inner">
         <div class="footer-left">
-          <strong>蔚蓝咖啡厅</strong>
-          <p>Copyright © 2026 BlueArchive.Cafe. All rights reserved.</p>
-          <p>“蔚蓝咖啡厅”是由爱好者创立并维护的民间项目，与游戏“ブルーアーカイブ（中文名‘蔚蓝档案’）”及相关公司并无官方关联。</p>
+          <strong>{{ siteTitle }}</strong>
+          <p>Copyright © {{ copyrightYear }} {{ siteName }}. All rights reserved.</p>
+          <p>{{ nonAffiliationNotice }}</p>
           <div class="friend-links" aria-label="友情链接">
             <span>友情链接</span>
             <a
@@ -25,22 +25,15 @@
           </div>
           <div class="beian-list" aria-label="备案信息">
             <a
+              v-for="link in beianLinks"
+              :key="link.href"
               class="beian-link"
-              href="https://beian.miit.gov.cn/"
-              title="工业和信息化部备案管理系统"
+              :href="link.href"
+              :title="link.title"
               target="_blank"
               rel="noopener noreferrer"
             >
-              皖 ICP 备 2026002949 号-1
-            </a>
-            <a
-              class="beian-link"
-              href="https://beian.mps.gov.cn/#/query/webSearch?code=34010402704707"
-              title="全国互联网安全管理服务平台"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              皖公网安备 34010402704707 号
+              {{ link.label }}
             </a>
           </div>
         </div>
@@ -52,11 +45,12 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import { friendLinks } from '../content/site-content'
-import { staticRoutes } from '../shared/site-routes.mjs'
+import { beianLinks, friendLinks, nonAffiliationNotice } from '../content/site-content'
+import { siteName, siteTitle, staticRoutes } from '../shared/site-routes.mjs'
 
 // 页脚链接与展示顺序都从共享路由表派生。
 const footerNavLinks = staticRoutes
+const copyrightYear = new Date().getFullYear()
 </script>
 
 <style scoped>

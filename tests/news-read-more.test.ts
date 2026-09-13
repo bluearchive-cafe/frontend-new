@@ -10,8 +10,8 @@ describe('news read-more affordances', () => {
     const newsSection = readFileSync(newsSectionPath, 'utf8')
     const newsPage = readFileSync(newsPagePath, 'utf8')
 
-    expect(newsSection).toMatch(/<span class="read-more">\s*查看详情\s*<v-icon icon="\$arrowRight" size="16" aria-hidden="true" \/>\s*<\/span>/)
-    expect(newsPage).toMatch(/<span class="read-more">\s*阅读全文\s*<v-icon icon="\$arrowRight" size="16" aria-hidden="true" \/>\s*<\/span>/)
+    expect(newsSection).toMatch(/<span class="read-more">\s*\{\{ articleCardCtaLabel \}\}\s*<v-icon icon="\$arrowRight" size="16" aria-hidden="true" \/>\s*<\/span>/)
+    expect(newsPage).toMatch(/<span class="read-more">\s*\{\{ articleCardCtaLabel \}\}\s*<v-icon icon="\$arrowRight" size="16" aria-hidden="true" \/>\s*<\/span>/)
     expect(newsSection).not.toMatch(/\.read-more \{[\s\S]*border-radius/)
     expect(newsPage).not.toMatch(/\.read-more \{[\s\S]*border-radius/)
   })

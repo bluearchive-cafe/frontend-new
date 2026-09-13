@@ -1,3 +1,4 @@
+import { siteTagline } from '../shared/site-routes.mjs'
 import { blueArchiveDarkTheme } from '../theme'
 
 export function printConsoleBrand() {
@@ -12,7 +13,7 @@ export function printConsoleBrand() {
   const reset = ''
 
   console.info(
-    '%cBlueArchive.Cafe%c\n提供全面的 Blue Archive 汉化服务。',
+    '%cBlueArchive.Cafe%c\n' + `${siteTagline.lead}${siteTagline.emphasis}${siteTagline.subject}。`,
     `color: ${primary}; font-size: 18px; font-weight: 800;`,
     'color: #8bd8ff; font-size: 13px;'
   )
