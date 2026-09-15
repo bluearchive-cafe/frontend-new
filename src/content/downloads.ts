@@ -115,7 +115,7 @@ export const platformLinks: PlatformLink[] = [
       {
         name: 'Cafe Launcher',
         description: '我们开发的第三方 Blue Archive 启动器，相比原版启动器提供了更多功能。',
-        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia_Release/releases',
+        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia/releases',
         notice: '如有相关问题，请先阅读文档，再根据文档中的“反馈指南”提交反馈。',
         recommended: true
       },
