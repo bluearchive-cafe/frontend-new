@@ -137,21 +137,21 @@ export const platformLinks: PlatformLink[] = [
     name: 'macOS 平台',
     docUrl: baseDocUrl + 'platform/macos/',
     docExternal: true,
-    description: '适用于 Apple Silicon Mac。首次打开时可能需要在系统设置中确认安全权限。',
+    description: '适用于 Apple Silicon Mac。首次启动时可能需要确认应用权限。',
     tags: ['Apple Silicon', '桌面端'],
     variants: [
       {
         name: '通过 PlayCover 安装',
-        description: '将应用源添加到 PlayCover，支持自动更新。',
+        description: '下载专用修改版 PlayCover，支持自动更新。',
         downloadUrl: 'https://download.bluearchive.cafe/playcover/latest',
-        notice: 'PlayCover 方案不兼容 Nightly 版，请使用此处下载的修改版或官方正式版。',
+        notice: '该方案不兼容官方版 PlayCover，请使用此处下载的专用修改版以获得完整支持。',
         recommended: true
       },
       {
         name: '手动安装',
-        description: '下载后需要通过 PlayCover 或自签进行安装。',
+        description: '需要使用 PlayCover 或 Impactor 进行安装。',
         downloadUrl: 'https://download.bluearchive.cafe/macos/latest',
-        notice: '仅支持搭载 Apple Silicon 的 Mac 设备，且不兼容 PlayCover Nightly 版。'
+        notice: '仅支持搭载 Apple Silicon 的 Mac 设备，且不兼容官方版 PlayCover。'
       },
       {
         name: '备用方案',
