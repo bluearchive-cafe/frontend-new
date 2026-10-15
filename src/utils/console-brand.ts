@@ -9,6 +9,11 @@ export function printConsoleBrand() {
   const badgeBuild = `${badgeBase} background: #90caf9; color: #102a43;`
   const badgeCommit = `${badgeBase} background: #1976d2; color: #fff;`
   const badgeDeveloper = `${badgeBase} background: #607d8b; color: #fff;`
+  // 生产构建标绿、开发服务器标琥珀色,排查时一眼分清线上部署与本地工作区。
+  const isProduction = import.meta.env.PROD
+  const badgeEnvironment = `${badgeBase} background: ${
+    isProduction ? blueArchiveDarkTheme.colors.success : blueArchiveDarkTheme.colors.warning
+  }; color: #102a43;`
   const reset = ''
 
   console.info(
@@ -26,5 +31,6 @@ export function printConsoleBrand() {
     badgeCommit,
     ` ${__APP_INFO__.commitSha} `
   )
+  console.info('%cenv%c%s', badgeLabel, badgeEnvironment, ` ${isProduction ? 'production' : 'development'} `)
   console.info('%cdeveloper%c%s', badgeLabel, badgeDeveloper, ` ${__APP_INFO__.developer} `)
 }
