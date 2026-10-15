@@ -1,5 +1,4 @@
 import { execSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
 import path from 'node:path'
 
 import vue from '@vitejs/plugin-vue'
@@ -7,9 +6,6 @@ import vuetify from 'vite-plugin-vuetify'
 import { configDefaults, defineConfig } from 'vitest/config'
 
 // Vite configuration for the Vue and Vuetify single-page app.
-const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8')) as {
-  version: string
-}
 const githubPagesBase = process.env.GITHUB_PAGES === 'true' ? '/frontend-new/' : '/'
 const newsDirectory = path.resolve('src/content/news')
 // Prefer the CI-provided short SHA; local builds fall back to the current Git commit.
@@ -29,7 +25,6 @@ export default defineConfig({
   define: {
     __APP_INFO__: JSON.stringify({
       name: 'BlueArchive.Cafe',
-      version: packageJson.version,
       buildTime: new Date().toISOString(),
       commitSha,
       developer: 'BlueArchive.Cafe Team, KFACBT, Sensei'

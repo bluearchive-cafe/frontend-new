@@ -6,7 +6,6 @@ export function printConsoleBrand() {
   const primary = blueArchiveDarkTheme.colors.primary
   const badgeBase = 'padding: 3px 6px; font: 400 11px/1.35 system-ui, sans-serif;'
   const badgeLabel = `${badgeBase} background: #555; color: #fff;`
-  const badgeVersion = `${badgeBase} background: ${primary}; color: #fff;`
   const badgeBuild = `${badgeBase} background: #90caf9; color: #102a43;`
   const badgeCommit = `${badgeBase} background: #1976d2; color: #fff;`
   const badgeDeveloper = `${badgeBase} background: #607d8b; color: #fff;`
@@ -17,7 +16,6 @@ export function printConsoleBrand() {
     `color: ${primary}; font-size: 18px; font-weight: 800;`,
     'color: #8bd8ff; font-size: 13px;'
   )
-  console.info('%cversion%c%s', badgeLabel, badgeVersion, ` v${__APP_INFO__.version} `)
   console.info(
     '%cbuild%c%s%c %ccommit%c%s',
     badgeLabel,
