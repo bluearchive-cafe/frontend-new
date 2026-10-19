@@ -407,6 +407,13 @@ h1 {
   color: var(--color-text);
 }
 
+/* §3.5: 阅读页在手机上与其余内页使用同一纵向留白。 */
+@media (max-width: 640px) {
+  .article-page {
+    padding-block: var(--page-padding-block);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .back-link,
   .article-shell {

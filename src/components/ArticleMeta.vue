@@ -48,7 +48,8 @@ withDefaults(
   flex-wrap: wrap;
   gap: var(--inline-gap) var(--space-4);
   margin: 0;
-  color: var(--color-secondary);
+  /* §2.4: 元信息使用次级文字色,避免抢过正文摘要。 */
+  color: var(--color-text-muted);
   font-size: var(--type-meta);
   font-weight: var(--font-weight-meta);
 }

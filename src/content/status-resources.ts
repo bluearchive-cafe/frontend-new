@@ -88,26 +88,27 @@ export interface StatusResourcePanel {
 }
 
 const statusResourcePanelMeta: Record<StatusResourceKey, Omit<StatusResourcePanel, 'key'>> = {
+  // §2.5.4: 平台是用户扫描客户端状态时的首要识别信息。
   android: {
-    title: '安装包',
+    title: 'Android 安装包',
     description: 'Android 专用客户端安装包',
     icon: clientPlatformPresentation.android.icon,
     colorTokens: clientPlatformPresentation.android.colorTokens
   },
   ios: {
-    title: '应用包',
+    title: 'iOS 应用包',
     description: 'iOS 专用客户端应用包',
     icon: clientPlatformPresentation.ios.icon,
     colorTokens: clientPlatformPresentation.ios.colorTokens
   },
   windows: {
-    title: '资源包',
+    title: 'Windows 资源包',
     description: 'Windows 专用启动器资源包',
     icon: clientPlatformPresentation.windows.icon,
     colorTokens: clientPlatformPresentation.windows.colorTokens
   },
   macos: {
-    title: '资源包',
+    title: 'macOS 资源包',
     description: 'macOS 专用客户端资源包',
     icon: clientPlatformPresentation.macos.icon,
     colorTokens: clientPlatformPresentation.macos.colorTokens

@@ -169,7 +169,8 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
 }
 
 .news-date {
-  color: var(--color-secondary);
+  /* §2.4: 时间从属标题与摘要,强调色留给阅读入口。 */
+  color: var(--color-text-muted);
   font-size: var(--type-meta);
   font-weight: var(--font-weight-meta);
 }
@@ -194,7 +195,8 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   line-height: 1.35;
   transition: color var(--md2-duration-shortest) var(--md2-easing-standard);
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  /* §2.1、§1.3: 保留长公告标题中的关键说明。 */
+  -webkit-line-clamp: 2;
 }
 
 .news-card p {

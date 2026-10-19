@@ -19,6 +19,8 @@
       </v-toolbar-title>
 
       <v-tabs
+        :model-value="activeNavItem"
+        mandatory
         class="desktop-tabs"
         color="primary"
         slider-color="primary"
@@ -78,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { siteName, siteTitle, staticRoutes } from '../shared/site-routes.mjs'
@@ -119,6 +121,9 @@ const navItems = staticRoutes.map((item) => ({
   to: item.path,
   isActive: () => matchesPath(item.path)
 }))
+
+// 桌面 tab 与抽屉共用路径匹配,详情页归入所属栏目;未知路径不强制选首页。
+const activeNavItem = computed(() => navItems.find((item) => item.isActive())?.value)
 
 function closeDrawer() {
   drawer.value = false

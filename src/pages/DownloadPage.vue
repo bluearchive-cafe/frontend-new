@@ -129,7 +129,8 @@
           <span>从下载、安装到问题反馈，按顺序完成这些步骤通常能减少大多数配置问题。</span>
         </div>
 
-        <v-list class="docs-list" bg-color="transparent" lines="two">
+        <!-- §1.3: 文档说明完整换行,不受固定行数限制。 -->
+        <v-list class="docs-list" bg-color="transparent" :lines="false">
           <v-list-item
             v-for="doc in documentLinks"
             :key="doc.title"
@@ -534,10 +535,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 }
 
 @media (max-width: 480px) {
-  .download-page {
-    padding-top: 82px;
-  }
-
   .platform-actions {
     align-items: stretch;
     flex-direction: column;

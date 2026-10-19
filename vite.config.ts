@@ -46,7 +46,13 @@ export default defineConfig({
     }
   },
   test: {
-    exclude: [...configDefaults.exclude, '**/.worktrees/**']
+    exclude: [...configDefaults.exclude, '**/.worktrees/**'],
+    // 真实 Vuetify 组件的 CSS import 交给 Vite 处理,供 jsdom 导航回归测试使用。
+    server: {
+      deps: {
+        inline: ['vuetify']
+      }
+    }
   },
   css: {
     preprocessorOptions: {

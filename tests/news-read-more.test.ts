@@ -16,11 +16,11 @@ describe('news read-more affordances', () => {
     expect(newsPage).not.toMatch(/\.read-more \{[\s\S]*border-radius/)
   })
 
-  it('clamps home news titles and summaries to preserve card hierarchy', () => {
+  it('allows two-line home news titles and summaries to preserve key information', () => {
     const newsSection = readFileSync(newsSectionPath, 'utf8')
 
-    expect(newsSection).toMatch(/\.news-card h3 \{[\s\S]*-webkit-line-clamp: 1/)
-    expect(newsSection).toMatch(/\.news-card p \{[\s\S]*-webkit-line-clamp: 2/)
+    expect(newsSection).toMatch(/\.news-card h3 \{[^}]*-webkit-line-clamp: 2/)
+    expect(newsSection).toMatch(/\.news-card p \{[^}]*-webkit-line-clamp: 2/)
   })
 
   it('stretches card content so every footer aligns to the card bottom', () => {
