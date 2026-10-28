@@ -60,6 +60,9 @@ src/content/news.generated.ts
 # Generated news entry list for build scripts
 src/content/news-entries.generated.json
 
+# Repository-audit ledger and its machine-local evidence (logs, repro scripts, screenshots)
+.repository-audit/
+
 # Optional eslint cache
 .eslintcache
 
