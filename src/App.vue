@@ -5,11 +5,13 @@
     <AppHeader />
 
     <v-main id="main-content" class="app-main">
-      <RouterView v-slot="{ Component, route }">
-        <Transition name="page">
-          <component :is="Component" :key="route.fullPath" />
-        </Transition>
-      </RouterView>
+      <div class="page-viewport">
+        <RouterView v-slot="{ Component, route }">
+          <Transition name="page" @before-leave="disableLeavingPage" @leave-cancelled="restoreLeavingPage">
+            <component :is="Component" :key="route.path" />
+          </Transition>
+        </RouterView>
+      </div>
     </v-main>
 
     <SiteFooter />
@@ -19,6 +21,14 @@
 <script setup lang="ts">
 import AppHeader from './components/AppHeader.vue'
 import SiteFooter from './components/SiteFooter.vue'
+
+function disableLeavingPage(element: Element) {
+  element.setAttribute('inert', '')
+}
+
+function restoreLeavingPage(element: Element) {
+  element.removeAttribute('inert')
+}
 </script>
 
 <style scoped>
@@ -53,5 +63,24 @@ import SiteFooter from './components/SiteFooter.vue'
 .app-main > :deep(*) {
   flex: 1 0 auto;
   width: 100%;
+}
+
+.page-viewport {
+  position: relative;
+  display: grid;
+  overflow: clip;
+}
+
+.page-viewport > :deep(*) {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+/* 新页面决定容器高度，离场页覆盖在同一位置，避免两页上下堆叠。 */
+.page-viewport > :deep(.page-leave-active) {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  pointer-events: none;
 }
 </style>

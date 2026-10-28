@@ -22,10 +22,10 @@ function resolved(path: string) {
 }
 
 describe('router scroll behavior', () => {
-  it('returns to the top for plain navigation', () => {
+  it('returns to the top instantly for plain navigation despite global smooth scrolling', () => {
     const result = router.options.scrollBehavior?.(resolved('/news/hello-world'), resolved('/'), null)
 
-    expect(result).toEqual({ top: 0 })
+    expect(result).toEqual({ top: 0, behavior: 'instant' })
   })
 
   it('offsets in-page anchors by the shared --anchor-offset token', () => {

@@ -56,8 +56,8 @@ const router = createRouter({
       }
     }
 
-    // Regular navigation starts at the top of the new page.
-    return { top: 0 }
+    // Override the global smooth anchor scrolling during cross-page transitions.
+    return { top: 0, behavior: 'instant' }
   }
 })
 
