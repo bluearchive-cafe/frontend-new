@@ -16,7 +16,7 @@ import { VIcon } from 'vuetify/components/VIcon'
 import { VList, VListItem } from 'vuetify/components/VList'
 import { VMenu } from 'vuetify/components/VMenu'
 
-import AboutSection from '../src/components/AboutSection.vue'
+import AboutSection from '../src/pages/AboutSection.vue'
 import DownloadPage from '../src/pages/DownloadPage.vue'
 
 let app: App | undefined

@@ -8,7 +8,7 @@ const sources = [
   '../src/pages/StatusPage.vue',
   '../src/pages/NewsArticlePage.vue',
   '../src/pages/NotFoundPage.vue',
-  '../src/components/AboutSection.vue'
+  '../src/pages/AboutSection.vue'
 ].map((file) => readFileSync(new URL(file, import.meta.url), 'utf-8'))
 
 const globalStyles = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf-8')
