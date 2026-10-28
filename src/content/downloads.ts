@@ -1,12 +1,15 @@
 import {
   clientPlatform,
+  statusResourceKeys,
   type ClientPlatformColorTokens,
-  type ClientPlatformKey
+  type ClientPlatformKey,
+  type StatusResourceKey
 } from './status-resources'
 
 export interface PlatformLink {
+  key: ClientPlatformKey
   name: string
-  statusKey: ClientPlatformKey
+  statusKey?: StatusResourceKey
   icon: string
   colorTokens: ClientPlatformColorTokens
   docUrl: string
@@ -32,13 +35,15 @@ export interface DownloadVariant {
 // icon 与颜色 token 由状态资源 registry 统一派生,入口只声明平台与文案。
 function clientLink(
   key: ClientPlatformKey,
-  link: Omit<PlatformLink, 'statusKey' | 'icon' | 'colorTokens'>
+  link: Omit<PlatformLink, 'key' | 'statusKey' | 'icon' | 'colorTokens'>
 ): PlatformLink {
   const meta = clientPlatform(key)
 
   return {
     ...link,
-    statusKey: key,
+    key,
+    // 下载平台可独立于状态接口扩展，只查询接口已提供的同名资源。
+    statusKey: statusResourceKeys.find((statusKey) => statusKey === key),
     icon: meta.icon,
     colorTokens: meta.colorTokens
   }
@@ -158,6 +163,22 @@ export const platformLinks: PlatformLink[] = [
         description: '仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。',
         downloadUrl: 'https://github.com/bluearchive-cafe/bluearchive-cafe/releases',
         notice: '手动替换游戏资源，更新后需要重新替换，仅支持文本汉化，且字体显示异常，建议仅在应急情况下使用。'
+      }
+    ]
+  }),
+  clientLink('linux', {
+    name: 'Linux 平台',
+    docUrl: baseDocUrl + 'cafe-launcher/installation',
+    docExternal: true,
+    description: '适用于 Linux x64，当前为实验性支持。通过 Wine、UMU 或 Proton 启动游戏，安装前请阅读兼容运行环境说明。',
+    tags: ['x64', '桌面端', '实验性'],
+    variants: [
+      {
+        name: 'Cafe Launcher',
+        description: '提供 deb、rpm、Arch 软件包、AppImage 与 tar.gz，请按发行版选择。',
+        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia/releases',
+        notice: 'Linux 版本为实验性支持，请在 GitHub Releases 中选择 Linux x64 发行包。启动游戏需要配置 Wine、UMU 或 Proton；目前仅部分环境组合经过验证，其他组合不保证可玩。',
+        recommended: true
       }
     ]
   })

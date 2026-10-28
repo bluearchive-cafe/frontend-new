@@ -10,7 +10,7 @@
       <div class="platform-grid" aria-label="客户端下载入口">
         <v-card
           v-for="platform in visiblePlatformLinks"
-          :key="platform.name"
+          :key="platform.key"
           :class="['platform-card', { 'platform-card--disabled': platform.disabled }]"
           elevation="1"
         >

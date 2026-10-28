@@ -47,7 +47,7 @@ export function useDownloadGuide(
   const selectedStatusNotice = computed<ClientStatusNotice | null>(() => {
     const platform = selectedPlatform.value
 
-    if (!platform) {
+    if (!platform?.statusKey) {
       return null
     }
 

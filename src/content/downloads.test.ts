@@ -11,6 +11,7 @@ const testColorTokens = {
 
 const links: PlatformLink[] = [
   {
+    key: 'android',
     name: 'Visible',
     statusKey: 'android',
     icon: '$download',
@@ -24,6 +25,7 @@ const links: PlatformLink[] = [
     ]
   },
   {
+    key: 'ios',
     name: 'Hidden',
     statusKey: 'ios',
     icon: '$download',
@@ -57,12 +59,12 @@ describe('filterVisiblePlatformLinks', () => {
 
 describe('platformLinks', () => {
   it('covers every registered client platform in registry order', () => {
-    expect(platformLinks.map((link) => link.statusKey)).toEqual([...clientPlatformKeys])
+    expect(platformLinks.map((link) => link.key)).toEqual([...clientPlatformKeys])
   })
 
   it('joins every download entry onto a registered client platform', () => {
     for (const link of platformLinks) {
-      const meta = clientPlatform(link.statusKey)
+      const meta = clientPlatform(link.key)
 
       expect(link.icon).toBe(meta.icon)
       expect(link.colorTokens).toEqual(meta.colorTokens)

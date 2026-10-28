@@ -8,10 +8,12 @@ import {
 } from './status-resources'
 
 describe('clientPlatformKeys', () => {
-  it('keeps every client platform within the status resource keys', () => {
+  it('provides presentation metadata even for platforms without a status resource', () => {
     for (const key of clientPlatformKeys) {
-      expect(statusResourceKeys).toContain(key)
+      expect(clientPlatform(key).key).toBe(key)
     }
+    expect(clientPlatformKeys).toContain('linux')
+    expect(statusResourceKeys).not.toContain('linux')
   })
 })
 

@@ -47,7 +47,7 @@ describe('applyRouteSeo', () => {
 
     expect(document.title).toBe('下载 - 蔚蓝咖啡厅')
     expect(getMeta('name', 'description')?.content).toBe(
-      '获取 BlueArchive.Cafe Android、iOS、macOS 与 Windows 客户端下载入口，并查看安装文档。'
+      '获取 BlueArchive.Cafe Android、iOS、Windows、macOS 与 Linux 客户端下载入口，并查看安装文档。'
     )
     expect(getMeta('property', 'og:title')?.content).toBe('下载 - 蔚蓝咖啡厅')
     expect(getMeta('name', 'twitter:card')?.content).toBe('summary')

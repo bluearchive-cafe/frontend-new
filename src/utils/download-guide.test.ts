@@ -109,6 +109,30 @@ describe('useDownloadGuide', () => {
   })
 
   describe('client status wiring', () => {
+    it.each(['ready', 'failed'])('skips status notices for Linux while the status request is loading or %s', async (state) => {
+      const guide = mountGuide({}, state === 'ready'
+        ? resolvingStatusFetch()
+        : rejectingStatusFetch(new Error('Network failed')))
+      const android = findPlatform('Android 平台')
+      guide.openDownloadGuide(android, findVariant(android, '手动安装'))
+      expect(guide.selectedStatusNotice.value).not.toBeNull()
+
+      const linux = findPlatform('Linux 平台')
+      guide.openDownloadGuide(linux, findVariant(linux, 'Cafe Launcher'))
+      expect(guide.selectedStatusNotice.value).toBeNull()
+      await flushUpdates()
+
+      expect(guide.selectedDownloadTitle.value).toBe('Linux 平台：Cafe Launcher')
+      expect(guide.selectedStatusNotice.value).toBeNull()
+      guide.markDownloadAttempted()
+      expect(trackDownloadClickMock).toHaveBeenCalledWith({
+        platform: linux.name,
+        variant: 'Cafe Launcher',
+        downloadUrl: 'https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia/releases'
+      })
+      expect(guide.downloadAttempted.value).toBe(true)
+    })
+
     it('keeps the download flow available when the status request fails', async () => {
       const guide = mountGuide({}, rejectingStatusFetch(new Error('Network failed')))
       await flushUpdates()

@@ -44,6 +44,27 @@ afterEach(() => {
 })
 
 describe('dialog focus recovery', () => {
+  it('opens the Linux download directly and restores focus after Escape', async () => {
+    await mountPage(DownloadPage)
+    const card = [...document.querySelectorAll<HTMLElement>('.platform-card')]
+      .find((item) => item.querySelector('h2')?.textContent === 'Linux 平台')!
+    const trigger = card.querySelector<HTMLButtonElement>('button')!
+    trigger.focus()
+    trigger.click()
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('#download-dialog-title')?.textContent).toBe('Linux 平台：Cafe Launcher')
+    })
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"]')!
+    expect(dialog.querySelector('.variant-notice')?.textContent).toContain('实验性支持')
+    expect(dialog.querySelector('.client-status-notice')).toBeNull()
+    expect(dialog.querySelector('a[href="https://github.com/bluearchive-cafe/Cafe.Launcher.Avalonia/releases"]')).not.toBeNull()
+    expect(dialog.querySelector('a[href="https://docs.bluearchive.cafe/cafe-launcher/installation"]')).not.toBeNull()
+
+    await closeDialog()
+    await vi.waitFor(() => expect(document.activeElement).toBe(trigger))
+  })
+
   it('returns focus to the platform entry after a menu selection and Escape', async () => {
     await mountPage(DownloadPage)
     const trigger = [...document.querySelectorAll<HTMLButtonElement>('button')]
@@ -122,7 +143,7 @@ async function mountPage(component: typeof DownloadPage | typeof AboutSection) {
     components: { VApp, VAlert, VAvatar, VBtn, VCard, VCardText, VChip, VDialog, VContainer, VIcon, VList, VListItem, VMenu },
     icons: {
       aliases: Object.fromEntries([
-        'android', 'appleIos', 'microsoftWindows', 'apple', 'download', 'chevronDown',
+        'android', 'appleIos', 'microsoftWindows', 'apple', 'linux', 'download', 'chevronDown',
         'arrowRight', 'infoOutline', 'bookOpenOutline', 'helpCircleOutline', 'linkVariant',
         'fileDocumentEditOutline', 'messageAlertOutline', 'videoOutline', 'accountGroupOutline',
         'github', 'openInNew', 'imageOutline', 'alertCircleOutline'

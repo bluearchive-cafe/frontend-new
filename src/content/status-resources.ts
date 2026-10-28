@@ -1,4 +1,4 @@
-// 状态资源身份与展示元数据的单一来源:资源 key、客户端平台子集、
+// 状态资源身份与展示元数据的单一来源:资源 key、客户端下载平台、
 // 状态页面板、下载入口的 icon 与颜色 token 都从这里派生。新增平台或
 // 资源只改这一处;utils/status.ts 只保留请求与视图映射的传输逻辑。
 export const statusResourceKeys = [
@@ -14,7 +14,7 @@ export const statusResourceKeys = [
 
 export type StatusResourceKey = typeof statusResourceKeys[number]
 
-export const clientPlatformKeys = ['android', 'ios', 'windows', 'macos'] as const
+export const clientPlatformKeys = ['android', 'ios', 'windows', 'macos', 'linux'] as const
 
 export type ClientPlatformKey = typeof clientPlatformKeys[number]
 
@@ -57,6 +57,14 @@ const clientPlatformPresentation: Record<ClientPlatformKey, Omit<ClientPlatformM
   },
   macos: {
     icon: '$apple',
+    colorTokens: {
+      border: '--color-neutral-border',
+      background: '--color-neutral-soft',
+      foreground: '--color-text'
+    }
+  },
+  linux: {
+    icon: '$linux',
     colorTokens: {
       border: '--color-neutral-border',
       background: '--color-neutral-soft',

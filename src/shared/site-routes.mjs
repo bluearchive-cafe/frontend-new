@@ -64,7 +64,7 @@ export const staticRoutes = [
     path: '/download',
     alias: [],
     title: `下载 - ${siteTitle}`,
-    description: '获取 BlueArchive.Cafe Android、iOS、macOS 与 Windows 客户端下载入口，并查看安装文档。',
+    description: '获取 BlueArchive.Cafe Android、iOS、Windows、macOS 与 Linux 客户端下载入口，并查看安装文档。',
     changefreq: 'weekly',
     priority: '0.9'
   },
