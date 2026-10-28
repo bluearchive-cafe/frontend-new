@@ -6,8 +6,8 @@ import { readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { createMarkdownRenderer, splitAssetReference } from './news-markdown.mjs'
-import { sanitizeRenderedHtml } from './news-sanitize.mjs'
-import { parseBoolean, parseFrontmatterRaw } from './frontmatter.mjs'
+import { describeDroppedStructures, sanitizeRenderedHtml } from './news-sanitize.mjs'
+import { parseBooleanFlag, parseFrontmatterRaw } from './frontmatter.mjs'
 
 /**
  * @typedef {import('../src/content/news-types').NewsArticle} NewsArticle
@@ -73,9 +73,17 @@ export async function readNewsArticles({
       resolveAsset: (/** @type {string} */ src) => registerNewsAsset(src, filePath, newsDirectory, assetRegistry)
     })
 
+    const sanitizedHtml = sanitizeRenderedHtml(renderedHtml)
+    const droppedStructures = describeDroppedStructures(renderedHtml, sanitizedHtml)
+
+    if (droppedStructures.length > 0) {
+      // 白名单丢弃是有意为之的安全行为,但静默丢弃会让作者误以为内容已发布。
+      console.warn(`${filePath} 有写法被清洗规则丢弃: ${droppedStructures.join('、')}。请改用受支持的语法,见 README「支持的作者语法」。`)
+    }
+
     articles.push({
       ...article,
-      html: sanitizeRenderedHtml(renderedHtml)
+      html: sanitizedHtml
     })
   }
 
@@ -120,6 +128,18 @@ export function projectNewsEntries(articles) {
   }))
 }
 
+// 文章 frontmatter 的合法键。写错的键（`Draft:` 大写、`publishAt` 拼错）
+// 此前会被静默丢弃，对 draft 而言等于把草稿当已发布推上生产。
+const knownArticleFrontmatterKeys = new Set([
+  'title',
+  'author',
+  'publishedAt',
+  'category',
+  'summary',
+  'pinned',
+  'draft'
+])
+
 /**
  * @param {string} source
  * @param {string} filePath
@@ -130,14 +150,20 @@ function parseNewsArticle(source, filePath, newsDirectory) {
   const { meta, body } = parseFrontmatterRaw(source)
   const publishedAt = parsePublishedAt(meta.publishedAt ?? '', filePath)
 
+  for (const key of Object.keys(meta)) {
+    if (!knownArticleFrontmatterKeys.has(key)) {
+      throw new Error(`${filePath} has unknown frontmatter key: ${key}`)
+    }
+  }
+
   return {
     title: meta.title ?? '未命名新闻',
     author: meta.author ?? 'BlueArchive.Cafe',
     ...publishedAt,
     category: meta.category ?? '未分类',
     summary: meta.summary ?? '',
-    pinned: parseBoolean(meta.pinned),
-    draft: parseBoolean(meta.draft),
+    pinned: parseBooleanFlag(meta.pinned, 'pinned', filePath),
+    draft: parseBooleanFlag(meta.draft, 'draft', filePath),
     slug: getSlugFromPath(newsDirectory, filePath),
     body,
     wordCount: countWords(body)

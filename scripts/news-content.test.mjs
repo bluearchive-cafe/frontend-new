@@ -8,6 +8,7 @@ import {
   generateNewsModule,
   sanitizeRenderedHtml
 } from './news-content.mjs'
+import { describeDroppedStructures } from './news-sanitize.mjs'
 
 const temporaryDirectories = []
 
@@ -88,6 +89,41 @@ describe('sanitizeRenderedHtml', () => {
   })
 })
 
+describe('describeDroppedStructures', () => {
+  /** @param {string} rendered */
+  const droppedFrom = (rendered) => describeDroppedStructures(rendered, sanitizeRenderedHtml(rendered))
+
+  it('reports nothing for syntax the whitelist actually supports', () => {
+    const rendered = [
+      '<table><thead><tr><th>姓名</th></tr></thead><tbody><tr><td>张三</td></tr></tbody></table>',
+      '<ul class="contains-task-list"><li class="task-list-item"><input class="task-list-item-checkbox" disabled type="checkbox"> 已完成</li></ul>',
+      '<p><code>行内代码</code> <kbd>Ctrl</kbd> <mark>重点</mark></p>',
+      '<pre><code>普通代码块</code></pre>'
+    ].join('\n')
+
+    expect(droppedFrom(rendered)).toEqual([])
+  })
+
+  it('reports the folding structure that disappears', () => {
+    expect(droppedFrom('<details><summary>剧透</summary><p>答案</p></details>')).toContain('<details> 标签 ×1')
+  })
+
+  it('reports the table alignment attribute that markdown-it produces', () => {
+    const dropped = droppedFrom('<table><thead><tr><th style="text-align:right">数值</th></tr></thead></table>')
+
+    expect(dropped).toContain('th 的 style 属性 ×1')
+  })
+
+  it('reports the code language class that has no highlighter to mount on', () => {
+    expect(droppedFrom('<pre><code class="language-js">console.log(1)</code></pre>')).toContain('"language-js" 类名 ×1')
+  })
+
+  it('does not treat sanitized attribute-case normalization as a loss', () => {
+    // sanitize-html 把 viewBox 规范成 viewbox,两者都算同一个属性,不该报丢弃。
+    expect(droppedFrom('<svg viewBox="0 0 16 16"><path d="M0 0h16v16H0z"></path></svg>')).toEqual([])
+  })
+})
+
 describe('generateNewsModule', () => {
   it('excludes draft content and draft assets from production output', async () => {
     const fixture = await createFixture()
@@ -164,6 +200,72 @@ describe('generateNewsModule', () => {
     })).rejects.toThrow('invalid publishedAt')
   })
 
+  // frontmatter 写错必须在构建期失败，不能退回默认值：
+  // draft 的默认值是「可发布」，静默降级等于把草稿推上生产。
+  const baseFrontmatter = [
+    'title: Test article',
+    'author: Test author',
+    'publishedAt: 2026-01-02 03:04',
+    'category: Test',
+    'summary: Test summary'
+  ]
+
+  function frontmatterSource(extraLines, body = '正文内容') {
+    return `---\n${[...baseFrontmatter, ...extraLines].join('\n')}\n---\n\n${body}\n`
+  }
+
+  async function expectGenerationFailure(fixture, source, message) {
+    await writeFile(path.join(fixture.newsDirectory, 'article.md'), source)
+
+    await expect(generateNewsModule({
+      newsDirectory: fixture.newsDirectory,
+      outputFile: fixture.outputFile
+    })).rejects.toThrow(message)
+  }
+
+  it('rejects unknown frontmatter keys instead of ignoring them', async () => {
+    const fixture = await createFixture()
+
+    await expectGenerationFailure(
+      fixture,
+      frontmatterSource(['Draft: true']),
+      'unknown frontmatter key: Draft'
+    )
+  })
+
+  it('rejects flag values it cannot parse', async () => {
+    const fixture = await createFixture()
+
+    await expectGenerationFailure(
+      fixture,
+      frontmatterSource(['draft: 是的']),
+      'invalid draft frontmatter'
+    )
+
+    await expectGenerationFailure(
+      fixture,
+      frontmatterSource(['draft: true # 待补']),
+      'invalid draft frontmatter'
+    )
+  })
+
+  it('ignores commented-out frontmatter keys', async () => {
+    const fixture = await createFixture()
+    await writeFile(
+      path.join(fixture.newsDirectory, 'article.md'),
+      frontmatterSource(['# pinned: true'])
+    )
+
+    const generated = await generateNewsModule({
+      newsDirectory: fixture.newsDirectory,
+      outputFile: fixture.outputFile,
+      entriesFile: fixture.entriesFile
+    })
+
+    expect(generated.articles).toHaveLength(1)
+    expect(generated.articles[0]?.pinned).toBe(false)
+  })
+
   it('rejects missing assets and assets outside the news directory', async () => {
     const fixture = await createFixture()
     await writeFile(path.join(fixture.newsDirectory, 'missing.md'), articleSource('![missing](missing.png)', false))
@@ -219,7 +321,7 @@ publishedAt: ${publishedAt}
 category: Test
 summary: Test summary
 pinned: false
-draft: ${draft}
+draft: ${draft ?? false}
 ---
 
 ${body}

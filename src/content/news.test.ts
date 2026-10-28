@@ -17,10 +17,12 @@ describe('normalizeNewsSlug', () => {
 
 describe('findNewsArticle', () => {
   it('resolves slugs with and without trailing slashes', () => {
-    const article = findNewsArticle('hello-world')
+    // 不写死具体 slug:示例文章是草稿,正式生成时会被排除。
+    const [sample] = newsArticles
 
-    expect(article?.slug).toBe('hello-world')
-    expect(findNewsArticle('hello-world/')?.slug).toBe('hello-world')
+    expect(sample).toBeDefined()
+    expect(findNewsArticle(sample?.slug)?.slug).toBe(sample?.slug)
+    expect(findNewsArticle(`${sample?.slug}/`)?.slug).toBe(sample?.slug)
   })
 
   it('returns undefined for missing or absent slugs', () => {
@@ -33,19 +35,18 @@ describe('newsArticles', () => {
   it('sorts pinned articles first and newest within each group', () => {
     expect(newsArticles.length).toBeGreaterThan(0)
 
-    const firstUnpinnedIndex = newsArticles.findIndex((article) => !article.pinned)
+    const pinnedCount = newsArticles.filter((article) => article.pinned).length
 
-    if (firstUnpinnedIndex === -1) {
-      return
-    }
+    // 置顶区必须恰好占据开头:全置顶、全不置顶都是合法状态,不依赖具体内容集。
+    expect(newsArticles.slice(0, pinnedCount).every((article) => article.pinned)).toBe(true)
+    expect(newsArticles.slice(pinnedCount).every((article) => !article.pinned)).toBe(true)
 
-    for (const article of newsArticles.slice(firstUnpinnedIndex)) {
-      expect(article.pinned).toBe(false)
-    }
-
-    for (let index = firstUnpinnedIndex + 1; index < newsArticles.length; index++) {
-      expect(newsArticles[index]?.publishedAtTimestamp)
-        .toBeLessThanOrEqual(newsArticles[index - 1]?.publishedAtTimestamp ?? Number.POSITIVE_INFINITY)
+    // 两个分组各自按发布时间倒序。
+    for (const group of [newsArticles.slice(0, pinnedCount), newsArticles.slice(pinnedCount)]) {
+      for (let index = 1; index < group.length; index++) {
+        expect(group[index]?.publishedAtTimestamp)
+          .toBeLessThanOrEqual(group[index - 1]?.publishedAtTimestamp ?? Number.POSITIVE_INFINITY)
+      }
     }
   })
 })

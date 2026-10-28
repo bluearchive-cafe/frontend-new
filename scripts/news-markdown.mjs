@@ -101,7 +101,7 @@ export function createMarkdownRenderer() {
       const type = /** @type {AlertType} */ (match[1].toLowerCase())
       const meta = alertMeta[type]
       const title = new state.Token('html_inline', '', 0)
-      title.content = `<strong class="markdown-alert-title"><svg data-component="Octicon" class="markdown-alert-icon octicon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="${meta.path}"></path></svg>${meta.label}</strong>`
+      title.content = `<strong class="markdown-alert-title"><svg class="markdown-alert-icon octicon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="${meta.path}"></path></svg>${meta.label}</strong>`
 
       token.tag = 'div'
       token.attrSet('class', `markdown-alert markdown-alert-${type}`)

@@ -98,9 +98,27 @@ draft: true
 ```
 
 - `publishedAt` 必须存在且能解析为日期时间。
+- 键名区分大小写，值不支持行内注释。写错键名或把 `pinned`/`draft` 写成无法识别的值会让构建直接失败，不会按"未设置"处理。
 - `draft: true` 只在开发模式展示，不进入生产 JavaScript、HTML 或资源产物。
 - Markdown 中的相对图片必须位于 `src/content/news/` 内；缺失文件或越出目录会让生成失败。
-- 原始 HTML 会在构建期按允许列表清理，脚本、事件属性、非法 URL 和不支持的样式不会进入页面。
+
+### 支持的作者语法
+
+渲染后的 HTML 会按 `scripts/news-sanitize.mjs` 的白名单清理。安全侧的丢弃（脚本、事件属性、`javascript:`/`data:` URL、非白名单标签）是刻意的；为了让"写了不生效"不再静默，`npm run build` 与 `npm run generate:news:dev` 会在清洗前后对账结构，把被丢弃的标签、属性和类名连同文件名打到 stderr。看到告警就是写法不在支持范围内，改用法而不是期待它生效。
+
+| 想表达 | 可用写法 | 说明 |
+|---|---|---|
+| 强调 / 删除 / 高亮 | `**粗体**`、`~~删除线~~`、`<mark>高亮</mark>`、`<del>` | `<del>` 与 `~~` 等价 |
+| 键盘按键 | `<kbd>Ctrl</kbd>` | 内联 HTML，在白名单内 |
+| 提示块 | `> [!NOTE]`、`[!TIP]`、`[!IMPORTANT]`、`[!WARNING]`、`[!CAUTION]` | 由 `scripts/news-markdown.mjs` 的 alert 插件渲染 |
+| 任务列表 | `- [x] 已完成` | 勾选框渲染为禁用 `<input type="checkbox">` |
+| 表格 | 标准管道表格 | **列对齐不生效**：`:---:` / `---:` 落在 `style` 上，会被丢弃 |
+| 链接 / 图片 | `[文字](https://…)`、`![替代文字](image.webp)` | 仅 `http`/`https`，`mailto` 只用于链接；新窗口链接自动补 `rel="noopener noreferrer"` |
+| 代码块 | ` ``` ` 围栏 | **语言标注不生效**：站点没挂高亮器，`language-*` 类名会被丢弃 |
+| 标题 / 列表 / 引用 / 分隔线 / 转义 | 标准 Markdown | `h1`–`h6` 全部保留 |
+
+明确不支持（写了会被丢弃并触发告警）：`style` 属性、`<details>`/`<summary>` 折叠（折叠结构消失，藏的内容会直接显示成正文）、`<iframe>`/`<video>` 嵌入。需要这些能力属于产品决策，请先与维护者确认，再改白名单。
+
 - `src/content/news.generated.ts` 是忽略的生成文件，不手动编辑。
 
 ## 目录结构

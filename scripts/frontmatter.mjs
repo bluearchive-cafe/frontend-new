@@ -1,12 +1,26 @@
 const booleanTrueValues = new Set(['true', '1', 'yes', 'y'])
+const booleanFalseValues = new Set(['false', '0', 'no', 'n'])
 
 /**
- * Parses a boolean-like frontmatter value.
- * Accepts "true", "1", "yes", "y" (case-insensitive).
- * @param {string | undefined | null} value
+ * Reads a boolean frontmatter flag, refusing to guess.
+ * An unrecognised value (a `Draft:` typo, `true # 待补`, `是`) used to fall
+ * through as `false`, which for `draft` means publishing a private article.
+ * @param {string | undefined} value
+ * @param {string} key
+ * @param {string} filePath
  */
-export function parseBoolean(value) {
-  return booleanTrueValues.has(value?.trim().toLowerCase() ?? '')
+export function parseBooleanFlag(value, key, filePath) {
+  if (value === undefined || value === '') {
+    return false
+  }
+
+  const normalized = value.trim().toLowerCase()
+
+  if (!booleanTrueValues.has(normalized) && !booleanFalseValues.has(normalized)) {
+    throw new Error(`${filePath} has invalid ${key} frontmatter: ${value} (use true/false)`)
+  }
+
+  return booleanTrueValues.has(normalized)
 }
 
 /**
@@ -36,6 +50,12 @@ export function parseFrontmatterRaw(source) {
     }
 
     const key = line.slice(0, separatorIndex).trim()
+
+    // 注释行(# pinned: true)整行忽略,不进入 meta,因此也不会被当成未知键。
+    if (key.startsWith('#')) {
+      return result
+    }
+
     const value = line.slice(separatorIndex + 1).trim()
     result[key] = value
 
