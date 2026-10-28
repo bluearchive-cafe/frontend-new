@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import router from './router'
 
@@ -12,6 +12,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.documentElement.style.removeProperty('--anchor-offset')
+  vi.unstubAllGlobals()
 })
 
 function resolved(path: string) {
@@ -31,6 +32,14 @@ describe('router scroll behavior', () => {
     const result = router.options.scrollBehavior?.(resolved('/news/hello-world#news'), resolved('/'), null)
 
     expect(result).toEqual({ el: '#news', behavior: 'smooth', top: 72 })
+  })
+
+  it('scrolls to the same anchor without motion when reduced motion is requested', () => {
+    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true })))
+
+    const result = router.options.scrollBehavior?.(resolved('/news/hello-world#news'), resolved('/'), null)
+
+    expect(result).toEqual({ el: '#news', behavior: 'auto', top: 72 })
   })
 
   it('honors a --anchor-offset override and returns to the configured token', () => {

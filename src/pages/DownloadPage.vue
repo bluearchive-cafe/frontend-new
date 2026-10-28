@@ -58,19 +58,25 @@
                   <template #activator="{ props }">
                     <v-btn
                       v-bind="props"
+                      :aria-label="`${platform.name}：查看下载选项`"
                       color="primary"
                       variant="flat"
                       prepend-icon="$download"
                       append-icon="$chevronDown"
+                      @click="rememberDownloadTrigger"
+                      @focus="rememberDownloadTrigger"
                     >
                       查看下载选项
                     </v-btn>
                   </template>
 
-                  <v-list class="variant-menu" density="comfortable" lines="two">
+                  <v-list class="variant-menu" density="comfortable" lines="two" role="menu" :aria-label="`${platform.name}下载选项`">
                     <v-list-item
                       v-for="variant in platform.variants"
                       :key="variant.name"
+                      tag="button"
+                      type="button"
+                      role="menuitem"
                       :title="variant.name"
                       :subtitle="variant.description"
                       @click="openDownloadGuide(platform, variant)"
@@ -96,7 +102,7 @@
                   color="primary"
                   variant="flat"
                   prepend-icon="$download"
-                  @click="openDownloadGuide(platform, platform.variants[0])"
+                  @click="rememberDownloadTrigger($event); openDownloadGuide(platform, platform.variants[0])"
                 >
                   {{ singleVariantButtonText(platform.variants[0]) }}
                 </v-btn>
@@ -147,7 +153,7 @@
       </section>
     </v-container>
 
-    <v-dialog v-model="downloadDialog" max-width="520" scrim="var(--md2-scrim)" aria-labelledby="download-dialog-title">
+    <v-dialog v-model="downloadDialog" max-width="520" scrim="var(--md2-scrim)" aria-labelledby="download-dialog-title" @after-leave="restoreDownloadFocus">
       <v-card class="download-dialog">
         <v-card-text>
           <div class="dialog-head">
@@ -226,6 +232,7 @@
 </template>
 
 <script setup lang="ts">
+import { shallowRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import PageHeading from '../components/PageHeading.vue'
@@ -238,6 +245,19 @@ import { clientPlatformColorStyle } from '../content/status-resources'
 import { useDownloadGuide } from '../utils/download-guide'
 
 const route = useRoute()
+const downloadTrigger = shallowRef<HTMLElement | null>(null)
+
+function rememberDownloadTrigger(event: Event) {
+  if (event.currentTarget instanceof HTMLElement) {
+    downloadTrigger.value = event.currentTarget
+  }
+}
+
+function restoreDownloadFocus() {
+  if (downloadTrigger.value?.isConnected) {
+    downloadTrigger.value.focus({ preventScroll: true })
+  }
+}
 
 const {
   visiblePlatformLinks,
@@ -358,7 +378,9 @@ function singleVariantButtonText(variant: DownloadVariant) {
 }
 
 .variant-menu :deep(.v-list-item) {
+  width: 100%;
   min-height: 68px;
+  text-align: start;
 }
 
 .variant-menu :deep(.v-list-item-title) {
@@ -504,7 +526,7 @@ function singleVariantButtonText(variant: DownloadVariant) {
 
   .dialog-actions {
     align-items: stretch;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 }
 

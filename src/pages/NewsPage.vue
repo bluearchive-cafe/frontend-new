@@ -84,7 +84,7 @@ import { newsArticles, newsCategories } from '../content/news'
 
 const allCategoryLabel = '全部'
 const selectedCategory = ref(allCategoryLabel)
-const hasCategoryFilter = computed(() => newsCategories.length > 0)
+const hasCategoryFilter = computed(() => newsCategories.length > 1)
 const categoryOptions = computed(() => [allCategoryLabel, ...newsCategories])
 
 function getCategoryCount(category: string) {

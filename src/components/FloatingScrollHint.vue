@@ -11,7 +11,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 // 仅移动端首页展示的提示条：提示用户可向下滚动查看更新动态，
-// 一旦用户离开页面顶部（scrollTop > 8）即淡出，此后不再出现。
+// 离开页面顶部（scrollTop > 8）时淡出，返回顶部时恢复。
 const visible = ref(true)
 
 function handleScroll() {
@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
   translate: -50% 16px;
 }
 
-@media (min-width: 721px) {
+@media (min-width: 721px), (max-height: 640px) {
   .scroll-hint {
     display: none;
   }

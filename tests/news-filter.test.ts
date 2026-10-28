@@ -76,6 +76,14 @@ describe('NewsPage category filter', () => {
     expect(container.querySelector('[aria-label="文章分类筛选"]')).toBeNull()
     expect(articleTitles(container)).toEqual(['站点公告', '版本更新'])
   })
+
+  it('keeps the articles visible without a redundant single-category filter', () => {
+    newsState.categories.splice(0, newsState.categories.length, '公告')
+    const container = mountNewsPage()
+
+    expect(container.querySelector('[aria-label="文章分类筛选"]')).toBeNull()
+    expect(articleTitles(container)).toEqual(['站点公告', '版本更新'])
+  })
 })
 
 function mountNewsPage() {

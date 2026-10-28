@@ -51,7 +51,7 @@ const router = createRouter({
       // Offset in-page anchors below the fixed app bar.
       return {
         el: to.hash,
-        behavior: 'smooth',
+        behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         top: readAnchorOffset()
       }
     }

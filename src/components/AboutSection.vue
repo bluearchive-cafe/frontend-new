@@ -59,8 +59,15 @@
 
         <v-list class="social-list sponsor-list" bg-color="transparent" lines="two">
           <v-list-item
+            tag="button"
+            type="button"
+            role="button"
+            :tabindex="0"
             title="微信赞赏码"
             subtitle="点击查看赞赏码，支持项目长期维护。"
+            ref="sponsorTrigger"
+            aria-haspopup="dialog"
+            aria-controls="sponsor-dialog"
             @click="isSponsorQrOpen = true"
           >
             <template #prepend>
@@ -95,7 +102,7 @@
       </section>
     </v-container>
 
-    <v-dialog v-model="isSponsorQrOpen" max-width="420" aria-labelledby="sponsor-dialog-title">
+    <v-dialog id="sponsor-dialog" v-model="isSponsorQrOpen" max-width="420" aria-labelledby="sponsor-dialog-title" @after-leave="restoreSponsorFocus">
       <v-card class="sponsor-dialog">
         <v-card-text>
           <div class="sponsor-dialog-heading">
@@ -116,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
 import { aboutItems, socialLinks } from '../content/site-content'
 import { siteTitle } from '../shared/site-routes.mjs'
@@ -124,6 +131,11 @@ import { siteTitle } from '../shared/site-routes.mjs'
 const publicAssetBase = import.meta.env.BASE_URL
 const sponsorQrSrc = `${publicAssetBase}assets/img/about/wechat-sponsor.webp`
 const isSponsorQrOpen = ref(false)
+const sponsorTrigger = useTemplateRef<{ $el: HTMLElement }>('sponsorTrigger')
+
+function restoreSponsorFocus() {
+  sponsorTrigger.value?.$el.focus({ preventScroll: true })
+}
 </script>
 
 <style scoped>
@@ -246,6 +258,11 @@ const isSponsorQrOpen = ref(false)
 
 .social-list :deep(.v-list-item) {
   min-height: 72px;
+}
+
+.sponsor-list :deep(button.v-list-item) {
+  width: 100%;
+  text-align: start;
 }
 
 .sponsor-section {
