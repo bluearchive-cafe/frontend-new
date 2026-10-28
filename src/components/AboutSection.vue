@@ -184,7 +184,6 @@ function restoreSponsorFocus() {
   grid-template-columns: 32px minmax(0, 1fr);
   gap: var(--space-4);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
-  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .about-copy p:nth-of-type(1) {
@@ -362,14 +361,6 @@ function restoreSponsorFocus() {
   border-color: var(--color-neutral-border);
   background: var(--color-neutral-soft);
   color: var(--color-text);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .about-row:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-3px);
-  }
 }
 
 @media (max-width: 840px) {
