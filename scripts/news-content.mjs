@@ -22,6 +22,7 @@ import { parseBoolean, parseFrontmatterRaw } from './frontmatter.mjs'
  * @property {string} title
  * @property {string} author
  * @property {string} publishedAt
+ * @property {string} publishedAtDateTime
  * @property {string} category
  * @property {string} summary
  *
@@ -113,6 +114,7 @@ export function projectNewsEntries(articles) {
     title: article.title,
     author: article.author,
     publishedAt: article.publishedAt,
+    publishedAtDateTime: article.publishedAtDateTime,
     category: article.category,
     summary: article.summary
   }))

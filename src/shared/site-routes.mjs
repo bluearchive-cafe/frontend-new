@@ -1,7 +1,9 @@
 export const siteTitle = '蔚蓝咖啡厅'
 export const siteName = 'BlueArchive.Cafe'
 export const siteUrl = 'https://bluearchive.cafe/'
-export const defaultImage = `${siteUrl}favicon.jpg`
+// og/twitter/JSON-LD 共用的站点图片。必须是 public/ 根下真实存在的文件:
+// hero 原图会被 prune-dist-hero-originals.mjs 从 dist 删除,optimized/ 是构建产物。
+export const defaultImage = `${siteUrl}og-image.png`
 export const defaultDescription = 'BlueArchive.Cafe 蔚蓝咖啡厅，提供蔚蓝档案汉化服务、安装教程、公告资讯与客户端下载入口。'
 export const defaultKeywords = '蔚蓝档案,蔚蓝档案汉化,Blue Archive,BlueArchive.Cafe,蔚蓝咖啡厅,汉化教程,客户端下载'
 

@@ -22,6 +22,7 @@ export async function getSitemapRoutes(newsEntries) {
       author: article.author,
       slug: article.slug,
       summary: article.summary,
+      publishedAtDateTime: article.publishedAtDateTime,
       changefreq: 'monthly',
       priority: '0.6',
       lastmod: formatLastmod(article.publishedAt)

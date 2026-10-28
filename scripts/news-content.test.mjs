@@ -135,6 +135,7 @@ describe('generateNewsModule', () => {
         title: 'Test article',
         author: 'Test author',
         publishedAt: '2026-01-02 03:04',
+        publishedAtDateTime: '2026-01-02T03:04',
         category: 'Test',
         summary: 'Test summary'
       }

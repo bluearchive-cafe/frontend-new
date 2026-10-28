@@ -7,7 +7,8 @@ const article = {
   title: '测试新闻',
   summary: '测试摘要',
   category: '公告',
-  publishedAt: '2026-01-02',
+  publishedAt: '2026-01-02 03:04',
+  publishedAtDateTime: '2026-01-02T03:04',
   author: '测试作者',
   slug: 'known-article'
 }
@@ -58,7 +59,7 @@ describe('applyRouteSeo', () => {
 
   it('removes article published time when the next route is not an article', () => {
     applyRouteSeo(createRoute('news-article', '/news/known-article', { slug: 'known-article' }))
-    expect(getMeta('property', 'article:published_time')?.content).toBe('2026-01-02')
+    expect(getMeta('property', 'article:published_time')?.content).toBe('2026-01-02T03:04')
     expect(getMeta('name', 'robots')?.content).toBe('index, follow')
 
     applyRouteSeo(createRoute('download', '/download'))
@@ -86,11 +87,13 @@ describe('applyRouteSeo', () => {
     applyRouteSeo(createRoute('news-article', '/news/known-article', { slug: 'known-article' }))
     const schema = JSON.parse(document.head.querySelector('script[id="jsonld-article"]')?.textContent ?? '{}') as {
       headline: string
+      datePublished: string
       author: { name: string }
     }
 
     expect(schema.headline).toBe('测试新闻')
     expect(schema.author.name).toBe('测试作者')
+    expect(schema.datePublished).toBe('2026-01-02T03:04')
 
     applyRouteSeo(createRoute('news', '/news'))
     expect(document.head.querySelector('script[id="jsonld-article"]')).toBeNull()

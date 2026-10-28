@@ -33,11 +33,13 @@ import {
  * @property {string} summary
  * @property {string} category
  * @property {string} publishedAt
+ * @property {string} publishedAtDateTime
  *
  * @typedef {object} ArticleSchemaInput
  * @property {string} title
  * @property {string} author
  * @property {string} publishedAt
+ * @property {string} publishedAtDateTime
  * @property {string} [summary]
  * @property {string} [description]
  * @property {string} slug
@@ -64,6 +66,7 @@ export function resolveRouteSeo(route, { notFound = false } = {}) {
 }
 
 // 新闻文章 → 路由级 SEO 元数据(标题带站点后缀,描述回退到统一文案)。
+// publishedAt 是给人看的展示值,机器可读字段一律取 ISO 的 publishedAtDateTime。
 /**
  * @param {ArticleSeoInput} article
  * @returns {SeoInfo}
@@ -75,7 +78,7 @@ export function buildArticleSeo(article) {
     keywords: `${article.category},${defaultKeywords}`,
     robots: 'index, follow',
     type: 'article',
-    publishedAt: article.publishedAt
+    publishedAt: article.publishedAtDateTime
   }
 }
 
@@ -109,7 +112,7 @@ export function buildArticleSchema(article) {
     '@type': 'Article',
     headline: buildArticleHeadline(article.title),
     author: { '@type': 'Person', name: article.author },
-    datePublished: article.publishedAt,
+    datePublished: article.publishedAtDateTime,
     description,
     url: new URL(`news/${article.slug}`, siteUrl).toString(),
     publisher: {
@@ -131,7 +134,7 @@ export function buildSiteSchemas() {
       name: siteTitle,
       alternateName: siteName,
       url: siteUrl,
-      logo: `${siteUrl}favicon.jpg`,
+      logo: defaultImage,
       description: defaultDescription,
       email: 'feedback@bluearchive.cafe',
       contactPoint: {

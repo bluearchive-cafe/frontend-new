@@ -2,7 +2,8 @@
 
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { applySeoToDocument, type ArticleSchemaInput, type SeoInfo } from './seo.mjs'
+import { defaultImage } from './site-routes.mjs'
+import { applySeoToDocument, buildArticleSeo, buildSiteSchemas, type ArticleSchemaInput, type SeoInfo } from './seo.mjs'
 
 function baseSeo(): SeoInfo {
   return {
@@ -19,7 +20,8 @@ function articleInput(overrides: Partial<ArticleSchemaInput> = {}): ArticleSchem
   return {
     title: '测试文章',
     author: '作者',
-    publishedAt: '2026-01-02',
+    publishedAt: '2026-01-02 03:04',
+    publishedAtDateTime: '2026-01-02T03:04',
     slug: 'a',
     ...overrides
   }
@@ -84,5 +86,59 @@ describe('applySeoToDocument', () => {
     document.head.innerHTML = ''
     applySeoToDocument(document, baseSeo(), {})
     expect(document.head.querySelectorAll('script[type="application/ld+json"]:not([id])')).toHaveLength(0)
+  })
+})
+
+// 机器可读的日期必须是 ISO 8601;展示值("2026-01-02 03:04")不能直接上送。
+const ISO_8601 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?$/
+
+describe('machine-readable dates', () => {
+  beforeEach(() => {
+    document.head.innerHTML = ''
+  })
+
+  it('publishes the ISO value in article:published_time and JSON-LD datePublished', () => {
+    // 与 NewsArticle 同形:同一个对象既喂 SEO 元数据也喂 JSON-LD。
+    const article = {
+      title: '测试文章',
+      author: '作者',
+      category: '公告',
+      summary: '示例摘要',
+      publishedAt: '2026-01-02 03:04',
+      publishedAtDateTime: '2026-01-02T03:04',
+      slug: 'a'
+    }
+
+    applySeoToDocument(document, buildArticleSeo(article), {
+      url: 'https://bluearchive.cafe/news/a',
+      article
+    })
+
+    expect(getMeta('property', 'article:published_time')?.getAttribute('content')).toMatch(ISO_8601)
+
+    const jsonLd = JSON.parse(
+      document.head.querySelector('script[id="jsonld-article"]')?.textContent ?? '{}'
+    ) as { datePublished?: string }
+
+    expect(jsonLd.datePublished).toBe('2026-01-02T03:04')
+  })
+})
+
+// defaultImage 的文件存在性由 scripts/site-routes.test.mjs 守卫;
+// 这里锁定 head 与站点 JSON-LD 只引用它,不允许再出现硬编码副本。
+describe('defaultImage consumers', () => {
+  beforeEach(() => {
+    document.head.innerHTML = ''
+  })
+
+  it('is the only image the head sequence and site schemas advertise', () => {
+    applySeoToDocument(document, baseSeo(), { url: 'https://bluearchive.cafe/' })
+
+    expect(getMeta('property', 'og:image')?.getAttribute('content')).toBe(defaultImage)
+    expect(getMeta('name', 'twitter:image')?.getAttribute('content')).toBe(defaultImage)
+
+    const [organization] = buildSiteSchemas()
+
+    expect(organization?.logo).toBe(defaultImage)
   })
 })
