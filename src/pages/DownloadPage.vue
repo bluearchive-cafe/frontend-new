@@ -70,7 +70,7 @@
                     </v-btn>
                   </template>
 
-                  <v-list class="variant-menu" density="comfortable" lines="two" role="menu" :aria-label="`${platform.name}下载选项`">
+                  <v-list class="content-list variant-menu" density="comfortable" :lines="false" role="menu" :aria-label="`${platform.name}下载选项`">
                     <v-list-item
                       v-for="variant in platform.variants"
                       :key="variant.name"
@@ -129,7 +129,7 @@
         </div>
 
         <!-- §1.3: 文档说明完整换行,不受固定行数限制。 -->
-        <v-list class="docs-list" bg-color="transparent" :lines="false">
+        <v-list class="content-list docs-list" bg-color="transparent" :lines="false">
           <v-list-item
             v-for="doc in documentLinks"
             :key="doc.title"
@@ -310,7 +310,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 }
 
 .platform-card {
-  border: 1px solid var(--color-border);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
   transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
@@ -351,7 +350,7 @@ function singleVariantButtonText(variant: DownloadVariant) {
 
 .platform-icon,
 .doc-icon {
-  border: 1px solid var(--color-primary-border);
+  border: var(--border-decorative) solid var(--color-primary-border);
   background: var(--color-primary-soft);
   color: var(--color-secondary);
 }
@@ -372,7 +371,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 
 .variant-menu {
   min-width: min(320px, calc(100vw - 32px));
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background-color: var(--color-surface) !important;
 }
@@ -384,21 +382,17 @@ function singleVariantButtonText(variant: DownloadVariant) {
 }
 
 .variant-menu :deep(.v-list-item-title) {
-  color: var(--color-text);
   font-weight: var(--font-weight-subheading);
 }
 
-.variant-menu :deep(.v-list-item-subtitle) {
-  color: var(--color-text-muted);
-  line-height: 1.55;
-  opacity: 1;
-}
-
-/* 下载页 chip(平台标签与推荐标记)刻意用胶囊形,偏离 M2 chip 4dp,
-   与状态章等强调性标记保持同一语言。 */
 .platform-meta :deep(.v-chip),
 .recommended-chip {
-  border-radius: 999px;
+  border-radius: var(--md2-radius-button);
+}
+
+.platform-meta :deep(.v-chip) {
+  border-width: var(--border-decorative);
+  color: var(--color-text-muted) !important;
 }
 
 .platform-actions {
@@ -417,11 +411,10 @@ function singleVariantButtonText(variant: DownloadVariant) {
   align-items: start;
   margin-top: var(--content-section-gap);
   padding-top: var(--content-divider-padding);
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-decorative) solid var(--color-border);
 }
 
 .docs-list {
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-card-soft) !important;
 }
@@ -431,7 +424,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 }
 
 .download-dialog {
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background-color: var(--color-surface);
 }
@@ -468,9 +460,8 @@ function singleVariantButtonText(variant: DownloadVariant) {
   align-items: start;
   margin-top: var(--space-5);
   padding: var(--space-4) var(--space-5);
-  border: 1px solid var(--color-primary-border);
-  border-radius: var(--radius-card);
-  background: var(--color-primary-soft);
+  border-radius: var(--md2-radius-button);
+  background: var(--color-neutral-soft);
 }
 
 .variant-notice :deep(.v-icon) {

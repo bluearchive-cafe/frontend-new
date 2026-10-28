@@ -28,7 +28,7 @@
           <h2 id="social-title">社交媒体</h2>
         </div>
 
-        <v-list class="social-list" bg-color="transparent" lines="two">
+        <v-list class="content-list social-list" bg-color="transparent" :lines="false">
           <v-list-item
             v-for="link in socialLinks"
             :key="link.href"
@@ -57,7 +57,7 @@
           <p>你的支持将用于汉化内容、站点和工具的持续维护。</p>
         </div>
 
-        <v-list class="social-list sponsor-list" bg-color="transparent" lines="two">
+        <v-list class="content-list social-list sponsor-list" bg-color="transparent" :lines="false">
           <v-list-item
             tag="button"
             type="button"
@@ -102,7 +102,7 @@
       </section>
     </v-container>
 
-    <v-dialog id="sponsor-dialog" v-model="isSponsorQrOpen" max-width="420" aria-labelledby="sponsor-dialog-title" @after-leave="restoreSponsorFocus">
+    <v-dialog id="sponsor-dialog" v-model="isSponsorQrOpen" max-width="420" scrim="var(--md2-scrim)" aria-labelledby="sponsor-dialog-title" @after-leave="restoreSponsorFocus">
       <v-card class="sponsor-dialog">
         <v-card-text>
           <div class="sponsor-dialog-heading">
@@ -176,18 +176,14 @@ function restoreSponsorFocus() {
 
 .about-list {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .about-row {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   gap: var(--space-4);
-  padding: var(--card-padding);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
-  background: var(--color-card-soft);
   transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
@@ -238,7 +234,7 @@ function restoreSponsorFocus() {
   align-items: start;
   margin-top: var(--content-section-gap);
   padding-top: var(--content-divider-padding);
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-decorative) solid var(--color-border);
 }
 
 .social-heading h2 {
@@ -250,7 +246,6 @@ function restoreSponsorFocus() {
 }
 
 .social-list {
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 320ms both;
   background: var(--color-card-soft) !important;
@@ -272,7 +267,7 @@ function restoreSponsorFocus() {
   align-items: start;
   margin-top: var(--content-section-gap);
   padding-top: var(--content-divider-padding);
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-decorative) solid var(--color-border);
 }
 
 .sponsor-heading h2 {
@@ -308,7 +303,6 @@ function restoreSponsorFocus() {
 }
 
 .sponsor-dialog {
-  border: 1px solid var(--color-border);
   background-color: var(--md2-surface);
 }
 
@@ -341,14 +335,13 @@ function restoreSponsorFocus() {
   display: block;
   width: 100%;
   max-width: 360px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--md2-radius-button);
   margin: 0 auto;
   background: #fff;
 }
 
 .social-icon {
-  border: 1px solid var(--color-primary-border);
+  border: var(--border-decorative) solid var(--color-primary-border);
   background: var(--color-primary-soft);
   color: var(--color-secondary);
 }
@@ -366,7 +359,7 @@ function restoreSponsorFocus() {
 }
 
 .social-icon--github {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: var(--color-neutral-border);
   background: var(--color-neutral-soft);
   color: var(--color-text);
 }

@@ -44,7 +44,7 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   background: color-mix(in srgb, var(--md2-surface) 86%, var(--color-primary));
   color: var(--color-text);
-  box-shadow: var(--md2-elevation-menu);
+  box-shadow: var(--md2-elevation-button);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   font-size: var(--md2-type-button);

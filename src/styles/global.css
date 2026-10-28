@@ -32,10 +32,12 @@
   --md2-type-body1: 16px;
   --md2-type-body2: 14px;
   --md2-type-caption: 12px;
-  --md2-type-overline: 10px;
+  --md2-type-overline: 12px;
   --md2-type-button: 14px;
   --md2-radius-button: 4px;
   --md2-radius-card: 8px;
+  --border-decorative: 0.5px;
+  --badge-height: 28px;
   --app-bar-height: 56px;
   --anchor-offset: 72px;
   --page-min-height: 72vh;
@@ -45,7 +47,7 @@
   --color-bg-deep: var(--md2-background);
   --color-footer: var(--md2-background);
   --color-surface: var(--md2-surface);
-  --color-surface-raised: color-mix(in srgb, var(--md2-surface) 93%, white);
+  --color-surface-raised: color-mix(in srgb, var(--md2-surface) 93%, var(--color-text));
   --color-primary: rgb(var(--v-theme-primary));
   --color-primary-soft: color-mix(in srgb, var(--color-primary) 12%, var(--md2-surface));
   --color-primary-softer: color-mix(in srgb, var(--color-primary) 8%, var(--md2-surface));
@@ -60,15 +62,16 @@
   --color-accent-softer: color-mix(in srgb, var(--color-accent) 8%, var(--md2-surface));
   --color-accent-border: rgba(var(--v-theme-secondary), 0.34);
   --color-success: rgb(var(--v-theme-success));
+  --color-warning: rgb(var(--v-theme-warning));
   --color-success-soft: color-mix(in srgb, var(--color-success) 12%, var(--md2-surface));
   --color-success-border: rgba(var(--v-theme-success), 0.34);
   --color-success-border-strong: rgba(var(--v-theme-success), 0.38);
   --color-error: rgb(var(--v-theme-error));
   --color-error-soft: color-mix(in srgb, var(--color-error) 12%, var(--md2-surface));
   --color-error-border: rgba(var(--v-theme-error), 0.36);
-  --color-neutral-soft: color-mix(in srgb, var(--md2-surface) 93%, white);
-  --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, white);
-  --color-neutral-border: rgba(255, 255, 255, 0.22);
+  --color-neutral-soft: color-mix(in srgb, var(--md2-surface) 93%, var(--color-text));
+  --color-neutral-softer: color-mix(in srgb, var(--md2-surface) 91%, var(--color-text));
+  --color-neutral-border: rgba(var(--v-theme-on-surface), 0.22);
   --color-mark: #4a4125;
   /* Hero 品牌底色:index.html 的 theme-color 与 --color-hero 同值,修改需两处同步。 */
   --color-hero: #191d24;
@@ -77,20 +80,18 @@
   --color-home-tint: #52698f;
   /* GitHub 提示块五色中主题无对应角色的唯一保留色(important);其余四色映射主题 info/success/warning/error。 */
   --color-markdown-important: #a371f7;
-  --color-text: #fff;
+  --color-text: rgb(var(--v-theme-on-surface));
   --color-text-soft: rgba(229, 241, 255, 0.82);
   --color-text-muted: rgba(229, 241, 255, 0.72);
   --color-text-subtle: rgba(255, 255, 255, 0.58);
-  --color-nav-muted: rgba(255, 255, 255, 0.78);
-  --color-border: rgba(255, 255, 255, 0.08);
+  --color-nav-muted: var(--color-text-muted);
+  --color-border: rgba(var(--v-theme-on-surface), 0.12);
   --color-border-hover: rgba(var(--v-theme-primary), 0.46);
   --color-card: rgb(var(--v-theme-surface));
-  --color-card-soft: color-mix(in srgb, var(--md2-surface) 95%, white);
-  --gradient-card: color-mix(in srgb, var(--md2-surface) 95%, white);
-  --gradient-card-strong: color-mix(in srgb, var(--md2-surface) 95%, white);
-  --page-background-fill:
-    radial-gradient(circle at 84% 12%, rgba(var(--v-theme-primary), 0.12), transparent 34%),
-    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-deep) 100%);
+  --color-card-soft: color-mix(in srgb, var(--md2-surface) 95%, var(--color-text));
+  --gradient-card: var(--color-card-soft);
+  --gradient-card-strong: var(--color-card-soft);
+  --page-background-fill: var(--color-bg);
   --radius-card: var(--md2-radius-card);
   --md2-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --md2-easing-deceleration: cubic-bezier(0, 0, 0.2, 1);
@@ -147,6 +148,31 @@
   --font-size-card-title: var(--md2-type-h5);
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --md2-surface-overlay-01: transparent;
+    --md2-surface-overlay-02: transparent;
+    --md2-surface-overlay-04: transparent;
+    --md2-surface-overlay-08: transparent;
+    --md2-surface-overlay-16: transparent;
+    --md2-surface-overlay-24: transparent;
+    --md2-elevation-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --md2-elevation-button: 0 1px 3px rgba(0, 0, 0, 0.16);
+    --md2-elevation-app-bar: 0 1px 4px rgba(0, 0, 0, 0.12);
+    --md2-elevation-menu: 0 4px 12px rgba(0, 0, 0, 0.16);
+    --md2-elevation-drawer: 0 8px 24px rgba(0, 0, 0, 0.16);
+    --md2-elevation-dialog: 0 12px 32px rgba(0, 0, 0, 0.2);
+    --color-text-soft: #494e62;
+    --color-text-muted: #5c6479;
+    --color-text-subtle: #5c6479;
+    --color-card-soft: var(--md2-surface);
+    --color-home-tint: var(--md2-background);
+    --color-mark: #fff2aa;
+    --color-markdown-important: #4b23c7;
+  }
 }
 
 * {
@@ -245,6 +271,17 @@ body {
   box-shadow: var(--md2-elevation-card);
 }
 
+/* 内容列表统一使用可读的辅助文字色，避免 Vuetify 的透明度再次削弱对比。 */
+.content-list .v-list-item-title {
+  color: var(--color-text);
+}
+
+.content-list .v-list-item-subtitle {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  opacity: 1;
+}
+
 .v-app-bar {
   background-image: linear-gradient(var(--md2-surface-overlay-04), var(--md2-surface-overlay-04)) !important;
 }
@@ -273,7 +310,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-secondary);
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 

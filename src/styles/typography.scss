@@ -2,8 +2,7 @@
 // 当前仅 button/subtitle-1/subtitle-2/body-2 被 settings.scss 的组件映射消费,
 // 其余角色作为完整刻度保留,供后续组件变量映射引用。
 //
-// 注意:站点 eyebrow 使用 global.css 的 --md2-type-overline(项目自定 10px),
-// 与本表官方值 0.75rem 存在刻意偏差;本表只描述官方 MD2。
+// 站点 eyebrow 使用 global.css 的 --md2-type-overline(12px)。
 
 $typography: (
   'h1': (

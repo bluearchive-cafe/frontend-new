@@ -19,3 +19,26 @@ export const blueArchiveDarkTheme = {
     warning: '#ffd76a'
   }
 }
+
+// 亮色主题使用品牌深色变体与生成色阶中的深色状态色，保证浅色表面上的文字对比。
+export const blueArchiveLightTheme = {
+  dark: false,
+  colors: {
+    background: '#f6fbfd',
+    surface: '#ffffff',
+    primary: '#0077ad',
+    primaryVariant: '#085cb7',
+    secondary: '#096235',
+    secondaryVariant: '#1b854f',
+    accent: '#096235',
+    error: '#a01320',
+    'on-primary': '#ffffff',
+    'on-secondary': '#ffffff',
+    'on-surface': '#222435',
+    'on-background': '#222435',
+    'on-error': '#ffffff',
+    info: '#085cb7',
+    success: '#105b1b',
+    warning: '#6b2b00'
+  }
+}

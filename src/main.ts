@@ -45,7 +45,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 import App from './App.vue'
 import router from './router'
-import { blueArchiveDarkTheme } from './theme'
+import { blueArchiveDarkTheme, blueArchiveLightTheme } from './theme'
 import { buildApexRedirectUrl, shouldRedirectToApex } from './utils/apex-redirect'
 import { enableClickSound } from './utils/easter-egg'
 import { printConsoleBrand } from './utils/console-brand'
@@ -99,10 +99,10 @@ const vuetify = createVuetify({
     }
   },
   theme: {
-    defaultTheme: 'blueArchiveDark',
-    // Site palette mirrors the BlueArchive.Cafe dark visual system.
+    defaultTheme: 'system',
     themes: {
-      blueArchiveDark: blueArchiveDarkTheme
+      dark: blueArchiveDarkTheme,
+      light: blueArchiveLightTheme
     }
   },
   defaults: {

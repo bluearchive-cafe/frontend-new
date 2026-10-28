@@ -122,7 +122,7 @@ const emptyDescription = computed(() =>
 
 .category-filter {
   gap: var(--control-gap);
-  margin-bottom: var(--control-gap);
+  margin-bottom: var(--space-6);
 }
 
 .category-filter :deep(.v-btn--variant-outlined) {
@@ -135,7 +135,6 @@ const emptyDescription = computed(() =>
 
 .category-count {
   margin-left: var(--inline-gap);
-  opacity: 0.72;
   font-size: var(--type-meta);
 }
 
@@ -145,7 +144,6 @@ const emptyDescription = computed(() =>
 }
 
 .article-card {
-  border: 1px solid var(--color-border);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
   transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);

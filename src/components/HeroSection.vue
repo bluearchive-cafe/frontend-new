@@ -22,10 +22,10 @@
         </p>
 
         <div class="hero-actions">
-          <v-btn color="primary" to="/download" prepend-icon="$lightningBolt">
+          <v-btn color="primary" theme="dark" to="/download" prepend-icon="$download">
             下载客户端
           </v-btn>
-          <v-btn class="tutorial-link" variant="text" :href="tutorialUrl" rel="noopener noreferrer" append-icon="$arrowRight">
+          <v-btn class="tutorial-link" theme="dark" variant="text" :href="tutorialUrl" rel="noopener noreferrer" append-icon="$arrowRight">
             查看教程
           </v-btn>
         </div>
@@ -62,6 +62,9 @@ const currentHeroImage = ref(getRandomHeroImage())
 
 <style scoped>
 .hero {
+  --color-text: #fff;
+  --color-text-muted: rgba(229, 241, 255, 0.82);
+  --color-primary: #29aeea;
   --hero-background: var(--color-hero);
   --hero-background-deep: var(--color-hero-deep);
   position: relative;
@@ -149,7 +152,7 @@ const currentHeroImage = ref(getRandomHeroImage())
 }
 
 .tutorial-link {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
 }
 
 .hero-actions :deep(.v-btn) {

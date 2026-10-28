@@ -40,12 +40,12 @@ withDefaults(
   color: var(--color-text);
   font-size: var(--font-size-page-title);
   font-weight: var(--font-weight-heading);
-  line-height: 1.08;
+  line-height: 1.25;
 }
 
 .page-heading span {
   display: block;
-  margin-top: 16px;
+  margin-top: var(--space-4);
   color: var(--color-text-muted);
   font-size: var(--type-body);
   line-height: 1.8;

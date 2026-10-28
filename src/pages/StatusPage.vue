@@ -220,7 +220,7 @@ function stopToolbarLoading() {
 }
 
 .status-panel {
-  border: 1px solid var(--color-border);
+  border: var(--border-decorative) solid var(--color-border);
   border-radius: var(--radius-card);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
@@ -291,7 +291,7 @@ function stopToolbarLoading() {
   min-width: 72px;
   min-height: 28px;
   padding: var(--pill-padding);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: var(--border-decorative) solid var(--color-neutral-border);
   border-radius: 999px;
   color: var(--color-text-muted);
   font-size: var(--md2-type-caption);
@@ -343,14 +343,13 @@ function stopToolbarLoading() {
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border: 0;
 }
 
 .status-table th,
 .status-table td {
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: var(--border-decorative) solid var(--color-border);
   text-align: left;
 }
 
@@ -432,10 +431,7 @@ function stopToolbarLoading() {
   }
 
   .status-table tr {
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    background: var(--color-card);
+    border: 0;
   }
 
   .status-table td {
@@ -444,7 +440,7 @@ function stopToolbarLoading() {
     gap: var(--control-gap);
     align-items: start;
     padding: var(--space-3) var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 0;
     overflow-wrap: anywhere;
   }
 
@@ -458,7 +454,7 @@ function stopToolbarLoading() {
     justify-content: space-between;
     width: auto;
     padding: var(--space-3) var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: var(--border-decorative) solid var(--color-border);
     background: var(--color-neutral-softer);
     color: var(--color-text);
     font-size: var(--md2-type-body2);

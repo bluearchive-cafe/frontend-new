@@ -68,6 +68,6 @@ withDefaults(
 
 .meta-item :deep(.v-icon) {
   flex: 0 0 auto;
-  opacity: 0.95;
+  color: var(--color-text-subtle);
 }
 </style>

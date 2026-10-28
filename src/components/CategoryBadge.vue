@@ -18,12 +18,11 @@ defineProps<{
   align-items: center;
   gap: var(--compact-gap);
   width: fit-content;
-  min-height: 32px;
+  min-height: var(--badge-height);
   padding: var(--pill-padding);
-  border: 1px solid var(--color-primary-border);
   border-radius: var(--md2-radius-button);
-  background: var(--color-primary-soft);
-  color: var(--color-secondary);
+  background: var(--color-neutral-soft);
+  color: var(--color-text-muted);
   font-size: var(--md2-type-caption);
   font-weight: var(--font-weight-action);
   line-height: 1;

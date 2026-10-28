@@ -412,6 +412,10 @@ h1 {
   .article-page {
     padding-block: var(--page-padding-block);
   }
+
+  .article-shell {
+    padding: var(--space-4);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -57,9 +57,9 @@ const copyrightYear = new Date().getFullYear()
 .site-footer {
   flex-grow: 0;
   padding-block: var(--space-6);
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-decorative) solid var(--color-border);
   background: var(--color-footer);
-  color: rgba(255, 255, 255, 0.74);
+  color: var(--color-text-muted);
 }
 
 .footer-inner {
@@ -94,7 +94,7 @@ p {
 }
 
 .friend-links span {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-meta);
 }
 
