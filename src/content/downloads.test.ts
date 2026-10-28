@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { filterVisiblePlatformLinks, platformLinks, type PlatformLink } from './downloads'
 import { clientPlatform, clientPlatformKeys } from './status-resources'
+import { staticRoutes } from '../shared/site-routes.mjs'
 
 const testColorTokens = {
   border: '--color-primary-border',
@@ -69,5 +70,23 @@ describe('platformLinks', () => {
       expect(link.icon).toBe(meta.icon)
       expect(link.colorTokens).toEqual(meta.colorTokens)
     }
+  })
+
+  it('lists exactly the visible platforms in the download route description', () => {
+    // 下载页 description 是手抄在 site-routes.mjs 里的平台清单，与 platformLinks
+    // 没有任何代码关联：加一个平台忘了改不会报错，SEO 文案就少说一个端。
+    // 锚点是这句文案的形状，改写文案时同步这里的正则。
+    const description = staticRoutes.find((route) => route.name === 'download')?.description ?? ''
+    const platformRun = /BlueArchive\.Cafe\s+(.+?)\s+客户端/.exec(description)?.[1] ?? ''
+
+    expect(platformRun).not.toBe('')
+
+    expect(new Set(platformRun.split(/[、,，与和\s]+/).filter(Boolean))).toEqual(
+      new Set(
+        platformLinks
+          .filter((link) => !link.hidden)
+          .map((link) => link.name.replace(/ 平台$/, ''))
+      )
+    )
   })
 })

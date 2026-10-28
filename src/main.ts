@@ -1,5 +1,8 @@
-// Redirect www to apex domain before any app initialization
-if (shouldRedirectToApex(window.location.hostname)) {
+// www → apex 跳转放在模块体第一条语句。ES Module 会先求值下面的 import，
+// 所以它的真实语义是"应用代码一行都还没跑"，而不是"依赖加载之前"。
+const redirectingToApex = shouldRedirectToApex(window.location.hostname)
+
+if (redirectingToApex) {
   window.location.replace(buildApexRedirectUrl(window.location))
 }
 
@@ -8,7 +11,7 @@ import './styles/fonts.scss'
 import './styles/global.css'
 
 import { createApp } from 'vue'
-import { createVuetify } from 'vuetify'
+import { createVuetify, type VuetifyOptions } from 'vuetify'
 import {
   mdiAccountOutline,
   mdiAccountGroupOutline,
@@ -27,7 +30,6 @@ import {
   mdiFileDocumentEditOutline,
   mdiGithub,
   mdiHelpCircleOutline,
-  mdiLightningBolt,
   mdiLinkVariant,
   mdiLinux,
   mdiMenu,
@@ -51,13 +53,8 @@ import { buildApexRedirectUrl, shouldRedirectToApex } from './utils/apex-redirec
 import { enableClickSound } from './utils/easter-egg'
 import { printConsoleBrand } from './utils/console-brand'
 
-printConsoleBrand()
-
-// 1% 概率彩蛋音效，挂载前就位。
-enableClickSound()
-
-// Vuetify is configured here so icon aliases, theme tokens, and component defaults are app-wide.
-const vuetify = createVuetify({
+// 配置在此声明，实例只在真正渲染的分支里创建（见文件末尾）。
+const vuetifyOptions: VuetifyOptions = {
   icons: {
     defaultSet: 'mdi',
     // Only icons referenced by the app are registered as aliases.
@@ -80,7 +77,6 @@ const vuetify = createVuetify({
       fileDocumentEditOutline: mdiFileDocumentEditOutline,
       github: mdiGithub,
       helpCircleOutline: mdiHelpCircleOutline,
-      lightningBolt: mdiLightningBolt,
       linkVariant: mdiLinkVariant,
       linux: mdiLinux,
       menu: mdiMenu,
@@ -115,7 +111,16 @@ const vuetify = createVuetify({
       rounded: 'circle'
     }
   }
-})
+}
 
-// Mount the Vue app after router and Vuetify are installed.
-createApp(App).use(router).use(vuetify).mount('#app')
+// 跳转已发起时到此为止：不创建 Vuetify、不挂载应用。www 流量仍会付出这一趟
+// 已下载的模块图（ES Module 先求值 import），但不会再跑一遍应用初始化。
+if (!redirectingToApex) {
+  printConsoleBrand()
+
+  // 1% 概率彩蛋音效，挂载前就位。
+  enableClickSound()
+
+  // Mount the Vue app after router and Vuetify are installed.
+  createApp(App).use(router).use(createVuetify(vuetifyOptions)).mount('#app')
+}
