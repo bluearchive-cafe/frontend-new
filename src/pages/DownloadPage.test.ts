@@ -30,7 +30,7 @@ describe('DownloadPage download dialog wiring', () => {
     await flushUpdates()
 
     expect(container.querySelector('#download-dialog-title')?.textContent)
-      .toContain('Android 平台 · 手动安装')
+      .toContain('Android 平台：手动安装')
     expect(container.querySelector('.variant-notice')?.textContent)
       .toContain('卸载官方原版客户端')
   })

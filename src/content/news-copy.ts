@@ -4,7 +4,6 @@ export const articleCardCtaLabel = '阅读全文'
 
 /** 站点尚无任何已发布新闻时的空状态文案。 */
 export const newsEmptyState = {
-  label: 'No news',
   title: '暂无新闻',
   description: '当前还没有已发布的新闻内容，后续公告会在这里展示。'
 } as const

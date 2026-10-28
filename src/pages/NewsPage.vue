@@ -2,9 +2,8 @@
   <section class="news-page">
     <v-container max-width="1120">
       <PageHeading
-        eyebrow="News"
         title="新闻"
-        description="查看汉化更新、使用说明与站点公告，快速找到最近发布的重要信息。"
+        description="汉化更新、使用说明与站点公告。"
       />
 
       <v-btn-toggle
@@ -61,7 +60,6 @@
 
       <v-card v-else class="empty-card" elevation="1">
         <v-card-text class="empty-content">
-          <p class="empty-label">{{ emptyLabel }}</p>
           <h2>{{ emptyTitle }}</h2>
           <p>{{ emptyDescription }}</p>
           <v-btn v-if="newsArticles.length" color="primary" variant="flat" @click="selectedCategory = allCategoryLabel">
@@ -107,7 +105,6 @@ const filteredArticles = computed(() => {
 
 // 分类为空与站点无新闻是两种空状态:前者文案仅本页使用,后者与首页
 // 新闻区块共用 news-copy 的单一来源。
-const emptyLabel = computed(() => newsArticles.length ? 'No articles' : newsEmptyState.label)
 const emptyTitle = computed(() => newsArticles.length ? '这个分类暂时没有文章' : newsEmptyState.title)
 const emptyDescription = computed(() =>
   newsArticles.length
@@ -226,13 +223,6 @@ const emptyDescription = computed(() =>
   padding: clamp(22px, 4vw, 34px) !important;
 }
 
-.empty-label {
-  margin: 0 0 var(--control-gap);
-  color: var(--color-primary);
-  font-size: var(--type-meta);
-  font-weight: var(--font-weight-overline);
-}
-
 .empty-content h2 {
   margin: 0;
   color: var(--color-text);
@@ -240,7 +230,7 @@ const emptyDescription = computed(() =>
   font-weight: var(--font-weight-heading);
 }
 
-.empty-content p:not(.empty-label) {
+.empty-content p {
   max-width: 520px;
   margin: var(--control-gap) 0 var(--space-6);
   color: var(--color-text-muted);

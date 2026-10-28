@@ -41,7 +41,7 @@ export function useDownloadGuide(
       return ''
     }
 
-    return `${selectedPlatform.value.name} · ${selectedVariant.value.name}`
+    return `${selectedPlatform.value.name}：${selectedVariant.value.name}`
   })
 
   const selectedStatusNotice = computed<ClientStatusNotice | null>(() => {

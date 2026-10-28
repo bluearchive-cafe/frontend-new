@@ -2,16 +2,10 @@
   <section class="download-page">
     <v-container max-width="1120">
       <PageHeading
-        eyebrow="Download"
         title="下载"
-        description="选择你的设备平台，获取客户端入口；首次使用前建议先阅读安装文档和注意事项。"
+        description="选择设备平台下载客户端。首次安装前，请阅读对应平台的安装文档。"
         max-width="760px"
       />
-
-      <div class="guide-strip" role="note">
-        <v-icon icon="$infoOutline" color="info" size="24" aria-hidden="true" />
-        <p>不同平台的安装方式和系统权限要求可能不同。遇到签名、权限或网络问题时，请优先查看对应文档。</p>
-      </div>
 
       <div class="platform-grid" aria-label="客户端下载入口">
         <v-card
@@ -124,9 +118,8 @@
 
       <section class="docs-section" aria-labelledby="docs-title">
         <div class="docs-copy">
-          <p>Guide</p>
           <h2 id="docs-title">文档与引导</h2>
-          <span>从下载、安装到问题反馈，按顺序完成这些步骤通常能减少大多数配置问题。</span>
+          <span>安装、更新或使用遇到问题时，可以查看以下文档或提交反馈。</span>
         </div>
 
         <!-- §1.3: 文档说明完整换行,不受固定行数限制。 -->
@@ -274,14 +267,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
   background: var(--page-background-fill);
 }
 
-.docs-copy p {
-  margin: 0 0 var(--inline-gap);
-  color: var(--color-primary);
-  font-size: var(--md2-type-button);
-  font-weight: var(--font-weight-overline);
-  text-transform: uppercase;
-}
-
 .docs-copy h2 {
   margin: 0;
   color: var(--color-text);
@@ -296,29 +281,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
   color: var(--color-text-muted);
   font-size: var(--md2-type-body1);
   line-height: 1.8;
-}
-
-.guide-strip {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: var(--control-gap);
-  align-items: center;
-  margin-bottom: var(--space-6);
-  padding: var(--space-4) var(--space-5);
-  border: 1px solid var(--color-info-border);
-  border-radius: var(--radius-card);
-  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 60ms both;
-  background: var(--color-info-soft);
-}
-
-.guide-strip :deep(.v-icon) {
-  align-self: center;
-}
-
-.guide-strip p {
-  margin: 0;
-  color: var(--color-info);
-  line-height: 1.7;
 }
 
 .platform-grid {

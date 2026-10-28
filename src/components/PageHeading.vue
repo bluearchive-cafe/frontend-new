@@ -1,6 +1,6 @@
 <template>
   <div class="page-heading" :style="{ maxWidth }">
-    <p>{{ eyebrow }}</p>
+    <p v-if="eyebrow">{{ eyebrow }}</p>
     <h1>{{ title }}</h1>
     <span>{{ description }}</span>
   </div>
@@ -9,12 +9,13 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    eyebrow: string
+    eyebrow?: string
     title: string
     description: string
     maxWidth?: string
   }>(),
   {
+    eyebrow: '',
     maxWidth: '720px'
   }
 )

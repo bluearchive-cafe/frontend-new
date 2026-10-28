@@ -36,7 +36,6 @@
 
         <v-card v-else class="news-empty-card" elevation="1">
           <v-card-text>
-            <p class="empty-label">{{ newsEmptyState.label }}</p>
             <h3>{{ newsEmptyState.title }}</h3>
             <p>{{ newsEmptyState.description }}</p>
           </v-card-text>
@@ -104,13 +103,6 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   padding: var(--space-8);
 }
 
-.empty-label {
-  margin: 0 0 var(--control-gap);
-  color: var(--color-primary);
-  font-size: var(--type-meta);
-  font-weight: var(--font-weight-heading);
-}
-
 .news-empty-card h3 {
   margin: 0;
   color: var(--color-text);
@@ -118,7 +110,7 @@ const latestNews = computed(() => newsArticles.slice(0, 3))
   font-weight: var(--font-weight-heading);
 }
 
-.news-empty-card p:not(.empty-label) {
+.news-empty-card p {
   max-width: 520px;
   margin: var(--control-gap) 0 0;
   color: var(--color-text-muted);

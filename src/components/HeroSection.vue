@@ -23,7 +23,7 @@
 
         <div class="hero-actions">
           <v-btn color="primary" to="/download" prepend-icon="$lightningBolt">
-            立即使用
+            下载客户端
           </v-btn>
           <v-btn class="tutorial-link" variant="text" :href="tutorialUrl" rel="noopener noreferrer" append-icon="$arrowRight">
             查看教程

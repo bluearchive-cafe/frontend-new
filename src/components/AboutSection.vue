@@ -8,7 +8,7 @@
             {{ siteTitle }} 是游戏《ブルーアーカイブ》的民间汉化项目，旨在为各位玩家提供优质、准确的汉化服务。
           </p>
           <p>
-            如发现问题，请反馈到 feedback@bluearchive.cafe。
+            问题反馈：<a href="mailto:feedback@bluearchive.cafe">feedback@bluearchive.cafe</a>
           </p>
         </div>
 
@@ -26,7 +26,6 @@
       <section class="social-section" aria-labelledby="social-title">
         <div class="social-heading">
           <h2 id="social-title">社交媒体</h2>
-          <p>在这里，查看我们的社交平台。</p>
         </div>
 
         <v-list class="social-list" bg-color="transparent" lines="two">
@@ -55,7 +54,7 @@
       <section class="sponsor-section" aria-labelledby="sponsor-title">
         <div class="sponsor-heading">
           <h2 id="sponsor-title">支持我们</h2>
-          <p>如果本站对你有帮助，可以通过以下方式支持我们持续维护汉化内容、站点服务和相关工具。</p>
+          <p>你的支持将用于汉化内容、站点和工具的持续维护。</p>
         </div>
 
         <v-list class="social-list sponsor-list" bg-color="transparent" lines="two">
@@ -200,6 +199,13 @@ const isSponsorQrOpen = ref(false)
   animation-delay: 240ms;
 }
 
+.about-copy a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  overflow-wrap: anywhere;
+}
+
 .about-row h3 {
   margin: 0 0 6px;
   color: var(--color-text);
@@ -229,14 +235,6 @@ const isSponsorQrOpen = ref(false)
   color: var(--color-text);
   font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-heading);
-}
-
-.social-heading p {
-  max-width: 560px;
-  margin: var(--control-gap) 0 0;
-  animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) 320ms both;
-  color: var(--color-text-muted);
-  line-height: 1.75;
 }
 
 .social-list {

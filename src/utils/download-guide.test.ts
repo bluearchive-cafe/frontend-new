@@ -59,7 +59,7 @@ describe('useDownloadGuide', () => {
       expect(guide.downloadDialog.value).toBe(true)
       expect(guide.selectedPlatform.value).toStrictEqual(platform)
       expect(guide.selectedVariant.value).toStrictEqual(variant)
-      expect(guide.selectedDownloadTitle.value).toBe(`${platform.name} · ${variant.name}`)
+      expect(guide.selectedDownloadTitle.value).toBe(`${platform.name}：${variant.name}`)
     })
 
     it('resets the attempted flag each time the dialog opens', () => {
