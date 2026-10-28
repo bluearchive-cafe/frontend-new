@@ -18,7 +18,7 @@
     "lint:fix": "npm run generate:news:dev && eslint . --fix",
     "test": "npm run generate:news:dev && vitest run",
     "audit": "npm audit --audit-level=moderate",
-    "build": "npm run optimize:hero && npm run generate:news:prod && npm run typecheck:raw && vite build && npm run prune:hero && node scripts/create-pages-fallback.mjs && node scripts/generate-sitemap.mjs",
+    "build": "npm run optimize:hero && npm run generate:news:prod && npm run typecheck:raw && vite build && npm run prune:hero && node scripts/create-pages-fallback.mjs && node scripts/generate-sitemap.mjs && node scripts/verify-dist-assets.mjs",
     "build:pages": "npm run build",
     "preview": "vite preview --host 127.0.0.1"
   },
