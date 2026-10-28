@@ -1,6 +1,6 @@
 <template>
   <v-footer class="site-footer">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <div class="footer-inner">
         <div class="footer-left">
           <strong>{{ siteTitle }}</strong>

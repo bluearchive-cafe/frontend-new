@@ -1,6 +1,6 @@
 <template>
   <section class="download-page">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <PageHeading
         title="下载"
         description="选择设备平台下载客户端。首次安装前，请阅读对应平台的安装文档。"
@@ -312,7 +312,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
 .platform-card {
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
   background: var(--gradient-card);
-  transition: border-color var(--md2-duration-shorter) var(--md2-easing-standard), box-shadow var(--md2-duration-shorter) var(--md2-easing-standard), transform var(--md2-duration-shorter) var(--md2-easing-standard);
 }
 
 .platform-card:nth-child(2) {
@@ -487,13 +486,6 @@ function singleVariantButtonText(variant: DownloadVariant) {
   flex-wrap: wrap;
   gap: var(--control-gap);
   margin-top: var(--space-6);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .platform-card:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: var(--md2-elevation-card);
-  }
 }
 
 @media (max-width: 840px) {

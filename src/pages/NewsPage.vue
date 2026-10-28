@@ -1,6 +1,6 @@
 <template>
   <section class="news-page">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <PageHeading
         title="新闻"
         description="汉化更新、使用说明与站点公告。"

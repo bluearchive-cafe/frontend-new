@@ -51,9 +51,6 @@ const EASTER_EGG_ASSETS = [
 // 默认触发概率；调试时可在 URL 上追加 ?kuyashi=1（100%）或 ?kuyashi=0.5（50%）覆盖。
 const DEFAULT_CHANCE = 1 / 100
 
-// 贴图时长由根 CSS token 提供,内联仅保留动画声明的最低样式保障。
-const INLINE_ANIMATION_STYLE = 'opacity:0;animation:var(--ee-sticker-duration) cubic-bezier(0.2,0,0,1) both'
-
 let lastPlayAt = -COOLDOWN_MS
 let chance = DEFAULT_CHANCE
 let active = false
@@ -158,7 +155,6 @@ function showSticker(x: number, y: number, stickerUrl: string) {
   const size = readCssPixelToken('--ee-sticker-size')
   sticker.style.marginLeft = `${-size / 2}px`
   sticker.style.marginTop = `${-size / 2}px`
-  sticker.style.animation = INLINE_ANIMATION_STYLE
 
   // 展示时长直接读取根 CSS token,避免与样式表维护两份默认值。
   const removeAfter = readCssDurationToken('--ee-sticker-duration')

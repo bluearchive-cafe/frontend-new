@@ -11,7 +11,7 @@
     />
     <div class="hero-shade" />
 
-    <v-container class="hero-content" max-width="1120">
+    <v-container class="hero-content" max-width="var(--container-page)">
       <div class="hero-copy">
         <h1>
           <span class="hero-line">{{ siteTagline.lead }} <span class="text-gradient">{{ siteTagline.emphasis }}</span></span>

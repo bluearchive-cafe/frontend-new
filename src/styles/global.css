@@ -4,31 +4,25 @@
   --md2-background: rgb(var(--v-theme-background));
   --md2-surface: rgb(var(--v-theme-surface));
   /* M2 暗色主题 elevation 白色叠加表:dp → 不透明度
-     (1dp 5%、2dp 7%、4dp 9%、8dp 12%、16dp 15%、24dp 16%)。 */
-  --md2-surface-overlay-01: rgba(255, 255, 255, 0.05);
-  --md2-surface-overlay-02: rgba(255, 255, 255, 0.07);
+     (4dp 9%、8dp 12%、16dp 15%、24dp 16%)。 */
   --md2-surface-overlay-04: rgba(255, 255, 255, 0.09);
   --md2-surface-overlay-08: rgba(255, 255, 255, 0.12);
   --md2-surface-overlay-16: rgba(255, 255, 255, 0.15);
   --md2-surface-overlay-24: rgba(255, 255, 255, 0.16);
   /* M2 elevation 阴影阶梯(暗色下加深):卡片 1dp、按钮 2dp、应用栏 4dp、
-     菜单 8dp、抽屉 16dp、对话框 24dp。 */
+     菜单 8dp、对话框 24dp。 */
   --md2-elevation-card: 0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.24);
   --md2-elevation-button: 0 2px 4px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.24);
   --md2-elevation-app-bar: 0 2px 4px rgba(0, 0, 0, 0.32), 0 3px 5px rgba(0, 0, 0, 0.24);
   --md2-elevation-menu: 0 5px 5px rgba(0, 0, 0, 0.32), 0 8px 10px rgba(0, 0, 0, 0.24);
-  --md2-elevation-drawer: 0 8px 10px rgba(0, 0, 0, 0.36), 0 16px 24px rgba(0, 0, 0, 0.28);
   --md2-elevation-dialog: 0 12px 17px rgba(0, 0, 0, 0.36), 0 24px 38px rgba(0, 0, 0, 0.28);
   /* M2 暗色主题 scrim,模态抽屉与对话框共用。 */
   --md2-scrim: rgba(0, 0, 0, 0.46);
-  --md2-type-h1: 96px;
-  --md2-type-h2: 60px;
   --md2-type-h3: 48px;
   --md2-type-h4: 34px;
   --md2-type-h5: 24px;
   --md2-type-h6: 20px;
   --md2-type-subtitle1: 16px;
-  --md2-type-subtitle2: 14px;
   --md2-type-body1: 16px;
   --md2-type-body2: 14px;
   --md2-type-caption: 12px;
@@ -47,19 +41,14 @@
   --color-bg-deep: var(--md2-background);
   --color-footer: var(--md2-background);
   --color-surface: var(--md2-surface);
-  --color-surface-raised: color-mix(in srgb, var(--md2-surface) 93%, var(--color-text));
   --color-primary: rgb(var(--v-theme-primary));
   --color-primary-soft: color-mix(in srgb, var(--color-primary) 12%, var(--md2-surface));
-  --color-primary-softer: color-mix(in srgb, var(--color-primary) 8%, var(--md2-surface));
   --color-primary-border: rgba(var(--v-theme-primary), 0.32);
   --color-primary-border-strong: rgba(var(--v-theme-primary), 0.42);
   --color-secondary: rgb(var(--v-theme-secondary));
   --color-info: rgb(var(--v-theme-info));
-  --color-info-soft: rgba(var(--v-theme-info), 0.1);
-  --color-info-border: rgba(var(--v-theme-info), 0.34);
   --color-accent: rgb(var(--v-theme-accent));
   --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, var(--md2-surface));
-  --color-accent-softer: color-mix(in srgb, var(--color-accent) 8%, var(--md2-surface));
   --color-accent-border: rgba(var(--v-theme-secondary), 0.34);
   --color-success: rgb(var(--v-theme-success));
   --color-warning: rgb(var(--v-theme-warning));
@@ -95,19 +84,14 @@
   --radius-card: var(--md2-radius-card);
   --md2-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --md2-easing-deceleration: cubic-bezier(0, 0, 0.2, 1);
-  --md2-easing-acceleration: cubic-bezier(0.4, 0, 1, 1);
-  --md2-easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);
   --md2-duration-shortest: 150ms;
   --md2-duration-shorter: 200ms;
-  --md2-duration-short: 250ms;
   --md2-duration-standard: 300ms;
   --md2-duration-complex: 375ms;
-  --md2-duration-entering: 225ms;
-  --md2-duration-leaving: 195ms;
   --container-page: 1120px;
+  --container-reading: 860px;
   --shadow-hover: var(--md2-elevation-menu);
   --space-1: 4px;
-  --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 20px;
@@ -153,8 +137,6 @@
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
-    --md2-surface-overlay-01: transparent;
-    --md2-surface-overlay-02: transparent;
     --md2-surface-overlay-04: transparent;
     --md2-surface-overlay-08: transparent;
     --md2-surface-overlay-16: transparent;
@@ -163,7 +145,6 @@
     --md2-elevation-button: 0 1px 3px rgba(0, 0, 0, 0.16);
     --md2-elevation-app-bar: 0 1px 4px rgba(0, 0, 0, 0.12);
     --md2-elevation-menu: 0 4px 12px rgba(0, 0, 0, 0.16);
-    --md2-elevation-drawer: 0 8px 24px rgba(0, 0, 0, 0.16);
     --md2-elevation-dialog: 0 12px 32px rgba(0, 0, 0, 0.2);
     --color-text-soft: #494e62;
     --color-text-muted: #5c6479;
@@ -389,8 +370,9 @@ body {
   display: block;
   pointer-events: none;
   transform-origin: 50% 50%;
-  animation: easter-egg-sticker var(--ee-sticker-duration) var(--md2-easing-standard)
-    var(--ee-rot, -8deg) both;
+  /* --ee-rot 只在 @keyframes 的 rotate 里消费;放进 animation 简写会被
+     解析成 animation-delay,角度值非法会让整条声明失效、动画名归零。 */
+  animation: easter-egg-sticker var(--ee-sticker-duration) var(--md2-easing-standard) both;
 }
 
 @keyframes easter-egg-sticker {

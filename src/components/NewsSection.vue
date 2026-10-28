@@ -1,6 +1,6 @@
 <template>
   <section id="news" class="section news-section">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <div class="news-overview">
         <h2 class="section-title">最新动态</h2>
         <v-btn class="all-news-link" variant="text" color="primary" append-icon="$chevronRight" to="/news">

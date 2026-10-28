@@ -27,7 +27,7 @@ describe('blueArchiveDarkTheme', () => {
   it('defines Material 2 elevation and fixed typography tokens', () => {
     expect(globalStyles).toContain('--md2-elevation-card:')
     expect(globalStyles).toContain('--md2-elevation-app-bar:')
-    expect(globalStyles).toContain('--md2-type-h1: 96px')
+    expect(globalStyles).toContain('--md2-type-h3: 48px')
     expect(globalStyles).toContain('--md2-radius-button: 4px')
   })
 })

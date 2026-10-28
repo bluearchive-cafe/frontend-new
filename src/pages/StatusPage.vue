@@ -1,6 +1,6 @@
 <template>
   <section class="status-page">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <PageHeading
         title="资源状态"
         description="汉化资源会因官方版本更新而暂时失效，可以在此处检查各项资源的维护状态。"

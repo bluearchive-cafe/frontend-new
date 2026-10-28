@@ -1,6 +1,6 @@
 <template>
   <section class="article-page">
-    <v-container max-width="860">
+    <v-container max-width="var(--container-reading)">
       <v-btn class="back-link" variant="text" color="primary" prepend-icon="$arrowLeft" to="/news">
         返回新闻
       </v-btn>
@@ -153,7 +153,9 @@ h1 {
   --markdown-border: rgba(139, 148, 158, 0.28);
   --markdown-border-muted: rgba(139, 148, 158, 0.18);
   --markdown-code-bg: var(--color-neutral-soft);
-  --markdown-pre-bg: var(--color-bg);
+  /* 暗色主题 background 与 surface 同为 #121212,取 surface+text 混合的
+     neutral-softer 才能在两套主题下都比页面底色更亮一档。 */
+  --markdown-pre-bg: var(--color-neutral-softer);
   --markdown-table-alt: var(--color-neutral-softer);
   /* 提示块颜色映射主题语义色:note→info、tip→success、warning→warning、caution→error;
      important 无主题对应角色,使用 --color-markdown-important。 */

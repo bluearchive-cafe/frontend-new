@@ -13,7 +13,7 @@
       <RouterLink to="/" :aria-label="`${siteName} 首页`">{{ siteTitle }}</RouterLink>
     </v-toolbar-title>
 
-    <v-container class="header-inner" max-width="1120">
+    <v-container class="header-inner" max-width="var(--container-page)">
       <v-toolbar-title class="brand">
         <RouterLink to="/" :aria-label="`${siteName} 首页`">{{ siteTitle }}</RouterLink>
       </v-toolbar-title>

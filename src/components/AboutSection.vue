@@ -1,6 +1,6 @@
 <template>
   <section class="section about-section">
-    <v-container max-width="1120">
+    <v-container max-width="var(--container-page)">
       <div class="about-layout">
         <div class="about-copy">
           <h1>关于本站</h1>

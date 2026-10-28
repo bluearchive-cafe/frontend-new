@@ -1,6 +1,6 @@
 <template>
   <section class="not-found-page">
-    <v-container max-width="860">
+    <v-container max-width="var(--container-reading)">
       <NotFoundState
         title="页面不存在"
         description="这个地址可能已经移动、删除，或者暂时还没有发布。你可以回到首页重新开始，也可以查看最近的新闻公告。"
