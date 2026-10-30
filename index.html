@@ -14,13 +14,26 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L9C6BQBHSG"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      // 两个站点分别使用独立数据流；本地开发和 www 跳转页不发送统计。
+      ;(() => {
+        const tagId = new Map([
+          ['bluearchive.cafe', 'G-L9C6BQBHSG'],
+          ['bluearchive-cafe.github.io', 'GT-MK5ZZ9QP']
+        ]).get(window.location.hostname)
+        if (!tagId) return
 
-      gtag('config', 'G-L9C6BQBHSG');
+        window.dataLayer = window.dataLayer || []
+        function gtag() { window.dataLayer.push(arguments) }
+        window.gtag = gtag
+        gtag('js', new Date())
+        gtag('config', tagId)
+
+        const script = document.createElement('script')
+        script.async = true
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${tagId}`
+        document.head.appendChild(script)
+      })()
     </script>
   </head>
   <body>
