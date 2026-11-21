@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { trackDownloadClick, trackNotFound } from './analytics'
+import { trackAnnouncementClick, trackDownloadClick, trackNotFound } from './analytics'
 
 describe('analytics events', () => {
   beforeEach(() => {
@@ -21,6 +21,18 @@ describe('analytics events', () => {
       platform: 'Android',
       variant: '国际服 APK',
       link_host: 'download.bluearchive.cafe',
+    })
+  })
+
+  it('sends the announcement id and the clicked target', () => {
+    const gtag = vi.fn()
+    window.gtag = gtag
+
+    trackAnnouncementClick({ id: 'publisher-transfer-2027', target: 'migration' })
+
+    expect(gtag).toHaveBeenCalledWith('event', 'announcement_click', {
+      announcement_id: 'publisher-transfer-2027',
+      target: 'migration',
     })
   })
 

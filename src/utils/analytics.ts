@@ -6,6 +6,13 @@ export interface DownloadClickInput {
   downloadUrl: string
 }
 
+export type AnnouncementActionTarget = 'migration' | 'news' | 'official'
+
+export interface AnnouncementClickInput {
+  id: string
+  target: AnnouncementActionTarget
+}
+
 type Parameters = Record<string, string>
 
 declare global {
@@ -20,6 +27,13 @@ export function trackDownloadClick(input: DownloadClickInput) {
     platform: input.platform,
     variant: input.variant,
     ...(linkHost ? { link_host: linkHost } : {}),
+  })
+}
+
+export function trackAnnouncementClick(input: AnnouncementClickInput) {
+  track('announcement_click', {
+    announcement_id: input.id,
+    target: input.target
   })
 }
 

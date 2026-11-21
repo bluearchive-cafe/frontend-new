@@ -15,12 +15,25 @@
     </v-main>
 
     <SiteFooter />
+
+    <AnnouncementDialog
+      v-if="announcement"
+      v-model="isOpen"
+      :announcement="announcement"
+      @acknowledge="acknowledge"
+      @snooze="snooze"
+      @action="handleAction"
+    />
   </v-app>
 </template>
 
 <script setup lang="ts">
+import AnnouncementDialog from './components/AnnouncementDialog.vue'
 import AppHeader from './components/AppHeader.vue'
 import SiteFooter from './components/SiteFooter.vue'
+import { useAnnouncementNotice } from './utils/announcement-notice'
+
+const { announcement, isOpen, acknowledge, snooze, handleAction } = useAnnouncementNotice()
 
 function disableLeavingPage(element: Element) {
   element.setAttribute('inert', '')
