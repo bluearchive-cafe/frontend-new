@@ -290,7 +290,10 @@ body {
   box-shadow: var(--md2-elevation-menu);
 }
 
-:focus-visible {
+/* 焦点环只服务键盘导航。对话框/菜单的 .v-overlay__content(tabindex="-1")由焦点
+   陷阱脚本聚焦,首屏自动打开的公告会被浏览器判定为 :focus-visible;排除该容器,
+   默认不显示焦点环,键盘 Tab 进入的可交互控件仍保留轮廓。 */
+:focus-visible:not(.v-overlay__content) {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }

@@ -132,3 +132,14 @@ describe('dark-surface elevation contracts', () => {
     expect(globalStyles).toContain('box-shadow: var(--md2-elevation-dialog) !important;')
   })
 })
+
+describe('keyboard focus visibility contract', () => {
+  it('shows the focus ring only for keyboard-reachable elements', () => {
+    // 焦点陷阱把脚本焦点放到 .v-overlay__content(tabindex="-1")上;首屏自动打开的
+    // 公告对话框因此被 :focus-visible 命中。排除该容器后,默认浏览不再显示焦点环,
+    // 而 Tab 可达的链接与按钮仍由全局轮廓标记。
+    expect(globalStyles).toContain(':focus-visible:not(.v-overlay__content)')
+    expect(globalStyles).toContain('outline: 3px solid var(--color-primary)')
+    expect(globalStyles).toContain('outline-offset: 2px')
+  })
+})
