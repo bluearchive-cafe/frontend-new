@@ -1,8 +1,6 @@
 // MD2 官方排版刻度,数值来自 Vuetify 4 typography-migration 指南的 legacy token 表。
 // 当前仅 button/subtitle-1/subtitle-2/body-2 被 settings.scss 的组件映射消费,
 // 其余角色作为完整刻度保留,供后续组件变量映射引用。
-//
-// 站点 eyebrow 使用 global.css 的 --md2-type-overline(12px)。
 
 $typography: (
   'h1': (

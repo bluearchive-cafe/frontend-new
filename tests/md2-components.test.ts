@@ -15,8 +15,8 @@ const globalStyles = readFileSync(new URL('../src/styles/global.css', import.met
 const mainSource = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf-8').replace(/\r\n/g, '\n')
 
 describe('shared MD2 content primitives', () => {
-  it('uses fixed Material 2 heading and overline styles', () => {
-    expect(headingSource).toContain('font-size: var(--type-overline)')
+  it('uses the fixed Material 2 page-title style without an eyebrow label', () => {
+    expect(headingSource).not.toContain('eyebrow')
     expect(headingSource).toContain('font-size: var(--font-size-page-title)')
     expect(globalStyles).toContain('--type-overline: var(--md2-type-overline)')
   })

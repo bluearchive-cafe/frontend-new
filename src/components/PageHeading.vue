@@ -1,6 +1,5 @@
 <template>
   <div class="page-heading" :style="{ maxWidth }">
-    <p v-if="eyebrow">{{ eyebrow }}</p>
     <h1>{{ title }}</h1>
     <span>{{ description }}</span>
   </div>
@@ -9,13 +8,11 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    eyebrow?: string
     title: string
     description: string
     maxWidth?: string
   }>(),
   {
-    eyebrow: '',
     maxWidth: '720px'
   }
 )
@@ -25,14 +22,6 @@ withDefaults(
 .page-heading {
   margin-bottom: var(--page-heading-gap);
   animation: fade-slide-up var(--md2-duration-complex) var(--md2-easing-deceleration) both;
-}
-
-.page-heading p {
-  margin: 0 0 var(--inline-gap);
-  color: var(--color-primary);
-  font-size: var(--type-overline);
-  font-weight: var(--font-weight-overline);
-  text-transform: uppercase;
 }
 
 .page-heading h1 {
