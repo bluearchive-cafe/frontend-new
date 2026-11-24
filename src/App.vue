@@ -2,6 +2,13 @@
   <v-app>
     <a class="skip-link" href="#main-content">跳转到主内容</a>
 
+    <AnnouncementBanner
+      v-if="banner"
+      :announcement="banner"
+      @dismiss="dismissBanner"
+      @action="trackBannerAction"
+    />
+
     <AppHeader />
 
     <v-main id="main-content" class="app-main">
@@ -28,11 +35,18 @@
 </template>
 
 <script setup lang="ts">
+import AnnouncementBanner from './components/AnnouncementBanner.vue'
 import AnnouncementDialog from './components/AnnouncementDialog.vue'
 import AppHeader from './components/AppHeader.vue'
 import SiteFooter from './components/SiteFooter.vue'
+import { useAnnouncementBanner } from './utils/announcement-banner'
 import { useAnnouncementNotice } from './utils/announcement-notice'
 
+const {
+  banner,
+  dismiss: dismissBanner,
+  trackAction: trackBannerAction
+} = useAnnouncementBanner()
 const { announcement, isOpen, acknowledge, snooze, handleAction } = useAnnouncementNotice()
 
 function disableLeavingPage(element: Element) {

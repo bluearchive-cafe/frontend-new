@@ -16,6 +16,8 @@ export interface SiteAnnouncement {
   revision: number
   eyebrow: string
   title: string
+  /** 顶部横幅的一句话补充,与 title 同屏展示,应保持简短。 */
+  bannerSummary: string
   lead: string
   dates: AnnouncementDate[]
   warning: string
@@ -35,6 +37,7 @@ export const activeAnnouncements: SiteAnnouncement[] = [
     revision: 1,
     eyebrow: '官方公告 · 账号迁移',
     title: '日服《蔚蓝档案》发行商将变更为 NEXON',
+    bannerSummary: '请在 2027 年 1 月中旬维护前完成「账号迁移申请」。',
     lead: '2027 年 1 月起，日服《蔚蓝档案》（ブルーアーカイブ）的发行商将由 Yostar 变更为 NEXON。若要继续使用当前游戏账号，请在预计于 1 月中旬开始的发行商变更维护前完成「账号迁移申请」。',
     dates: [
       {

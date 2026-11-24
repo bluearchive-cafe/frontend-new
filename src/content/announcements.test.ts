@@ -45,5 +45,6 @@ describe('activeAnnouncements', () => {
     expect(announcement?.dates.length).toBeGreaterThan(0)
     expect(announcement?.warning).not.toBe('')
     expect(announcement?.note).not.toBe('')
+    expect(announcement?.bannerSummary).not.toBe('')
   })
 })

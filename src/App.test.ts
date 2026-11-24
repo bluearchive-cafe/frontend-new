@@ -4,6 +4,7 @@ import { createApp, defineComponent, h, nextTick, type App as VueApp } from 'vue
 import { createMemoryHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('./components/AnnouncementBanner.vue', () => ({ default: defineComponent({ render: () => null }) }))
 vi.mock('./components/AnnouncementDialog.vue', () => ({ default: defineComponent({ render: () => null }) }))
 vi.mock('./components/AppHeader.vue', () => ({ default: defineComponent({ render: () => null }) }))
 vi.mock('./components/SiteFooter.vue', () => ({ default: defineComponent({ render: () => null }) }))

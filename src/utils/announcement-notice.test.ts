@@ -15,6 +15,7 @@ function createAnnouncement(overrides: Partial<SiteAnnouncement> = {}): SiteAnno
     revision: 1,
     eyebrow: '公告',
     title: '示例公告',
+    bannerSummary: '示例横幅',
     lead: '示例正文',
     dates: [],
     warning: '示例提醒',

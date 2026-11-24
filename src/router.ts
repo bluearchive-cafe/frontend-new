@@ -33,7 +33,7 @@ const publicRoutes = staticRoutes.map((route) => {
 })
 
 // 锚点偏移与 global.css 的 --anchor-offset 单一来源:固定应用栏高度 +
-// 16px 呼吸间距,由样式表 token 驱动。
+// 16px 呼吸间距,由样式表 token 驱动;顶部横幅存在时由横幅组件把自身高度叠加进该 token。
 function readAnchorOffset() {
   return readCssPixelToken('--anchor-offset')
 }
