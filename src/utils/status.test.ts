@@ -7,7 +7,8 @@ import {
   mapStatusResources,
   statusEndpoint,
   statusRequestTimeoutMs,
-  StatusRequestTimeoutError
+  StatusRequestTimeoutError,
+  summarizeStatusResources
 } from './status'
 
 const statusData = {
@@ -39,6 +40,16 @@ describe('mapStatusResources', () => {
     expect(resources.windows.status).toEqual({ label: '未获取', state: 'loading' })
     expect(resources.windows.official.version).toBe('未获取')
     expect(Object.keys(resources)).not.toContain('launcher')
+  })
+})
+
+describe('summarizeStatusResources', () => {
+  it('counts synchronized, unsynchronized, and unavailable resources', () => {
+    const summary = summarizeStatusResources(mapStatusResources(statusData))
+
+    // statusData 只覆盖 android(已同步)与 ios(未同步),其余资源键均未返回。
+    expect(summary).toEqual({ total: 8, synced: 1, outOfSync: 1, pending: 6 })
+    expect(summary.synced + summary.outOfSync + summary.pending).toBe(summary.total)
   })
 })
 

@@ -47,11 +47,15 @@
   --color-primary-border-strong: rgba(var(--v-theme-primary), 0.42);
   --color-secondary: rgb(var(--v-theme-secondary));
   --color-info: rgb(var(--v-theme-info));
+  --color-info-soft: color-mix(in srgb, var(--color-info) 12%, var(--md2-surface));
+  --color-info-border: rgba(var(--v-theme-info), 0.34);
   --color-accent: rgb(var(--v-theme-accent));
   --color-accent-soft: color-mix(in srgb, var(--color-accent) 12%, var(--md2-surface));
   --color-accent-border: rgba(var(--v-theme-secondary), 0.34);
   --color-success: rgb(var(--v-theme-success));
   --color-warning: rgb(var(--v-theme-warning));
+  --color-warning-soft: color-mix(in srgb, var(--color-warning) 12%, var(--md2-surface));
+  --color-warning-border: rgba(var(--v-theme-warning), 0.36);
   --color-success-soft: color-mix(in srgb, var(--color-success) 12%, var(--md2-surface));
   --color-success-border: rgba(var(--v-theme-success), 0.34);
   --color-success-border-strong: rgba(var(--v-theme-success), 0.38);

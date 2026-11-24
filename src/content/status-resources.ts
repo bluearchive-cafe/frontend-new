@@ -86,8 +86,39 @@ export function clientPlatformColorStyle(tokens: ClientPlatformColorTokens) {
   }
 }
 
+// 状态页把面板分成两组阅读:客户端安装包按平台分发,游戏资源包随官方
+// 版本更新。分组只影响状态页顺序,不影响 statusResourceKeys 的注册顺序。
+export const statusResourceGroupKeys = ['client', 'game'] as const
+
+export type StatusResourceGroupKey = typeof statusResourceGroupKeys[number]
+
+export interface StatusResourceGroup {
+  key: StatusResourceGroupKey
+  title: string
+  description: string
+}
+
+const statusResourceGroupMeta: Record<StatusResourceGroupKey, Omit<StatusResourceGroup, 'key'>> = {
+  client: {
+    title: '客户端安装包',
+    description: '按设备平台分发的客户端安装包与应用包。'
+  },
+  game: {
+    title: '游戏资源包',
+    description: '随官方版本更新、由汉化组同步的游戏内资源。'
+  }
+}
+
+// 顺序跟随 statusResourceGroupKeys;Record 以 StatusResourceGroupKey 为键,
+// 新增分组缺少文案时会在编译期报错。
+export const statusResourceGroups: StatusResourceGroup[] = statusResourceGroupKeys.map((key) => ({
+  key,
+  ...statusResourceGroupMeta[key]
+}))
+
 export interface StatusResourcePanel {
   key: StatusResourceKey
+  group: StatusResourceGroupKey
   title: string
   description: string
   icon: string
@@ -98,48 +129,56 @@ export interface StatusResourcePanel {
 const statusResourcePanelMeta: Record<StatusResourceKey, Omit<StatusResourcePanel, 'key'>> = {
   // §2.5.4: 平台是用户扫描客户端状态时的首要识别信息。
   android: {
+    group: 'client',
     title: 'Android 安装包',
     description: 'Android 专用客户端安装包',
     icon: clientPlatformPresentation.android.icon,
     colorTokens: clientPlatformPresentation.android.colorTokens
   },
   ios: {
+    group: 'client',
     title: 'iOS 应用包',
     description: 'iOS 专用客户端应用包',
     icon: clientPlatformPresentation.ios.icon,
     colorTokens: clientPlatformPresentation.ios.colorTokens
   },
   windows: {
+    group: 'client',
     title: 'Windows 资源包',
     description: 'Windows 专用启动器资源包',
     icon: clientPlatformPresentation.windows.icon,
     colorTokens: clientPlatformPresentation.windows.colorTokens
   },
   macos: {
+    group: 'client',
     title: 'macOS 资源包',
     description: 'macOS 专用客户端资源包',
     icon: clientPlatformPresentation.macos.icon,
     colorTokens: clientPlatformPresentation.macos.colorTokens
   },
   notice: {
+    group: 'game',
     title: '公告包',
     description: '游戏内公告资源同步状态',
     icon: '$calendarClockOutline',
     tone: 'notice'
   },
   text: {
+    group: 'game',
     title: '文本包',
     description: '游戏内文本资源同步状态',
     icon: '$textBoxOutline',
     tone: 'text'
   },
   voice: {
+    group: 'game',
     title: '语音包',
     description: '游戏内主线语音资源同步状态',
     icon: '$volumeHigh',
     tone: 'voice'
   },
   media: {
+    group: 'game',
     title: '图像包',
     description: '游戏内图像视频资源同步状态',
     icon: '$imageOutline',

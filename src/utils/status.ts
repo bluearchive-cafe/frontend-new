@@ -27,6 +27,13 @@ export interface StatusSourceView {
   time: string
 }
 
+export interface StatusSummary {
+  total: number
+  synced: number
+  outOfSync: number
+  pending: number
+}
+
 export interface StatusResourceView {
   status: StatusChipView
   official: StatusSourceView
@@ -103,6 +110,37 @@ export function createStatusResources(valueLabel: string, status: StatusChipView
 
     return resources
   }, {} as Record<StatusResourceKey, StatusResourceView>)
+}
+
+/**
+ * 聚合各资源的同步状态,供状态页总览使用。总数始终等于 statusResourceKeys
+ * 的长度,三种状态互斥且相加等于总数。
+ */
+export function summarizeStatusResources(
+  resources: Record<StatusResourceKey, StatusResourceView>
+): StatusSummary {
+  const summary: StatusSummary = {
+    total: 0,
+    synced: 0,
+    outOfSync: 0,
+    pending: 0
+  }
+
+  for (const key of statusResourceKeys) {
+    summary.total += 1
+
+    const state = resources[key].status.state
+
+    if (state === 'success') {
+      summary.synced += 1
+    } else if (state === 'error') {
+      summary.outOfSync += 1
+    } else {
+      summary.pending += 1
+    }
+  }
+
+  return summary
 }
 
 export function mapStatusResources(statusData: StatusData) {

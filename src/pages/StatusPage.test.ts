@@ -61,6 +61,8 @@ function mountStatusPage() {
   const app = createApp(StatusPage)
 
   app.component('VContainer', passthroughComponent)
+  app.component('VCard', passthroughComponent)
+  app.component('VCardText', passthroughComponent)
   app.component('VAlert', alertComponent)
   app.component('VBtn', buttonComponent)
   app.component('VAvatar', passthroughComponent)
